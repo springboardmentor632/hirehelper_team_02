@@ -1,0 +1,477 @@
+/* theme.css */
+ 
+:root {
+    /* Colors */
+    --primary-bg-color: #99f4ef;
+    --secondary-bg-color: #bff7f3;
+    --accent-color-1: #a5f68f; /* logo icon gradient start */
+    --accent-color-2: #2dfc94; /* logo icon gradient end */
+    --brand-color-primary: #6366f1; /* HireHelper brand */
+    --brand-color-secondary: #4a4df7; /* forgot password link */
+    --brand-color-secondary-hover: #4f46e5;
+    --text-color-dark: #111827;
+    --text-color-medium: #253146;
+    --text-color-light: #6b7280;
+    --text-color-lighter: #374151; /* pw toggle, google button */
+    --text-color-primary-blue: rgb(31, 58, 129); /* left side description */
+    --text-color-secondary-blue: rgb(36, 68, 147); /* tagline */
+    --text-color-tertiary-blue: rgb(30, 57, 124); /* description */
+    --form-bg-color: #f9fafb;
+    --form-border-color: #d1d5db;
+    --form-focus-border: #8f91fc;
+    --form-focus-shadow: rgba(99, 102, 241, 0.1);
+    --form-placeholder-color: #f5f8fc;
+    --btn-signin-gradient-start: #284ced;
+    --btn-signin-gradient-end: #63bac2;
+    --btn-google-border: #e5e7eb;
+    --divider-color: #9bb5e9;
+    --check-icon-bg: rgba(255, 255, 255, 0.511);
+    --login-container-bg: rgb(216, 246, 248);
+    --grid-highlight-bg: rgb(255, 253, 253);
+    --grid-shadow-bg: rgb(107, 204, 245);
+    --shadow-light: 0 4px 6px -2px rgba(18, 26, 43, 0.1);
+    --shadow-medium: 0 8px 16px rgba(36, 251, 140, 0.3);
+    --shadow-login-form: 0 20px 25px -5px rgba(234, 234, 234, 0.296), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-signin-btn: 0 4px 6px -1px rgba(88, 108, 201, 0.3);
+    --shadow-signin-btn-hover: 0 10px 15px -3px rgba(76, 94, 176, 0.4);
+ 
+    /* Fonts */
+    --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-family-poppins: 'Poppins', sans-serif;
+}
+ 
+/* Global Resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+/* Base Body Styles */
+body {
+    font-family: var(--font-family-base);
+    background: var(--primary-bg-color);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    /* This will apply Poppins to body, but specific elements might override */
+    font-family: var(--font-family-poppins);
+}
+ 
+/* Grid Background Pattern */
+.grid-background {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 6px;
+    padding: 20px;
+    opacity: 0.3;
+}
+ 
+.grid-cell {
+    background: var(--secondary-bg-color);
+    border-radius: 8px;
+    aspect-ratio: 1;
+}
+ 
+.grid-cell.highlight {
+    background: var(--grid-highlight-bg);
+    box-shadow: var(--shadow-light);
+}
+ 
+.grid-cell.shadow {
+    background: var(--grid-shadow-bg);
+    box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.08); /* This one is specific, not a var */
+}
+ 
+/* Reusable form element styles using variables */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    border: 1px solid var(--form-border-color);
+    background: var(--form-bg-color);
+    color: var(--text-color-dark);
+}
+ 
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    background: white; /* kept white as in original */
+    border-color: var(--form-focus-border);
+    box-shadow: 0 0 0 3px var(--form-focus-shadow);
+}
+ 
+input::placeholder {
+    color: var(--form-placeholder-color);
+}
+ 
+label {
+    color: var(--text-color-medium);
+}
+ 
+.pw-toggle {
+    color: var(--text-color-lighter);
+}
+ 
+.forgot-password {
+    color: var(--brand-color-secondary);
+}
+ 
+.forgot-password:hover {
+    color: var(--brand-color-secondary-hover);
+}
+ 
+.remember-me {
+    color: #3a4657; /* specific to login page, but kept here for theme completeness */
+}
+ 
+.remember-me input[type="checkbox"] {
+    accent-color: var(--brand-color-primary);
+}
+ 
+.btn-signin {
+    background: linear-gradient(135deg, var(--btn-signin-gradient-start) 0%, var(--btn-signin-gradient-end) 100%);
+    box-shadow: var(--shadow-signin-btn);
+}
+ 
+.btn-signin:hover {
+    box-shadow: var(--shadow-signin-btn-hover);
+}
+ 
+.divider {
+    color: #38507a; /* specific to login page, but kept here for theme completeness */
+}
+ 
+.divider::before,
+.divider::after {
+    background: var(--divider-color);
+}
+ 
+.btn-google {
+    color: var(--text-color-lighter);
+    border: 1px solid var(--btn-google-border);
+}
+ 
+.signup-link {
+    color: var(--text-color-light);
+}
+ 
+.signup-link a {
+    color: var(--brand-color-secondary); /* or a more specific link color variable if needed */
+}
+ 
+.signup-link a:hover {
+    color: #1d12ea; /* specific hover color */
+}
+ 
+.logo-name h1 .brand-name,
+.header h1 .brand-name {
+    color: var(--brand-color-primary);
+}
+ 
+.login-container {
+    background: var(--login-container-bg);
+    box-shadow: var(--shadow-login-form);
+}
+ 
+.check-icon {
+    background: var(--check-icon-bg);
+}
+.grid-background {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 6px;
+    padding: 20px;
+    opacity: 0.3;
+
+    pointer-events: none; /* ✅ ADD THIS LINE */
+}
+/* ================= EMAIL VERIFICATION PAGE FIX ================= */
+
+.grid-background {
+  pointer-events: none;
+}
+
+/* Override body centering ONLY for email page */
+.email-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Content container */
+.email-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  padding: 0 16px;
+  text-align: center;
+}
+
+/* Title */
+.email-content h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(22px, 6vw, 42px);
+  font-weight: 800;
+  color: #0b2340;
+  line-height: 1.2;
+}
+
+/* Subtitle */
+.email-content .subtitle {
+  margin-top: 6px;
+  font-size: clamp(12px, 3.5vw, 14px);
+  color: #3b5568;
+}
+
+/* Form */
+.email-form {
+  margin-top: clamp(20px, 5vw, 32px);
+  text-align: left;
+}
+
+.email-form label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #0b2340;
+}
+
+.email-form input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  font-size: 14px;
+}
+
+.email-form button {
+  margin-top: 14px;
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  background-color: #5b55e6;
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.email-form .resend {
+  margin-top: 14px;
+  font-size: 13px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.email-form .resend span {
+  color: #5b55e6;
+  cursor: pointer;
+}
+
+
+ 
+/* Media query for grid background specific to theme */
+@media (max-width: 480px) {
+    .grid-background {
+        grid-template-columns: repeat(10, 1fr);
+    }
+}
+ /* ================= EMAIL PAGE RESPONSIVE FIX ================= */
+
+/* Disable body flex influence */
+.email-override {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;        /* ✅ enables responsiveness */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Content */
+.email-container {
+  width: 100%;
+  max-width: 420px;
+  padding: 16px;
+  text-align: center;
+  z-index: 2;
+}
+
+/* Heading */
+.email-container h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(22px, 6vw, 42px);
+  font-weight: 800;
+  color: #0b2340;
+}
+
+/* Subtitle */
+.email-container .subtitle {
+  margin-top: 6px;
+  font-size: clamp(12px, 3.5vw, 14px);
+  color: #3b5568;
+}
+
+/* Form */
+.email-form {
+  margin-top: clamp(20px, 5vw, 32px);
+  text-align: left;
+}
+
+.email-form label {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.email-form input,
+.email-form button {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.email-form input {
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+}
+
+.email-form button {
+  margin-top: 14px;
+  background: #5b55e6;
+  color: white;
+  border: none;
+}
+
+.email-form .resend {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.email-form .resend span {
+  color: #5b55e6;
+  cursor: pointer;
+}
+
+/* Grid must never affect layout */
+.grid-background {
+  pointer-events: none;
+}
+/* ================= OTP PAGE LAYOUT ================= */
+
+.otp-page {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.otp-wrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 0 16px;
+  text-align: center;
+}
+
+/* TEXT */
+.otp-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(24px, 6vw, 42px);
+  font-weight: 800;
+  color: #0b2340;
+}
+
+.otp-subtitle {
+  margin-top: 6px;
+  font-size: clamp(12px, 3.5vw, 14px);
+  color: #3b5568;
+}
+
+.otp-label {
+  display: block;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0b2340;
+}
+
+/* OTP INPUTS */
+.otp-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.otp-box {
+  width: 100%;
+  max-width: 52px;
+  height: 52px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 12px;              /* ✅ ROUNDED CORNERS */
+  border: 1px solid var(--form-border-color);
+  background-color: #ffffff;
+  outline: none;
+}
+
+/* FOCUS STATE (NO BLACK BORDER) */
+.otp-box:focus {
+  border-color: var(--form-focus-border);
+  box-shadow: 0 0 0 3px var(--form-focus-shadow);
+}
+
+/* BUTTON */
+.otp-button {
+  margin-top: 24px;
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  background-color: #5b55e6;
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* RESEND */
+.otp-resend {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.otp-resend span {
+  color: #5b55e6;
+  cursor: pointer;
+}
+
+/* MOBILE ADJUSTMENT */
+@media (max-width: 360px) {
+  .otp-box {
+    max-width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+}
