@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import '../styles/login.css'; // Import the original CSS
-import logoImage from '../assets/logo.png'; // Import the logo image
+import '../styles/login.css';                 // Import the original CSS
+import logoImage from '../assets/logo.png';   // Import the logo image
 
-// FontAwesome imports (assuming it's installed via npm or included globally)
+// FontAwesome imports
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const LoginPage = () => {
