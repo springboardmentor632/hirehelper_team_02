@@ -1,4 +1,15 @@
+HEAD
+# Node
+node_modules/
+
+# Environment variables
+.env
+
+#Lock file (not commit)
+package-lock-json
+
 node_modules/
 .env
 .env.*
 package-lock.json
+origin/develop

@@ -1,28 +1,29 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const cors = require('cors');
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import otpRoutes from "./routes/otp_route.js";
 
 dotenv.config();
+connectDB();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB ERROR:', err));
-
 // Routes
-const otpRoutes = require('./routes/otp_route');
-app.use('/api/auth', otpRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/auth", otpRoutes);
 
-// Running
-app.get('/', (req, res) => {
-  res.send('OTP Backend Running');
+// Health check
+app.get("/", (req, res) => {
+  res.send("HireHelper Backend Running");
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
