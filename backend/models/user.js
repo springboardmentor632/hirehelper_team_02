@@ -9,10 +9,11 @@ const userSchema = new mongoose.Schema(
     phoneNumber: String,
     isVerified: { type: Boolean, default: false },
     otp: String,
-    otpExpires: Date,
-    otpLastSentAt: Date,
+    otpExpires: Date
   },
   { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+export default User;
