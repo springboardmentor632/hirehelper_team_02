@@ -1,0 +1,189 @@
+/* theme.css */
+
+:root {
+    --primary-bg-color: #99f4ef;
+    --secondary-bg-color: #bff7f3;
+    --accent-color-1: #a5f68f; /* logo icon gradient start */
+    --accent-color-2: #2dfc94; /* logo icon gradient end */
+    --brand-color-primary: #6366f1; /* HireHelper brand */
+    --brand-color-secondary: #4a4df7; /* forgot password link */
+    --brand-color-secondary-hover: #4f46e5;
+    --text-color-dark: #111827;
+    --text-color-medium: #253146;
+    --text-color-light: #6b7280;
+    --text-color-lighter: #374151; /* pw toggle, google button */
+    --text-color-primary-blue: rgb(31, 58, 129); /* left side description */
+    --text-color-secondary-blue: rgb(36, 68, 147); /* tagline */
+    --text-color-tertiary-blue: rgb(30, 57, 124); /* description */
+    --form-bg-color: #f9fafb;
+    --form-border-color: #d1d5db;
+    --form-focus-border: #8f91fc;
+    --form-focus-shadow: rgba(99, 102, 241, 0.1);
+    --form-placeholder-color: #f5f8fc;
+    --btn-signin-gradient-start: #284ced;
+    --btn-signin-gradient-end: #63bac2;
+    --btn-google-border: #e5e7eb;
+    --divider-color: #9bb5e9;
+    --check-icon-bg: rgba(255, 255, 255, 0.511);
+    --login-container-bg: rgb(216, 246, 248);
+    --grid-highlight-bg: rgb(255, 253, 253);
+    --grid-shadow-bg: rgb(107, 204, 245);
+    --shadow-light: 0 4px 6px -2px rgba(18, 26, 43, 0.1);
+    --shadow-medium: 0 8px 16px rgba(36, 251, 140, 0.3);
+    --shadow-login-form: 0 20px 25px -5px rgba(234, 234, 234, 0.296), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-signin-btn: 0 4px 6px -1px rgba(88, 108, 201, 0.3);
+    --shadow-signin-btn-hover: 0 10px 15px -3px rgba(76, 94, 176, 0.4);
+
+    /* Fonts */
+    --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-family-poppins: 'Poppins', sans-serif;
+}
+
+/* Global Resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base Body Styles */
+body {
+    font-family: var(--font-family-base);
+    background: var(--primary-bg-color);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    /* This will apply Poppins to body, but specific elements might override */
+    font-family: var(--font-family-poppins); 
+}
+
+/* Grid Background Pattern */
+.grid-background {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 6px;
+    padding: 20px;
+    opacity: 0.3;
+}
+
+.grid-cell {
+    background: var(--secondary-bg-color);
+    border-radius: 8px;
+    aspect-ratio: 1;
+}
+
+.grid-cell.highlight {
+    background: var(--grid-highlight-bg);
+    box-shadow: var(--shadow-light);
+}
+
+.grid-cell.shadow {
+    background: var(--grid-shadow-bg);
+    box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.08); /* This one is specific, not a var */
+}
+
+/* Reusable form element styles using variables */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    border: 1px solid var(--form-border-color);
+    background: var(--form-bg-color);
+    color: var(--text-color-dark);
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    background: white; /* kept white as in original */
+    border-color: var(--form-focus-border);
+    box-shadow: 0 0 0 3px var(--form-focus-shadow);
+}
+
+input::placeholder {
+    color: var(--form-placeholder-color);
+}
+
+label {
+    color: var(--text-color-medium);
+}
+
+.pw-toggle {
+    color: var(--text-color-lighter);
+}
+
+.forgot-password {
+    color: var(--brand-color-secondary);
+}
+
+.forgot-password:hover {
+    color: var(--brand-color-secondary-hover);
+}
+
+.remember-me {
+    color: #3a4657; /* specific to login page, but kept here for theme completeness */
+}
+
+.remember-me input[type="checkbox"] {
+    accent-color: var(--brand-color-primary);
+}
+
+.btn-signin {
+    background: linear-gradient(135deg, var(--btn-signin-gradient-start) 0%, var(--btn-signin-gradient-end) 100%);
+    box-shadow: var(--shadow-signin-btn);
+}
+
+.btn-signin:hover {
+    box-shadow: var(--shadow-signin-btn-hover);
+}
+
+.divider {
+    color: #38507a; /* specific to login page, but kept here for theme completeness */
+}
+
+.divider::before,
+.divider::after {
+    background: var(--divider-color);
+}
+
+.btn-google {
+    color: var(--text-color-lighter);
+    border: 1px solid var(--btn-google-border);
+}
+
+.signup-link {
+    color: var(--text-color-light);
+}
+
+.signup-link a {
+    color: var(--brand-color-secondary); /* or a more specific link color variable if needed */
+}
+
+.signup-link a:hover {
+    color: #1d12ea; /* specific hover color */
+}
+
+.logo-name h1 .brand-name,
+.header h1 .brand-name {
+    color: var(--brand-color-primary);
+}
+
+.login-container {
+    background: var(--login-container-bg);
+    box-shadow: var(--shadow-login-form);
+}
+
+.check-icon {
+    background: var(--check-icon-bg);
+}
+
+/* Media query for grid background specific to theme */
+@media (max-width: 480px) {
+    .grid-background {
+        grid-template-columns: repeat(10, 1fr);
+    }
+}
