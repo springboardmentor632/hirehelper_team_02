@@ -22,6 +22,7 @@ export const register = async (req, res) => {
       password: hashedPassword,
       otp,
       otpExpires: Date.now() + 10 * 60 * 1000,
+      otpLastSentAt: new Date(),
     });
 
     await sendMail(email, otp);
@@ -79,7 +80,17 @@ export const login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.json({ token });
+   res.status(200).json({
+  message: "You are logged in successfully 🎉",
+  token,
+  user: {
+    id: user._id,
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName
+  }
+});
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
