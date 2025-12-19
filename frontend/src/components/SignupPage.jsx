@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import "../styles/Signup.css";
 import logoImage from "../assets/logo.png";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -10,6 +10,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [gridCells, setGridCells] = useState([]);
+  const navigate = useNavigate();
 
   const generateGrid = useCallback(() => {
     const totalCells = 380;
@@ -34,7 +35,8 @@ const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Signup Submitted!\nName: ${name}\nEmail: ${email}`);
+    // Navigate to OTP verification page
+    navigate("/otp");
   };
 
   const signInWithGoogle = () => alert("Google Sign-Up would be implemented here!");
