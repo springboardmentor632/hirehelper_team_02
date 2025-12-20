@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import '../styles/login.css'; // Import the original CSS
 import logoImage from '../assets/logo.png'; // Import the logo image
 import { Link } from "react-router-dom";
+import API from "../api";
+
 
 // FontAwesome imports (assuming it's installed via npm or included globally)
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -36,11 +38,21 @@ const LoginPage = () => {
         setGridCells(generateGrid());
     }, [generateGrid]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Login attempt:', { email, password, remember });
-        alert('Login functionality would be implemented here!\n\nEmail: ' + email);
-    };
+    const handleSubmit = async (event) => {
+  event.preventDefault();
+  try {
+    const res = await API.post("/auth/login", {
+      email,
+      password,
+    });
+
+    localStorage.setItem("token", res.data.token);
+    alert("Login successful");
+  } catch (error) {
+    alert(error.response?.data?.message || "Login failed");
+  }
+};
+
 
     const signInWithGoogle = () => {
         alert('Google Sign-In would be implemented here!');

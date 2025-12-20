@@ -3,6 +3,8 @@ import "../styles/Signup.css";
 import logoImage from "../assets/logo.png";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, useNavigate } from "react-router-dom";
+import API from "../api";
+
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -33,11 +35,23 @@ const SignupPage = () => {
 
   const togglePasswordVisibility = () => setPasswordVisible(prev => !prev);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Navigate to OTP verification page
-    navigate("/otp");
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    await API.post("/auth/register", {
+      firstName: name.split(" ")[0],
+      lastName: name.split(" ")[1] || "",
+      email,
+      password,
+    });
+
+    alert("OTP sent to email");
+    navigate("/otp", { state: { email } });
+  } catch (error) {
+    alert(error.response?.data?.message || "Signup failed");
+  }
+};
+
 
   const signInWithGoogle = () => alert("Google Sign-Up would be implemented here!");
 

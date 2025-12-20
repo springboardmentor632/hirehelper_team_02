@@ -2,12 +2,19 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import "../styles/otp.css";
 import logoImage from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import API from "../api";
+import { useLocation } from "react-router-dom";
+
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const inputsRef = useRef([]);
   const [gridCells, setGridCells] = useState([]);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const email = location.state?.email;
+
 
   const generateGrid = useCallback(() => {
     const totalCells = 380;
@@ -42,14 +49,34 @@ const OtpVerification = () => {
     }
   };
 
-  const handleVerify = () => {
-    if (otp.join("").length !== 6) {
-      alert("Enter valid 6-digit OTP");
-      return;
-    }
-    alert("OTP Verified");
+const handleVerify = async () => {
+  const otpValue = otp.join("");
+
+  if (otpValue.length !== 6) {
+    alert("Enter valid 6-digit OTP");
+    return;
+  }
+
+  if (!email) {
+    alert("Session expired. Please sign up again.");
+    navigate("/signup");
+    return;
+  }
+
+  try {
+    await API.post("/auth/verify-otp", {
+      email,
+      otp: otpValue,
+    });
+
+    alert("OTP verified successfully");
     navigate("/");
-  };
+  } catch (error) {
+    alert(error.response?.data?.message || "OTP verification failed");
+  }
+};
+
+
 
   return (
     <div className="otp-page">
