@@ -283,6 +283,12 @@ input::placeholder {
     border-radius: 6px;
 }
 
+/* Hide browser's default password reveal button */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-webkit-reveal {
+    display: none;
+}
+
 /* Sign Up Button */
 .btn-signup {
     width: 100%;

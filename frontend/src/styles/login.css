@@ -238,6 +238,12 @@ input::placeholder {
     outline: 2px solid rgba(99,102,241,0.25);
     border-radius: 6px;
 }
+
+/* Hide browser's default password reveal button */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-webkit-reveal {
+    display: none;
+}
 /* Remember Me & Forgot Password */
 .form-options {
     display: flex;
