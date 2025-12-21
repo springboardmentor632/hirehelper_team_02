@@ -1,29 +1,19 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  font-family: poppins;
-  background: #99f4ef;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
+/* ===============================
+   OTP PAGE ONLY (SCOPED SAFELY)
+   =============================== */
 
 /* PAGE */
 .otp-page {
   width: 100vw;
   min-height: 100vh;
   position: relative;
+  font-family: poppins;
+  background: #99f4ef;
+  overflow: hidden;
 }
 
 /* GRID BACKGROUND – EXACT LOGIN MATCH */
-.grid-background {
+.otp-page .grid-background {
   position: fixed;
   inset: 0;
   display: grid;
@@ -34,24 +24,24 @@ body {
   z-index: 0;
 }
 
-.grid-cell {
+.otp-page .grid-cell {
   background: #bff7f3;
   border-radius: 8px;
   aspect-ratio: 1;
 }
 
-.grid-cell.highlight {
+.otp-page .grid-cell.highlight {
   background: rgb(255, 253, 253);
   box-shadow: 0 4px 6px -2px rgba(18, 26, 43, 0.1);
 }
 
-.grid-cell.shadow {
+.otp-page .grid-cell.shadow {
   background: rgb(107, 204, 245);
   box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 /* CONTENT */
-.main-container {
+.otp-page .main-container {
   position: relative;
   z-index: 1;
   min-height: 100vh;
@@ -61,7 +51,7 @@ body {
   justify-content: center;
 }
 
-.otp-wrapper {
+.otp-page .otp-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,24 +59,24 @@ body {
 }
 
 /* HEADER */
-.otp-header {
+.otp-page .otp-header {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-.otp-header h1 {
+.otp-page .otp-header h1 {
   font-size: 32px;
   font-weight: 750;
   color: #111827;
 }
 
-.otp-header h1 span {
+.otp-page .otp-header h1 span {
   color: #6366f1;
 }
 
 /* LOGO */
-.logo-icon {
+.otp-page .logo-icon {
   width: 60px;
   height: 60px;
   background: linear-gradient(135deg, #a5f68f, #2dfc94);
@@ -98,7 +88,7 @@ body {
   overflow: hidden;
 }
 
-.logo-icon img {
+.otp-page .logo-icon img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -108,7 +98,7 @@ body {
 }
 
 /* OTP CARD */
-.otp-card {
+.otp-page .otp-card {
   background: rgb(216, 246, 248);
   padding: 40px;
   border-radius: 24px;
@@ -118,14 +108,14 @@ body {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
 }
 
-.card-title {
+.otp-page .card-title {
   font-size: 20px;
   font-weight: 600;
   color: rgb(36, 68, 147);
   margin-bottom: 10px;
 }
 
-.card-desc {
+.otp-page .card-desc {
   font-size: 15px;
   color: rgb(30, 57, 124);
   line-height: 1.6;
@@ -133,14 +123,14 @@ body {
 }
 
 /* OTP INPUTS */
-.otp-inputs {
+.otp-page .otp-inputs {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 24px;
 }
 
-.otp-inputs input {
+.otp-page .otp-inputs input {
   width: 48px;
   height: 55px;
   border-radius: 12px;
@@ -150,14 +140,14 @@ body {
   background: #f9fafb;
 }
 
-.otp-inputs input:focus {
+.otp-page .otp-inputs input:focus {
   outline: none;
   border-color: #6366f1;
   background: #fff;
 }
 
 /* BUTTON */
-.otp-card button {
+.otp-page .otp-card button {
   width: 100%;
   padding: 14px;
   font-size: 16px;
@@ -169,40 +159,40 @@ body {
 }
 
 /* RESEND */
-.resend {
+.otp-page .resend {
   margin-top: 16px;
   font-size: 14px;
   color: #6b7280;
 }
 
-.resend span {
+.otp-page .resend span {
   color: #4f46e5;
   cursor: pointer;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .otp-header h1 {
+  .otp-page .otp-header h1 {
     font-size: 26px;
     text-align: center;
   }
 
-  .otp-wrapper {
+  .otp-page .otp-wrapper {
     padding: 0 16px;
   }
 }
 
 @media (max-width: 480px) {
-  .grid-background {
+  .otp-page .grid-background {
     grid-template-columns: repeat(10, 1fr);
   }
 
-  .otp-inputs input {
+  .otp-page .otp-inputs input {
     width: 42px;
     height: 48px;
   }
 
-  .otp-card {
+  .otp-page .otp-card {
     padding: 32px 24px;
   }
 }

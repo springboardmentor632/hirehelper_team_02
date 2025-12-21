@@ -1,18 +1,13 @@
-import React, {
-  useEffect,
-  useCallback,
-  useState,
-  useRef
-} from "react";
-import "../styles/login.css"; // reuse background + grid
-import "../styles/forgot-password.css"; // forgot password styles
-import logoImage from "../assets/logo.png"; // SAME as OTP page
+import React, { useEffect, useCallback, useState, useRef } from "react";
+import "../styles/login.css";              // grid background
+import "../styles/forgot-password.css";    // forgot page styles
+import logoImage from "../assets/logo.png";
 
 const ForgotPassword = () => {
   const [gridCells, setGridCells] = useState([]);
   const otpRefs = useRef([]);
 
-  // SAME grid logic (unchanged)
+  // SAME GRID LOGIC (UNCHANGED)
   const generateGrid = useCallback(() => {
     const totalCells = 380;
     const highlights = [
@@ -27,10 +22,10 @@ const ForgotPassword = () => {
 
     const cells = [];
     for (let i = 0; i < totalCells; i++) {
-      let className = "grid-cell";
-      if (highlights.includes(i)) className += " highlight";
-      else if (shadows.includes(i)) className += " shadow";
-      cells.push(<div key={i} className={className}></div>);
+      let cls = "grid-cell";
+      if (highlights.includes(i)) cls += " highlight";
+      else if (shadows.includes(i)) cls += " shadow";
+      cells.push(<div key={i} className={cls}></div>);
     }
     return cells;
   }, []);
@@ -39,7 +34,6 @@ const ForgotPassword = () => {
     setGridCells(generateGrid());
   }, [generateGrid]);
 
-  // OTP auto-focus logic
   const handleOtpChange = (e, index) => {
     if (e.target.value && index < otpRefs.current.length - 1) {
       otpRefs.current[index + 1].focus();
@@ -55,15 +49,13 @@ const ForgotPassword = () => {
   return (
     <div className="LoginPage">
       {/* GRID BACKGROUND */}
-      <div className="grid-background">
-        {gridCells}
-      </div>
+      <div className="grid-background">{gridCells}</div>
 
       {/* CONTENT */}
       <div className="main-container">
         <div className="otp-wrapper">
 
-          {/* ✅ SAME HEADER AS OTP PAGE */}
+          {/* 🔥 HEADER (EXACT SAME AS OTP PAGE) */}
           <div className="otp-header">
             <div className="logo-icon">
               <img src={logoImage} alt="HireHelper Logo" />
@@ -75,13 +67,11 @@ const ForgotPassword = () => {
 
           {/* FORGOT PASSWORD CARD */}
           <div className="forgot-card">
-
             <h2 className="forgot-title">Forgot Password</h2>
             <p className="forgot-subtitle">
               Enter your email used to authenticate
             </p>
 
-            {/* EMAIL + SEND */}
             <p className="enter-email-text">Enter Email</p>
             <div className="email-send-row">
               <input
@@ -92,10 +82,8 @@ const ForgotPassword = () => {
               <button className="forgot-send-btn">Send</button>
             </div>
 
-            {/* ENTER OTP */}
             <p className="enter-otp-text">Enter OTP</p>
 
-            {/* OTP BOXES (6) */}
             <div className="otp-boxes">
               {[0,1,2,3,4,5].map((_, index) => (
                 <input
@@ -114,10 +102,10 @@ const ForgotPassword = () => {
             <button className="verify-btn">Verify Code</button>
 
             <p className="resend-text">
-              Haven't got the OTP yet? <span>Resend</span>
+              Haven’t got the OTP yet? <span>Resend</span>
             </p>
-
           </div>
+
         </div>
       </div>
     </div>

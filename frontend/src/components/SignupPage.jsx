@@ -76,7 +76,7 @@ const SignupPage = () => {
           {/* Signup Form */}
           <div className="login-container"> {/* reuse same class for same style */}
             <div className="header">
-              <h1><span className="brand-name">Sign Up</span></h1>
+              <h1><span className="brand-name">Register</span></h1>
               <p>Create your account to get started</p>
             </div>
 
@@ -92,14 +92,14 @@ const SignupPage = () => {
               </div>
 
               <div className="form-group password-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Create Password</label>
                 <input type={passwordVisible ? "text" : "password"} id="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)} />
                 <button type="button" className="pw-toggle" onClick={togglePasswordVisibility}>
                   <i className={passwordVisible ? "fa fa-eye" : "fa fa-eye-slash"}></i>
                 </button>
               </div>
 
-              <button type="submit" className="btn-signin">Register</button>
+              <button type="submit" className="btn-signin">Sign Up</button>
 
               <div className="divider"><span>Or</span></div>
 
@@ -114,7 +114,7 @@ const SignupPage = () => {
               </button>
 
               <div className="signup-link">
-                Already have an account? <Link to="/">Login</Link>
+                Already have an account? <Link to="/">Sign in</Link>
               </div>
             </form>
           </div>
