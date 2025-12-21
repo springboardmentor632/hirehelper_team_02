@@ -140,7 +140,7 @@ const LoginPage = () => {
                                 <input type="checkbox" id="remember" checked={remember} onChange={(e) => setRemember(e.target.checked)}/>
                                 <span>Remember me</span>
                             </label>
-                            <a href="#" className="forgot-password">Forgot password?</a>
+                            <a href="/forgot-password" className="forgot-password">Forgot password?</a>
                         </div>
 
                         <button type="submit" className="btn-signin">Sign in</button>
