@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import otpRoutes from "./routes/otp_route.js";
 
+
 dotenv.config();
 connectDB();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/auth", otpRoutes);
+
 
 // Health check
 app.get("/", (req, res) => {
