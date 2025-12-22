@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import API from "../api";
 
 
+
+
+
 // FontAwesome imports (assuming it's installed via npm or included globally)
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -20,6 +23,7 @@ const LoginPage = () => {
     const [forgotEmail, setForgotEmail] = useState("");
     const [otp, setOtp] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [resetPasswordVisible, setResetPasswordVisible] = useState(false);
 
 
     // Generate grid background
@@ -238,15 +242,31 @@ const LoginPage = () => {
                                     />
                                 </div>
 
-                                <div className="form-group">
+                                <div className="form-group password-group">
                                     <label>New Password</label>
+
                                     <input
-                                        type="password"
-                                        placeholder="Enter new password"
+                                        type={resetPasswordVisible ? "text" : "password"}
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
+                                        placeholder="Enter new password"
                                     />
+
+                                    <button
+                                        type="button"
+                                        className="pw-toggle"
+                                        onClick={() => setResetPasswordVisible(!resetPasswordVisible)}
+                                    >
+                                        <i
+                                            className={
+                                                resetPasswordVisible ? "fa fa-eye" : "fa fa-eye-slash"
+                                            }
+                                        />
+                                    </button>
                                 </div>
+
+
+
 
                                 <button
                                     className="btn-signin"
