@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import '../styles/login.css'; // Import the original CSS
 import logoImage from '../assets/logo.png'; // Import the logo image
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // FontAwesome imports (assuming it's installed via npm or included globally)
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -12,6 +12,7 @@ const LoginPage = () => {
     const [remember, setRemember] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [gridCells, setGridCells] = useState([]);
+    const navigate = useNavigate();
 
     // Generate grid background
     const generateGrid = useCallback(() => {
@@ -39,7 +40,7 @@ const LoginPage = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('Login attempt:', { email, password, remember });
-        alert('Login functionality would be implemented here!\n\nEmail: ' + email);
+        navigate('/feed');
     };
 
     const signInWithGoogle = () => {

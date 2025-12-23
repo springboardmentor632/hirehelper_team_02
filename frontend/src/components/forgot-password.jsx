@@ -2,10 +2,12 @@ import React, { useEffect, useCallback, useState, useRef } from "react";
 import "../styles/login.css";              // grid background
 import "../styles/forgot-password.css";    // forgot page styles
 import logoImage from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [gridCells, setGridCells] = useState([]);
   const otpRefs = useRef([]);
+  const navigate = useNavigate();
 
   // SAME GRID LOGIC (UNCHANGED)
   const generateGrid = useCallback(() => {
@@ -44,6 +46,12 @@ const ForgotPassword = () => {
     if (e.key === "Backspace" && !e.target.value && index > 0) {
       otpRefs.current[index - 1].focus();
     }
+  };
+
+  const handleVerifyCode = () => {
+    // In a real application, OTP verification logic would go here.
+    // For now, we are directly navigating to the feed screen.
+    navigate('/feed');
   };
 
   return (
@@ -99,7 +107,7 @@ const ForgotPassword = () => {
 
             <p className="otp-info">Sent to your mail id</p>
 
-            <button className="verify-btn">Verify Code</button>
+            <button className="verify-btn" onClick={handleVerifyCode}>Verify Code</button>
 
             <p className="resend-text">
               Haven’t got the OTP yet? <span>Resend</span>

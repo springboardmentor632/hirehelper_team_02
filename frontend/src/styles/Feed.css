@@ -1,0 +1,114 @@
+.feed-layout {
+  display: flex;
+  background: linear-gradient(to bottom, #C5F9FF, #59BCC7);
+  min-height: 100vh;
+}
+
+.feed-content {
+  flex: 1;
+  padding: 24px 32px;
+}
+
+.feed-header {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  max-width: 100%;
+}
+
+.feed-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.feed-header p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+
+.task-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+
+  /* IMPORTANT for equal height */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  /* Optional polish */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: 0.2s ease;
+}
+.task-card:hover {
+  transform: translateY(-4px);
+}
+
+
+.task-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+
+.task-card h3 {
+  font-size: 18px;
+  margin: 6px 0;
+}
+
+.task-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+
+.meta {
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto; /* pushes footer to bottom */
+}
+
+.footer .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #d9d9d9;
+}
+
+
+.footer button {
+  margin-left: auto;
+  background: #5b5cf0;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}

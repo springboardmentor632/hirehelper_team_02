@@ -47,8 +47,7 @@ const OtpVerification = () => {
       alert("Enter valid 6-digit OTP");
       return;
     }
-    alert("OTP Verified");
-    navigate("/");
+    navigate("/feed");
   };
 
   return (
