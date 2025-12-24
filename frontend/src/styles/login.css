@@ -4,25 +4,33 @@
     box-sizing: border-box;
 }
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: poppins, -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: #99f4ef;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 0;
     position: relative;
-    overflow: hidden;
-    font-family: poppins;
+    overflow-x: hidden;
 }
+.main-container,
+.auth-wrapper,
+.login-container {
+  position: relative;
+  z-index: 10;
+}
+
+
 /* Grid Background Pattern */
 .grid-background {
-    position: absolute;
+    position: fixed;
     inset: 0;
     display: grid;
     grid-template-columns: repeat(20, 1fr);
     gap: 6px;
     padding: 20px;
     opacity: 0.3;
+    z-index: 1;
+    pointer-events: none;
 }
 .grid-cell {
     background: #bff7f3;
@@ -371,18 +379,35 @@ input::placeholder {
     }
 }
 @media (max-width: 768px) {
-    .left-side {
-        display: none;
-    }
-    .auth-wrapper{
+    .auth-wrapper {
+        flex-direction: column;   /* stack left + login */
+        gap: 40px;
         background: transparent;
         box-shadow: none;
         justify-content: center;
+        align-items: center;
     }
-    .login-container{
+
+    .left-side {
+        display: flex;            
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .content-wrapper {
+        align-items: center;
+        text-align: center;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 420px;
         border-radius: 24px;
     }
 }
+
 @media (max-width: 480px) {
     .login-container {
         padding: 32px 24px;
@@ -431,21 +456,15 @@ input::placeholder {
   cursor: pointer;
 }
 
-/* FULL PAGE RESET */
-.reset-overlay {
-  position: fixed;
-  inset: 0;
-  background: white;
-  z-index: 9999;
-}
-/* Overlay ONLY on right side */
-.reset-right-overlay {
-  width: 50%;           /* matches login container side */
-  height: 100%;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
+.LoginPage {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
