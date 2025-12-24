@@ -1,0 +1,143 @@
+/* ================= PAGE ================= */
+.addtask-page {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #bfeef3, #6bcbd2);
+}
+
+/* ================= MAIN CONTENT ================= */
+.addtask-content {
+  flex: 1;
+  padding: 28px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.addtask-header {
+  width: 100%;
+  max-width: 1200px;        
+  background: white;
+  padding: 18px 18px;      
+  border-radius: 14px;
+  margin-bottom: 24px;
+}
+
+.addtask-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.addtask-header p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+
+.addtask-card {
+  width: 100%;
+  max-width: 1000px;       
+  background: white;
+  padding: 32px;
+  border-radius: 18px;
+}
+
+/* ================= FORM ================= */
+.addtask-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  height: 44px;            
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  height: 90px;
+  resize: none;
+}
+
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+
+.upload-box {
+  border: 2px dashed #cbd5e1;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  color: #666;
+}
+
+.upload-box input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+
+.submit-btn {
+  margin: 22px auto 0;     
+  padding: 12px 36px;
+  border-radius: 10px;
+  border: none;
+  background: #5b5bf0;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #4a4ad8;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .addtask-content {
+    padding: 20px;
+  }
+
+  .addtask-card {
+    padding: 24px;
+  }
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border: 1px solid #857878;
+  box-shadow: 0 0 0 2px rgba(106, 106, 120, 0.15);
+}

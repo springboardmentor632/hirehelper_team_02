@@ -4,8 +4,9 @@ import SignupPage from "./components/SignupPage";
 import OtpVerification from "./components/OtpVerification";
 import ForgotPassword from "./components/forgot-password";
 import Feed from "./components/Feed";
-
-
+import Addtask from "./components/Addtask"; 
+ 
+ 
 function App() {
   return (
     <BrowserRouter>
@@ -15,10 +16,11 @@ function App() {
         <Route path="/otp" element={<OtpVerification />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/feed" element={<Feed />} />
+        <Route path="/Add-task" element={<Addtask />} />
       </Routes>
     </BrowserRouter>
   );
-
+ 
 }
-
+ 
 export default App;
