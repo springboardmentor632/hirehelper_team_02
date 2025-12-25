@@ -1,18 +1,44 @@
+import { useState } from "react";
 import Sidebar from "./Sidebar";
 import "../styles/Addtask.css";
-
+ 
+const today = new Date().toISOString().split("T")[0];
+ 
 const Addtask = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+ 
+  const toggleSidebar = () => {
+    setSidebarOpen(prev => !prev);
+  };
+ 
   return (
     <div className="addtask-page">
-      <Sidebar />
-
+      {/* Overlay for closing sidebar */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+ 
+      {/* Sidebar */}
+      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
+        <Sidebar />
+      </div>
+ 
+      {/* Main Content */}
       <div className="addtask-content">
+        {/* Menu Button (mobile only) */}
+        <button className="menu-btn" onClick={toggleSidebar}>
+          ☰
+        </button>
+ 
         {/* Header */}
         <div className="addtask-header">
           <h2>Add New Task</h2>
           <p>Create a task and find someone to help you</p>
         </div>
-
+ 
         {/* Form Card */}
         <div className="addtask-card">
           <form className="addtask-form">
@@ -20,41 +46,41 @@ const Addtask = () => {
               <label>Task Title</label>
               <input type="text" placeholder="e.g. Help moving furniture" />
             </div>
-
+ 
             <div className="form-group">
               <label>Description</label>
               <textarea placeholder="Describe what help you need..." />
             </div>
-
+ 
             <div className="form-group">
               <label>Location</label>
               <input type="text" placeholder="e.g. Delhi, India" />
             </div>
-
+ 
             <div className="form-row">
               <div className="form-group">
                 <label>Start Date</label>
-                <input type="date" />
+                <input type="date" min={today} />
               </div>
-
+ 
               <div className="form-group">
                 <label>Start Time</label>
                 <input type="time" />
               </div>
             </div>
-
+ 
             <div className="form-row">
               <div className="form-group">
-                <label>End Date </label>
+                <label>End Date</label>
                 <input type="date" />
               </div>
-
+ 
               <div className="form-group">
-                <label>End Time </label>
+                <label>End Time</label>
                 <input type="time" />
               </div>
             </div>
-
+ 
             <div className="form-group">
               <label>Category</label>
               <select>
@@ -65,7 +91,7 @@ const Addtask = () => {
                 <option>Moving</option>
               </select>
             </div>
-
+ 
             <div className="form-group">
               <label>Task Image (Optional)</label>
               <div className="upload-box">
@@ -73,7 +99,7 @@ const Addtask = () => {
                 <input type="file" />
               </div>
             </div>
-
+ 
             <button type="submit" className="submit-btn">
               Create Task
             </button>
@@ -83,5 +109,5 @@ const Addtask = () => {
     </div>
   );
 };
-
+ 
 export default Addtask;
