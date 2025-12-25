@@ -112,6 +112,10 @@ const LoginPage = () => {
 
                 {/* Login Form */}
                 <div className="login-container">
+                    <div className="mobile-logo">
+                        <img src={logoImage} alt="HireHelper Logo" />
+                        <h1><span className="brand-name">HireHelper</span></h1>
+                    </div>
                     <div className="header">
                         <h1><span className="brand-name">Login</span></h1>
                         <p>Please enter your details to get started</p>

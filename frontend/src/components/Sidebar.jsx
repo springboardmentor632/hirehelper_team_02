@@ -11,6 +11,7 @@ import {
   FiLogOut,
   FiUser,
 } from "react-icons/fi";
+import logoImage from '../assets/logo.png'; // Import the logo image
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-header">
-        <div className="logo-circle"></div>
+        <img src={logoImage} alt="HireHelper Logo" className="logo-circle" />
         <div>
           <h2>HireHelper</h2>
           <p>Get a helping partner</p>
@@ -33,6 +34,7 @@ export default function Sidebar() {
 
       {/* Search */}
       <div className="sidebar-search">
+        <FiSearch className="search-icon" />
         <input type="text" placeholder="Search" />
       </div>
 

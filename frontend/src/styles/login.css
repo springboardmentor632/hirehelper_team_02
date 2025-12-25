@@ -360,6 +360,29 @@ input[type="password"]::-webkit-reveal {
     color: #1d12ea;
     text-decoration: underline;
 }
+
+.mobile-logo {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.mobile-logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.mobile-logo h1 {
+    font-size: 24px;
+    font-weight: 750;
+    color: #111827;
+    /* margin-bottom: 8px; */
+    line-height: 1.2;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .auth-wrapper {
@@ -368,17 +391,22 @@ input[type="password"]::-webkit-reveal {
     }
     .login-container {
         margin: 0 auto;    /* Explicitly center the login container */
-        border-radius: 0 0 24px 24px;
+        border-radius: 24px;
         width: 100%;       /* Ensure it can take full width up to its max-width */
     }
     .left-side {
-        width: 100%;         /* Make it take full width to prevent overflow */
-        padding: 40px 20px;  /* Adjust padding for smaller screens */
+        display: none;
+    }
+    .mobile-logo {
+        display: flex;
     }
 }
 @media (max-width: 768px) {
     .left-side {
         display: none;
+    }
+    .mobile-logo {
+        display: flex;
     }
     .auth-wrapper{
         background: transparent;
@@ -391,7 +419,7 @@ input[type="password"]::-webkit-reveal {
 }
 @media (max-width: 480px) {
     .login-container {
-        padding: 32px 24px;
+        padding: 24px 24px;
     }
     .header h1 {
         font-size: 28px;

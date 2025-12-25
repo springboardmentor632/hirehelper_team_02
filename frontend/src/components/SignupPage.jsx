@@ -75,6 +75,10 @@ const SignupPage = () => {
 
           {/* Signup Form */}
           <div className="login-container"> {/* reuse same class for same style */}
+            <div className="mobile-logo">
+                <img src={logoImage} alt="HireHelper Logo" />
+                <h1><span className="brand-name">HireHelper</span></h1>
+            </div>
             <div className="header">
               <h1><span className="brand-name">Register</span></h1>
               <p>Create your account to get started</p>
