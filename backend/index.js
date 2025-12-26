@@ -1,13 +1,14 @@
+// 🔥 FORCE env to load FIRST
+import "./loadEnv.js";
+
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import otpRoutes from "./routes/otp_route.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
-
-dotenv.config();
 connectDB();
 
 const app = express();
@@ -18,7 +19,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/auth", otpRoutes);
-
+app.use("/api/tasks", taskRoutes);
 
 // Health check
 app.get("/", (req, res) => {
