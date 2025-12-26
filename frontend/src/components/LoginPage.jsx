@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/login.css";
 import logoImage from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../api";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useLoader } from "../context/LoaderContext";
@@ -14,6 +14,7 @@ const LoginPage = () => {
   const [gridCells, setGridCells] = useState([]);
 
   const { setLoading } = useLoader(); // ✅ GLOBAL LOADER
+  const navigate = useNavigate();     // ✅ FOR REDIRECT
 
   /* ---------------- LOGIN SUBMIT ---------------- */
   const handleSubmit = async (e) => {
@@ -24,11 +25,13 @@ const LoginPage = () => {
 
       const res = await API.post("/auth/login", { email, password });
 
+      // save token
       localStorage.setItem("token", res.data.token);
+
       alert("Login successful");
 
-      // TODO: navigate to dashboard if needed
-      // navigate("/dashboard");
+      // ✅ REDIRECT TO FEED PAGE
+      navigate("/feed");
 
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");

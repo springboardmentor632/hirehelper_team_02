@@ -1,0 +1,43 @@
+/* Root layout */
+.app-layout {
+  display: flex;
+  height: 100vh;        /* full viewport height */
+  width: 100%;
+  overflow: hidden;    /* prevent body scroll */
+}
+
+/* Sidebar stays fixed */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+/* Main content scrolls */
+.app-content {
+  margin-left: 260px;   /* same as sidebar width */
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;     /* 👈 ONLY content scrolls */
+  overflow-x: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* =========================
+   MOBILE RESPONSIVENESS
+========================= */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .app-content {
+    margin-left: 220px;
+    padding: 12px;
+  }
+}

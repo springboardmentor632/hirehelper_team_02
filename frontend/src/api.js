@@ -11,12 +11,20 @@ const API = axios.create({
   baseURL: "http://localhost:5000/api",
 });
 
-/* REQUEST → SHOW LOADER */
+/* REQUEST → SHOW LOADER + ADD TOKEN */
 API.interceptors.request.use(
   (config) => {
+    // Show global loader
     if (setGlobalLoading) {
       setGlobalLoading(true);
     }
+
+    // Attach JWT token if available
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
   (error) => {
@@ -39,6 +47,13 @@ API.interceptors.response.use(
     if (setGlobalLoading) {
       setGlobalLoading(false);
     }
+
+    // Optional: handle unauthorized globally
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      // window.location.href = "/login"; // enable if you want auto-redirect
+    }
+
     return Promise.reject(error);
   }
 );
