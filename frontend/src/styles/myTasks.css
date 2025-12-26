@@ -1,8 +1,14 @@
-
-/* 🔒 SCOPE WRAPPER – FONT APPLIES ONLY HERE */
-.mytasks-scope {
+/* ===============================
+   PAGE LAYOUT
+================================ */
+.mytasks-page {
+  display: flex;
   min-height: 100vh;
-  padding: 24px;
+}
+
+.mytasks-content {
+  flex: 1;
+  padding: 24px 32px;
   background: linear-gradient(to bottom, #bdf3f5, #63cfd3);
 
   font-family: -apple-system, BlinkMacSystemFont,
@@ -11,7 +17,9 @@
   font-family: poppins;
 }
 
-/* Header */
+/* ===============================
+   HEADER
+================================ */
 .mytasks-header {
   background: #ffffff;
   padding: 20px 24px;
@@ -31,87 +39,120 @@
   color: #666;
 }
 
-/* Grid */
+/* ===============================
+   GRID
+================================ */
 .mytasks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
 }
 
-/* Card */
-.task-card {
-  background: #eaf9fa;
+/* ===============================
+   CARD (POP)
+================================ */
+.mytasks-card {
+  background: #ffffff;
   border-radius: 16px;
   padding: 14px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.task-card:hover {
-  transform: translateY(-6px);
+.mytasks-card:hover {
+  transform: translateY(-4px);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
 }
 
-/* Image */
-.task-image {
-  overflow: hidden;
+/* ===============================
+   IMAGE CONTAINER (POP)
+================================ */
+.mytasks-image {
   border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  transition: transform 0.25s ease;
 }
 
-.task-image img {
+.mytasks-card:hover .mytasks-image {
+  transform: translateY(-2px);
+}
+
+.mytasks-image img {
   width: 100%;
-  height: 140px;
+  height: 160px;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  display: block;
 }
 
-.task-card:hover img {
-  transform: scale(1.05);
-}
-
-/* Tags */
-.task-tags {
+/* ===============================
+   TAGS
+================================ */
+.mytasks-tags {
   display: flex;
   gap: 10px;
   margin: 10px 0;
 }
 
-.tag {
+.mytasks-tag {
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
 }
 
-.tag.category {
+.mytasks-tag.category {
   background: #dbe7ff;
   color: #2f55d4;
 }
 
-.tag.status {
+.mytasks-tag.status {
   background: #d9f5d3;
   color: #2f8f2f;
 }
 
-/* Content */
-.task-title {
+/* ===============================
+   TEXT
+================================ */
+.mytasks-title {
   font-size: 15px;
   margin: 6px 0;
 }
 
-.task-desc {
+.mytasks-desc {
   font-size: 13px;
   color: #555;
   line-height: 1.4;
 }
 
-/* Info */
-.task-info {
+.mytasks-info {
   margin-top: 10px;
+  font-size: 12px;
+  color: #666;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 12px;
-  color: #666;
+}
+
+/* ===============================
+   MOBILE
+================================ */
+.menu-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-btn {
+    display: block !important;
+    background: none;
+    border: none;
+    font-size: 22px;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+
+  .mytasks-grid {
+    grid-template-columns: 1fr;
+  }
 }

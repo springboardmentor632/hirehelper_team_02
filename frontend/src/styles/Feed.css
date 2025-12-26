@@ -112,3 +112,79 @@
   font-size: 14px;
   cursor: pointer;
 }
+/* Sidebar mobile handling */
+.sidebar-wrapper {
+  width: 260px;
+}
+
+@media (max-width: 768px) {
+  .sidebar-wrapper {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    background: linear-gradient(to bottom, #c5f9ff, #59bcc7);
+    transition: left 0.3s ease;
+    z-index: 1001;
+  }
+
+  .sidebar-wrapper.open {
+    left: 0;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+
+  .menu-btn {
+    display: block !important;
+  }
+}
+
+/* Desktop */
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+/* ===============================
+   FEED – MOBILE MATCH MYTASKS
+================================ */
+@media (max-width: 768px) {
+
+  /* Remove white rectangle */
+  .feed-header {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    margin-bottom: 16px;
+  }
+
+  /* Adjust text like MyTasks */
+  .feed-header h2 {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .feed-header p {
+    font-size: 13px;
+    color: #555;
+  }
+
+  /* Cards full width on mobile */
+  .task-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Same padding feel as MyTasks */
+  .feed-content {
+    padding: 16px;
+  }
+}
