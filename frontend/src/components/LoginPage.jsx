@@ -4,6 +4,7 @@ import logoImage from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import API from "../api";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useLoader } from "../context/LoaderContext";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,31 @@ const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [gridCells, setGridCells] = useState([]);
 
-  // Generate grid background
+  const { setLoading } = useLoader(); // ✅ GLOBAL LOADER
+
+  /* ---------------- LOGIN SUBMIT ---------------- */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true); // 👈 SHOW LOADER
+
+      const res = await API.post("/auth/login", { email, password });
+
+      localStorage.setItem("token", res.data.token);
+      alert("Login successful");
+
+      // TODO: navigate to dashboard if needed
+      // navigate("/dashboard");
+
+    } catch (error) {
+      alert(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false); // 👈 HIDE LOADER
+    }
+  };
+
+  /* ---------------- GRID BACKGROUND ---------------- */
   const generateGrid = useCallback(() => {
     const totalCells = 380;
     const highlights = [
@@ -39,21 +64,12 @@ const LoginPage = () => {
     setGridCells(generateGrid());
   }, [generateGrid]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await API.post("/auth/login", { email, password });
-      localStorage.setItem("token", res.data.token);
-      alert("Login successful");
-    } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
-    }
-  };
-
+  /* ---------------- GOOGLE LOGIN ---------------- */
   const signInWithGoogle = () => {
     window.location.href = "http://localhost:5000/auth/google";
   };
 
+  /* ---------------- UI ---------------- */
   return (
     <div className="LoginPage">
       {/* Grid Background */}
@@ -61,6 +77,7 @@ const LoginPage = () => {
 
       <div className="main-container">
         <div className="auth-wrapper">
+
           {/* LEFT SIDE */}
           <div className="left-side">
             <div className="content-wrapper">
@@ -90,30 +107,14 @@ const LoginPage = () => {
               </div>
 
               <ul className="features">
-                <li>
-                  <span className="check-icon">✓</span>
-                  Post tasks and receive instant help requests
-                </li>
-                <li>
-                  <span className="check-icon">✓</span>
-                  Browse available tasks and offer your skills
-                </li>
-                <li>
-                  <span className="check-icon">✓</span>
-                  Secure payments and ratings system
-                </li>
-                <li>
-                  <span className="check-icon">✓</span>
-                  Real-time notifications and updates
-                </li>
-                <li>
-                  <span className="check-icon">✓</span>
-                  24/7 customer support
-                </li>
+                <li><span className="check-icon">✓</span> Post tasks and receive instant help requests</li>
+                <li><span className="check-icon">✓</span> Browse available tasks and offer your skills</li>
+                <li><span className="check-icon">✓</span> Secure payments and ratings system</li>
+                <li><span className="check-icon">✓</span> Real-time notifications and updates</li>
+                <li><span className="check-icon">✓</span> 24/7 customer support</li>
               </ul>
             </div>
           </div>
-
 
           {/* LOGIN FORM */}
           <div className="login-container">
@@ -173,7 +174,11 @@ const LoginPage = () => {
                 <span>Or</span>
               </div>
 
-              <button type="button" className="btn-google" onClick={signInWithGoogle}>
+              <button
+                type="button"
+                className="btn-google"
+                onClick={signInWithGoogle}
+              >
                 <svg className="google-icon" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -184,10 +189,11 @@ const LoginPage = () => {
               </button>
 
               <div className="signup-link">
-                Don't have an account? <Link to="/signup">Sign up</Link>
+                Don&apos;t have an account? <Link to="/signup">Sign up</Link>
               </div>
             </form>
           </div>
+
         </div>
       </div>
     </div>
