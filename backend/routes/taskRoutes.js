@@ -9,6 +9,10 @@ import upload from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
+router.get("/test", (req, res) => {
+  res.json({ message: "Task API working" });
+});
+
 /**
  * CREATE TASK (with optional image)
  * POST /api/tasks
@@ -16,7 +20,7 @@ const router = express.Router();
 router.post(
   "/",
   authMiddleware,
-  upload.single("image"), // 👈 image field name
+  upload.single("image"), // image field name
   createTask
 );
 
@@ -31,5 +35,8 @@ router.get("/my", authMiddleware, getMyTasks);
  * GET /api/tasks/feed
  */
 router.get("/feed", authMiddleware, getTaskFeed);
+
+router.get("/", authMiddleware, getTaskFeed);
+
 
 export default router;

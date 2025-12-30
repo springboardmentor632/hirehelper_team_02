@@ -124,3 +124,29 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+/////Resend OTP
+export const resendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    if (user.isVerified)
+      return res.status(400).json({ message: "User already verified" });
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    user.otp = otp;
+    user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 min
+    await user.save();
+
+    await sendMail(email, otp);
+
+    res.json({ message: "OTP resent successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

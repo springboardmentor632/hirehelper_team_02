@@ -5,45 +5,61 @@ import Task from "../models/Task.js";
 ========================= */
 export const createTask = async (req, res) => {
   try {
+    // 🔐 AUTH CHECK
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({
+        message: "Unauthorized: Please login again",
+      });
+    }
+
     const {
       title,
       description,
       location,
-      startTime,
-      endTime,
+      startDate,   // 🔥 REQUIRED from frontend
+      startTime,   // "09:30"
+      endDate,     // 🔥 REQUIRED from frontend
+      endTime,     // "16:30"
       category,
     } = req.body;
 
-    // 🔴 Required field validation
-    if (!title || !description || !location || !startTime) {
+    // ✅ REQUIRED FIELD VALIDATION
+    if (!title || !description || !location || !startDate || !startTime) {
       return res.status(400).json({
         message: "All required fields must be provided",
       });
     }
 
-    // 🔴 Time validation
-    if (endTime && new Date(startTime) > new Date(endTime)) {
+    // 🔥 COMBINE DATE + TIME → VALID DATE OBJECTS
+    const startDateTime = new Date(`${startDate}T${startTime}`);
+    const endDateTime = endDate && endTime
+      ? new Date(`${endDate}T${endTime}`)
+      : null;
+
+    // ⏰ TIME VALIDATION
+    if (endDateTime && startDateTime > endDateTime) {
       return res.status(400).json({
         message: "End time must be after start time",
       });
     }
 
-    // 🔥 Create task
+    // 📝 CREATE TASK
     const task = await Task.create({
       title,
       description,
       location,
-      category: category || "General",
-      startTime,
-      endTime: endTime || null,
-      image: req.file ? req.file.path : null, // ✅ Cloudinary URL
-      createdBy: req.user._id, // ✅ From authMiddleware
+      category: category?.trim() ? category : "General",
+      startTime: startDateTime,      // ✅ Date
+      endTime: endDateTime,          // ✅ Date or null
+      image: req.file ? req.file.path : null,
+      createdBy: req.user._id,
     });
 
     res.status(201).json({
       message: "Task created successfully",
       task,
     });
+
   } catch (error) {
     console.error("CREATE TASK ERROR:", error);
     res.status(500).json({
@@ -53,11 +69,18 @@ export const createTask = async (req, res) => {
   }
 };
 
+
 /* =========================
    GET MY TASKS
 ========================= */
 export const getMyTasks = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
     const tasks = await Task.find({
       createdBy: req.user._id,
     }).sort({ createdAt: -1 });
@@ -76,6 +99,12 @@ export const getMyTasks = async (req, res) => {
 ========================= */
 export const getTaskFeed = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
     const tasks = await Task.find({
       createdBy: { $ne: req.user._id },
     })

@@ -4,7 +4,8 @@ import {
   register,
   sendOtp,
   verifyOtp,
-  login
+  login,
+  resendOtp   
 } from "../controllers/authControllers.js";
 
 const router = express.Router();
@@ -15,5 +16,6 @@ router.post("/verify-otp", verifyOtp);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
+router.post("/resend-otp", resendOtp);
 
 export default router;
