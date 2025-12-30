@@ -16,9 +16,11 @@ body {
 
 /* PAGE */
 .otp-page {
-  width: 100vw;
-  min-height: 100vh;
-  position: relative;
+    position: fixed;
+  inset: 0;                 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* GRID BACKGROUND – EXACT LOGIN MATCH */
@@ -204,4 +206,19 @@ body {
   .otp-card {
     padding: 32px 24px;
   }
+}
+.resend-text {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #555;
+}
+
+.resend-link {
+  color: #3b82f6;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.resend-link:hover {
+  text-decoration: underline;
 }

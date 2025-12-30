@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "../styles/otp.css";
 import logoImage from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api";
-import { useLocation } from "react-router-dom";
-
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -15,11 +13,20 @@ const OtpVerification = () => {
   const location = useLocation();
   const email = location.state?.email;
 
+  const [resending, setResending] = useState(false);
 
+  /* BACKGROUND GRID */
   const generateGrid = useCallback(() => {
     const totalCells = 380;
-    const highlights = [9,19,46,90,125,156,200,210,232,256,266,289,302,311,15,20,121,23,49,5,70,104,137,168,184,223,245,351];
-    const shadows = [13,42,58,81,118,143,150,181,196,219,228,262,294,306,325,360,373];
+    const highlights = [
+      9, 19, 46, 90, 125, 156, 200, 210, 232, 256, 266, 289,
+      302, 311, 15, 20, 121, 23, 49, 5, 70, 104, 137, 168,
+      184, 223, 245, 351,
+    ];
+    const shadows = [
+      13, 42, 58, 81, 118, 143, 150, 181, 196, 219,
+      228, 262, 294, 306, 325, 360, 373,
+    ];
 
     const cells = [];
     for (let i = 0; i < totalCells; i++) {
@@ -35,12 +42,16 @@ const OtpVerification = () => {
     setGridCells(generateGrid());
   }, [generateGrid]);
 
+  /* OTP INPUT HANDLERS */
   const handleChange = (value, index) => {
     if (!/^\d?$/.test(value)) return;
     const updated = [...otp];
     updated[index] = value;
     setOtp(updated);
-    if (value && index < 5) inputsRef.current[index + 1].focus();
+
+    if (value && index < 5) {
+      inputsRef.current[index + 1].focus();
+    }
   };
 
   const handleKeyDown = (e, index) => {
@@ -49,34 +60,54 @@ const OtpVerification = () => {
     }
   };
 
-const handleVerify = async () => {
-  const otpValue = otp.join("");
+  /* VERIFY OTP */
+  const handleVerify = async () => {
+    const otpValue = otp.join("");
 
-  if (otpValue.length !== 6) {
-    alert("Enter valid 6-digit OTP");
-    return;
-  }
+    if (otpValue.length !== 6) {
+      alert("Enter valid 6-digit OTP");
+      return;
+    }
 
-  if (!email) {
-    alert("Session expired. Please sign up again.");
-    navigate("/signup");
-    return;
-  }
+    if (!email) {
+      alert("Session expired. Please sign up again.");
+      navigate("/signup");
+      return;
+    }
 
-  try {
-    await API.post("/auth/verify-otp", {
-      email,
-      otp: otpValue,
-    });
+    try {
+      await API.post("/auth/verify-otp", {
+        email,
+        otp: otpValue,
+      });
 
-    alert("OTP verified successfully");
-    navigate("/");
-  } catch (error) {
-    alert(error.response?.data?.message || "OTP verification failed");
-  }
-};
+      alert("OTP verified successfully");
+      navigate("/");
+    } catch (error) {
+      alert(error.response?.data?.message || "OTP verification failed");
+    }
+  };
 
+  /* RESEND OTP */
+  const handleResend = async () => {
+    if (!email) {
+      alert("Session expired. Please sign up again.");
+      navigate("/signup");
+      return;
+    }
 
+    try {
+      setResending(true);
+
+      await API.post("/auth/resend-otp", { email });
+
+      alert("OTP resent successfully to your email");
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to resend OTP");
+    } finally {
+      setResending(false);
+    }
+  };
 
   return (
     <div className="otp-page">
@@ -84,7 +115,6 @@ const handleVerify = async () => {
 
       <div className="main-container">
         <div className="otp-wrapper">
-
           {/* HEADER */}
           <div className="otp-header">
             <div className="logo-icon">
@@ -118,11 +148,17 @@ const handleVerify = async () => {
             </div>
 
             <button onClick={handleVerify}>Verify Code</button>
-            <div className="resend">
-              Didn’t receive the code? <span>Resend</span>
+
+            <div className="resend-text">
+              Didn’t receive the code?{" "}
+              <span
+                className="resend-link"
+                onClick={handleResend}
+              >
+                {resending ? "Resending..." : "Resend"}
+              </span>
             </div>
           </div>
-
         </div>
       </div>
     </div>

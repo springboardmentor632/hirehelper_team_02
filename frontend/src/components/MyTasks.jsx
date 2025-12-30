@@ -11,7 +11,13 @@ const MyTasks = () => {
     const fetchMyTasks = async () => {
       try {
         const res = await API.get("/tasks/my");
-        setMyTasks(res.data);
+
+        // 🔥 SAFE HANDLING FOR BOTH RESPONSE TYPES
+        const tasks = Array.isArray(res.data)
+          ? res.data
+          : res.data.tasks;
+
+        setMyTasks(tasks || []);
       } catch (err) {
         console.error(err);
         setError("Failed to load tasks");
@@ -40,11 +46,12 @@ const MyTasks = () => {
               task={{
                 id: task._id,
                 title: task.title,
-                category: task.category || "General",
+                category: task.category,
                 status: task.status || "Open",
                 description: task.description,
                 location: task.location,
-                time: new Date(task.createdAt).toLocaleString(),
+                startTime: task.startTime,
+                endTime: task.endTime,
                 image: task.image,
               }}
             />

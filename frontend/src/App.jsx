@@ -17,6 +17,7 @@ import Feed from "./components/Feed";
 import MyTasks from "./components/MyTasks";
 import Addtask from "./components/Addtask";
 import Sidebar from "./components/Sidebar";
+import Request from "./components/Request";
 
 import { LoaderProvider, useLoader } from "./context/LoaderContext";
 import { setLoader } from "./api";
@@ -96,6 +97,7 @@ const AppContent = () => {
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/feed" />} />
+         <Route path="/requests" element={<Request />} />
       </Routes>
     </Layout>
   );

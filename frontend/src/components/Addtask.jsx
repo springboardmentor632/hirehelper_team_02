@@ -1,209 +1,243 @@
 import { useState } from "react";
+import Sidebar from "./Sidebar";
 import "../styles/Addtask.css";
 import API from "../api";
+import { useNavigate } from "react-router-dom";
 
 const today = new Date().toISOString().split("T")[0];
+const MAX_FILE_SIZE = 500 * 1024; // 500KB
 
-const Addtask = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    location: "",
-    startDate: "",
-    startTime: "",
-    endDate: "",
-    endTime: "",
-    category: "",
-    image: null,
-  });
+const AddTask = () => {
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }));
+  // 🔹 Form states
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [category, setCategory] = useState("");
+  const [image, setImage] = useState(null);
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // 🔹 Handle file (click + drag & drop)
+  const handleFile = (file) => {
+    if (!file) return;
 
-    // 🔴 SAFETY CHECK (prevents 400 error)
-    if (!formData.startDate || !formData.startTime) {
-      alert("Please select start date and time");
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+      alert("Only JPG and PNG files are allowed");
       return;
     }
 
-    const startTimeISO = new Date(
-      `${formData.startDate}T${formData.startTime}`
-    ).toISOString();
+    if (file.size > MAX_FILE_SIZE) {
+      alert("File size must be less than 500KB");
+      return;
+    }
 
-    const endTimeISO =
-      formData.endDate && formData.endTime
-        ? new Date(`${formData.endDate}T${formData.endTime}`).toISOString()
-        : null;
+    setImage(file);
+  };
 
-    // ✅ MUST use FormData for image upload
-    const data = new FormData();
-    data.append("title", formData.title);
-    data.append("description", formData.description);
-    data.append("location", formData.location);
-    data.append("startTime", startTimeISO);
-    data.append("category", formData.category || "General");
-
-    if (endTimeISO) data.append("endTime", endTimeISO);
-    if (formData.image) data.append("image", formData.image); // 🔥 IMAGE KEY
+  // 🔹 Create Task API call
+  const handleCreateTask = async (e) => {
+    e.preventDefault();
 
     try {
-      await API.post("/tasks", data); // ❗ DO NOT set headers manually
-      alert("Task created successfully");
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("location", location);
+      formData.append("startDate", startDate);
+      formData.append("startTime", startTime);
+      formData.append("endDate", endDate);
+      formData.append("endTime", endTime);
+      formData.append("category", category);
+      if (image) formData.append("image", image);
 
-      // Reset form
-      setFormData({
-        title: "",
-        description: "",
-        location: "",
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-        category: "",
-        image: null,
-      });
-    } catch (error) {
-      console.error(error);
-      alert(error.response?.data?.message || "Failed to create task");
+      await API.post("/tasks", formData); // token handled by interceptor
+
+      alert("Task created successfully");
+      navigate("/my-tasks");
+    } catch (err) {
+      console.error("Create task error:", err);
+      alert(err.response?.data?.message || "Failed to create task");
     }
   };
 
   return (
     <div className="addtask-page">
-      {/* Header */}
-      <div className="addtask-header">
-        <h2>Add New Task</h2>
-        <p>Create a task and find someone to help you</p>
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
+        <Sidebar />
       </div>
 
-      {/* Form Card */}
-      <div className="addtask-card">
-        <form className="addtask-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Task Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="e.g. Help moving furniture"
-              required
-            />
-          </div>
+      <div className="addtask-content">
+        <button className="menu-btn" onClick={toggleSidebar}>
+          ☰
+        </button>
 
-          <div className="form-group">
-            <label>Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Describe what help you need..."
-              required
-            />
-          </div>
+        <div className="addtask-header">
+          <h2>Add New Task</h2>
+          <p>Create a task and find someone to help you</p>
+        </div>
 
-          <div className="form-group">
-            <label>Location</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              placeholder="e.g. Delhi, India"
-              required
-            />
-          </div>
-
-          <div className="form-row">
+        <div className="addtask-card">
+          <form className="addtask-form" onSubmit={handleCreateTask}>
             <div className="form-group">
-              <label>Start Date</label>
+              <label>Task Title</label>
               <input
-                type="date"
-                name="startDate"
-                min={today}
-                value={formData.startDate}
-                onChange={handleChange}
+                type="text"
+                placeholder="e.g. Help moving furniture"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>Start Time</label>
-              <input
-                type="time"
-                name="startTime"
-                value={formData.startTime}
-                onChange={handleChange}
+              <label>Description</label>
+              <textarea
+                placeholder="Describe what help you need..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 required
               />
             </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>End Date</label>
-              <input
-                type="date"
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleChange}
-              />
-            </div>
 
             <div className="form-group">
-              <label>End Time</label>
+              <label>Location</label>
               <input
-                type="time"
-                name="endTime"
-                value={formData.endTime}
-                onChange={handleChange}
+                type="text"
+                placeholder="e.g. Delhi, India"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                required
               />
             </div>
-          </div>
 
-          <div className="form-group">
-            <label>Category</label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-            >
-              <option value="">Select category</option>
-              <option>Household</option>
-              <option>Technical</option>
-              <option>Cleaning</option>
-              <option>Moving</option>
-            </select>
-          </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Start Date</label>
+                <input
+                  type="date"
+                  min={today}
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required
+                />
+              </div>
 
-          <div className="form-group">
-            <label>Task Image (Optional)</label>
-            <div className="upload-box">
-              <span>Upload a file or drag and drop</span>
-              <input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={handleChange}
-              />
+              <div className="form-group">
+                <label>Start Time</label>
+                <input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  required
+                />
+              </div>
             </div>
-          </div>
 
-          <button type="submit" className="submit-btn">
-            Create Task
-          </button>
-        </form>
+            <div className="form-row">
+              <div className="form-group">
+                <label>End Date</label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>End Time</label>
+                <input
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Category</label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                <option value="">Select category</option>
+                <option value="Cooking">Cooking</option>
+                <option value="Gardening">Gardening</option>
+                <option value="Household">Household</option>
+                <option value="Technical">Technical</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Moving">Moving</option>
+              </select>
+            </div>
+
+            {/* ✅ CUSTOM FILE UPLOAD */}
+            <div className="form-group">
+              <label>Task Image (Optional)</label>
+
+              <div
+                className="upload-box"
+                onClick={() =>
+                  document.getElementById("task-image-input").click()
+                }
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  handleFile(e.dataTransfer.files[0]);
+                }}
+              >
+                <div className="upload-content">
+                  <div className="upload-icon">📤</div>
+                  <p>
+                    <strong>Drag & drop</strong> your files here or
+                  </p>
+                  <span className="upload-btn">Choose files</span>
+                  <p className="upload-hint">
+                    Only JPG and PNG files. Max size 500KB.
+                  </p>
+                </div>
+
+                <input
+                  id="task-image-input"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  hidden
+                  onChange={(e) => handleFile(e.target.files[0])}
+                />
+              </div>
+
+              {image && (
+                <p className="upload-selected">
+                  Selected file: <strong>{image.name}</strong>
+                </p>
+              )}
+            </div>
+
+            <button type="submit" className="submit-btn">
+              Create Task
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Addtask;
+export default AddTask;

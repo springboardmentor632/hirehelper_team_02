@@ -1,52 +1,66 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../styles/Feed.css";
+import Sidebar from "./Sidebar";
 import TaskCard from "./TaskCard";
-import API from "../api";
 
 export default function Feed() {
-  const [tasks, setTasks] = useState([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchFeedTasks = async () => {
-      try {
-        const res = await API.get("/tasks/feed");
-        setTasks(res.data);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load feed");
-      }
-    };
-
-    fetchFeedTasks();
-  }, []);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <main className="feed-content">
-      <div className="feed-header">
-        <h2>Feed</h2>
-        <p>Find tasks that need help</p>
+    <div className="feed-layout">
+
+      {/* 🔥 Overlay (mobile only) */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* 🔥 Sidebar wrapper */}
+      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
+        <Sidebar />
       </div>
 
-      {error && <p className="error-text">{error}</p>}
+      {/* 🔥 Main content */}
+      <main className="feed-content">
 
-      <div className="task-grid">
-        {tasks.length === 0 ? (
-          <p>No tasks available</p>
-        ) : (
-          tasks.map((task) => (
-            <TaskCard
-              key={task._id}
-              image={task.image}
-              title={task.title}
-              desc={task.description}
-              user={`${task.createdBy?.firstName || ""} ${
-                task.createdBy?.lastName || ""
-              }`}
-            />
-          ))
-        )}
-      </div>
-    </main>
+        {/* 🍔 Hamburger (mobile only) */}
+        <button
+          className="menu-btn"
+          onClick={() => setSidebarOpen(prev => !prev)}
+        >
+          ☰
+        </button>
+
+        <div className="feed-header">
+          <h2>Feed</h2>
+          <p>Find tasks that need help</p>
+        </div>
+
+        <div className="task-grid">
+          <TaskCard
+            image="https://images.unsplash.com/photo-1581578731548-c64695cc6952"
+            title="Help Moving Furniture"
+            desc="Need help moving furniture from my apartment to a new house."
+            user="Saurav Mehta"
+          />
+
+          <TaskCard
+            image="https://images.unsplash.com/photo-1587202372775-e229f172b9d7"
+            title="Help Computer Setup"
+            desc="Need help to setup my computer system."
+            user="Khushi Mehta"
+          />
+
+          <TaskCard
+            image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
+            title="Plumbing Work"
+            desc="Need help fixing kitchen sink leakage."
+            user="Rahul"
+          />
+        </div>
+      </main>
+    </div>
   );
 }
