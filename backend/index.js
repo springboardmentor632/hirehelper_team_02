@@ -1,4 +1,4 @@
-// 🔥 FORCE env to load FIRST
+// FORCE env to load FIRST
 import "./loadEnv.js";
 
 import express from "express";
@@ -8,6 +8,8 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import otpRoutes from "./routes/otp_route.js";
 import taskRoutes from "./routes/taskRoutes.js";
+import requestRoutes from "./routes/requestRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 connectDB();
 
@@ -16,10 +18,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// Routes ( ALL BEFORE listen)
 app.use("/api/auth", authRoutes);
 app.use("/api/auth", otpRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/requests", requestRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Health check
 app.get("/", (req, res) => {
