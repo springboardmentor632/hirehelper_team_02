@@ -1,18 +1,19 @@
 .request-layout {
   display: flex;
-  background: linear-gradient(to bottom, #c5f9ff, #6cc1ca);
+  background: linear-gradient(to bottom, #c5f9ff, #7adfe3);
   min-height: 100vh;
 }
 
 .request-content {
   flex: 1;
-  padding: 24px 32px;
+  padding: 20px;
 }
 
 .request-page {
-  padding: 30px;
-  min-height: 100vh;
-  background: linear-gradient(to bottom, #d9fbff, #77cdd3);
+  border-radius: 15px;
+  padding: 20px;
+  min-height: 93vh;
+  background: linear-gradient(to bottom, #d9fbff, #85dee2);
 }
 
 /* Header */
@@ -62,12 +63,12 @@
 
 .request-left {
   display: flex;
-  gap: 15px;
+  gap: 12px;
 }
 
-.profile-img {
-  width: 48px;
-  height: 48px;
+.request-profile-img {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }

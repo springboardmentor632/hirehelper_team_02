@@ -9,7 +9,9 @@ import Feed from "./components/Feed";
 import MyTasks from "./components/MyTasks";
 import Addtask from "./components/Addtask";
 import Request from "./components/Request";
-
+import MyRequests from "./components/MyRequests";
+import Settings from "./components/Settings";
+import ChangePassword from "./components/ChangePassword"
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +25,9 @@ function App() {
         <Route path="/my-tasks" element={<MyTasks />} />
         <Route path="/add-task" element={<Addtask />} />
         <Route path="/requests" element={<Request />} />
+        <Route path="/my-requests" element={<MyRequests />} />
+        <Route path="/Settings" element={<Settings />} />
+        <Route path="/change-password" element={<ChangePassword />} />
       </Routes>
     </BrowserRouter>
   );

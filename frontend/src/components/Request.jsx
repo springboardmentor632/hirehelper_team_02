@@ -45,7 +45,7 @@ export default function Request() {
                 <img
                   src="https://randomuser.me/api/portraits/women/44.jpg"
                   alt="profile"
-                  className="profile-img"
+                  className="request-profile-img"
                 />
 
                 <div className="request-info">

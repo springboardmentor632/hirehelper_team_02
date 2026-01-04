@@ -1,5 +1,6 @@
 .addtask-page {
   display: flex;
+  background: linear-gradient(to bottom, #c5f9ff, #7adfe3);
   min-height: 100vh;
 }
  
@@ -15,6 +16,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
+  font-family: poppins;
 }
  
 /*  MENU BUTTON  */
@@ -40,6 +45,7 @@
 .addtask-header h2 {
   margin: 0;
   font-size: 22px;
+  font-weight: 600;
 }
  
 .addtask-header p {
