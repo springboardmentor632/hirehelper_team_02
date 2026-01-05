@@ -9,26 +9,32 @@ export default function Feed() {
   return (
     <div className="feed-layout">
 
-      {/* 🔥 Overlay (mobile only) */}
+      {/* ================= DESKTOP SIDEBAR ================= */}
+      <aside className="sidebar desktop-only">
+        <Sidebar />
+      </aside>
+
+      {/* ================= MOBILE SIDEBAR ================= */}
       {sidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <>
+          <div
+            className="sidebar-overlay mobile-only"
+            onClick={() => setSidebarOpen(false)}
+          />
+
+          <div className="sidebar-wrapper mobile-only">
+            <Sidebar />
+          </div>
+        </>
       )}
 
-      {/* 🔥 Sidebar wrapper */}
-      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
-        <Sidebar />
-      </div>
-
-      {/* 🔥 Main content */}
+      {/* ================= MAIN CONTENT ================= */}
       <main className="feed-content">
 
         {/* 🍔 Hamburger (mobile only) */}
         <button
-          className="menu-btn"
-          onClick={() => setSidebarOpen(prev => !prev)}
+          className="menu-btn mobile-only"
+          onClick={() => setSidebarOpen(true)}
         >
           ☰
         </button>
@@ -39,6 +45,7 @@ export default function Feed() {
         </div>
 
         <div className="task-grid">
+          {/* 🔥 TaskCard kept EXACTLY same */}
           <TaskCard
             image="https://images.unsplash.com/photo-1581578731548-c64695cc6952"
             title="Help Moving Furniture"

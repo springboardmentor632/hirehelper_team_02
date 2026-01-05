@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -16,7 +15,6 @@ import ResetPassword from "./components/ResetPassword";
 import Feed from "./components/Feed";
 import MyTasks from "./components/MyTasks";
 import Addtask from "./components/Addtask";
-import Sidebar from "./components/Sidebar";
 import Request from "./components/Request";
 
 import { LoaderProvider, useLoader } from "./context/LoaderContext";
@@ -25,30 +23,28 @@ import { setLoader } from "./api";
 import "./styles/loader.css";
 import "./styles/layout.css";
 
-/* 🔐 Private Route */
+/* =========================
+   PRIVATE ROUTE
+========================= */
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" />;
 };
 
-/* 🔹 Layout (Sidebar fixed, page scrolls) */
+/* =========================
+   SIMPLE LAYOUT (NO SIDEBAR)
+========================= */
 const Layout = ({ children }) => {
-  const location = useLocation();
-
-  const showSidebar =
-    location.pathname === "/feed" ||
-    location.pathname === "/my-tasks" ||
-    location.pathname === "/add-task";
-
   return (
     <div className="app-layout">
-      {showSidebar && <Sidebar />}
       <main className="app-content">{children}</main>
     </div>
   );
 };
 
-/* 🔹 Connect Axios → Loader ONCE */
+/* =========================
+   CONNECT LOADER ONCE
+========================= */
 const AppContent = () => {
   const { setLoading } = useLoader();
 
@@ -67,7 +63,7 @@ const AppContent = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* PROTECTED APP ROUTES */}
+        {/* PROTECTED ROUTES */}
         <Route
           path="/feed"
           element={
@@ -95,9 +91,17 @@ const AppContent = () => {
           }
         />
 
+        <Route
+          path="/requests"
+          element={
+            <PrivateRoute>
+              <Request />
+            </PrivateRoute>
+          }
+        />
+
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/feed" />} />
-         <Route path="/requests" element={<Request />} />
       </Routes>
     </Layout>
   );

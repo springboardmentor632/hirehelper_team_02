@@ -1,6 +1,7 @@
+/* ================= LAYOUT ================= */
 .feed-layout {
   display: flex;
-  background: linear-gradient(to bottom, #C5F9FF, #6cc1ca);
+  background: linear-gradient(to bottom, #c5f9ff, #7adfe3);
   min-height: 100vh;
 }
 
@@ -9,6 +10,7 @@
   padding: 24px 32px;
 }
 
+/* ================= FEED HEADER ================= */
 .feed-header {
   background: white;
   padding: 16px 20px;
@@ -28,32 +30,28 @@
   color: #666;
 }
 
-
+/* ================= TASK GRID ================= */
 .task-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
-
+/* ================= TASK CARD (UNCHANGED) ================= */
 .task-card {
   background: white;
   border-radius: 14px;
   padding: 16px;
-
-  /* IMPORTANT for equal height */
   display: flex;
   flex-direction: column;
   height: 100%;
-
-  /* Optional polish */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: 0.2s ease;
 }
+
 .task-card:hover {
   transform: translateY(-4px);
 }
-
 
 .task-card img {
   width: 100%;
@@ -62,7 +60,6 @@
   border-radius: 12px;
   margin-bottom: 12px;
 }
-
 
 .task-card h3 {
   font-size: 18px;
@@ -76,7 +73,6 @@
   margin-bottom: 12px;
 }
 
-
 .meta {
   font-size: 12px;
   color: #777;
@@ -86,12 +82,11 @@
   margin-bottom: 14px;
 }
 
-
 .footer {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: auto; /* pushes footer to bottom */
+  margin-top: auto;
 }
 
 .footer .avatar {
@@ -100,7 +95,6 @@
   border-radius: 50%;
   background: #d9d9d9;
 }
-
 
 .footer button {
   margin-left: auto;
@@ -112,24 +106,53 @@
   font-size: 14px;
   cursor: pointer;
 }
-/* Sidebar mobile handling */
+
+/* ================= SIDEBAR ================= */
+/* IMPORTANT:
+   sidebar-wrapper should NOT take space on desktop */
 .sidebar-wrapper {
-  width: 260px;
+  display: none;
 }
 
+/* Desktop sidebar (comes from .sidebar.desktop-only) */
+.sidebar.desktop-only {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+/* ================= MENU BUTTON ================= */
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  .sidebar-wrapper {
-    position: fixed;
-    left: -260px;
-    top: 0;
-    height: 100vh;
-    background: linear-gradient(to bottom, #c5f9ff, #59bcc7);
-    transition: left 0.3s ease;
-    z-index: 1001;
+
+  /* Hide desktop sidebar */
+  .desktop-only {
+    display: none;
   }
 
-  .sidebar-wrapper.open {
+  /* Show menu button */
+  .menu-btn {
+    display: block;
+  }
+
+  /* Mobile sidebar overlay */
+  .sidebar-wrapper {
+    display: block;
+    position: fixed;
     left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(to bottom, #c5f9ff, #59bcc7);
+    z-index: 1001;
   }
 
   .sidebar-overlay {
@@ -139,26 +162,7 @@
     z-index: 1000;
   }
 
-  .menu-btn {
-    display: block !important;
-  }
-}
-
-/* Desktop */
-.menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
-/* ===============================
-   FEED – MOBILE MATCH MYTASKS
-================================ */
-@media (max-width: 768px) {
-
-  /* Remove white rectangle */
+  /* Mobile feed header style (your existing logic) */
   .feed-header {
     background: transparent;
     padding: 0;
@@ -166,7 +170,6 @@
     margin-bottom: 16px;
   }
 
-  /* Adjust text like MyTasks */
   .feed-header h2 {
     font-size: 20px;
     margin-bottom: 4px;
@@ -183,7 +186,6 @@
     gap: 16px;
   }
 
-  /* Same padding feel as MyTasks */
   .feed-content {
     padding: 16px;
   }

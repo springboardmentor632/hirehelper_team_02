@@ -4,30 +4,42 @@ import "../styles/request.css";
 
 export default function Request() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="request-layout">
-      {/*  Overlay (mobile only) */}
+
+      {/* ================= DESKTOP SIDEBAR ================= */}
+      <aside className="sidebar desktop-only">
+        <Sidebar />
+      </aside>
+
+      {/* ================= MOBILE SIDEBAR ================= */}
       {sidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <>
+          <div
+            className="sidebar-overlay mobile-only"
+            onClick={() => setSidebarOpen(false)}
+          />
+
+          <div className="sidebar-wrapper mobile-only">
+            <Sidebar />
+          </div>
+        </>
       )}
 
-      {/*  Sidebar wrapper */}
-      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
-        <Sidebar />
-      </div>
-
+      {/* ================= MAIN CONTENT ================= */}
       <main className="request-content">
-        {/*  Hamburger (mobile only) */}
+
+        {/* 🍔 Hamburger (mobile only) */}
         <button
-          className="menu-btn"
-          onClick={() => setSidebarOpen((prev) => !prev)}
+          className="menu-btn mobile-only"
+          onClick={() => setSidebarOpen(true)}
         >
           ☰
         </button>
+
         <div className="request-page">
+
           {/* Header */}
           <div className="request-header">
             <h1>Requests</h1>
@@ -39,13 +51,13 @@ export default function Request() {
             <h2>Incoming Requests</h2>
             <p className="sub-text">People who want to help with your tasks</p>
 
-            {/* Request Card */}
+            {/* Request Card (UNCHANGED) */}
             <div className="request-card">
               <div className="request-left">
                 <img
                   src="https://randomuser.me/api/portraits/women/44.jpg"
                   alt="profile"
-                  className="profile-img"
+                  className="request-profile-img"
                 />
 
                 <div className="request-info">
@@ -75,6 +87,7 @@ export default function Request() {
                 <button className="decline-btn">Decline</button>
               </div>
             </div>
+
           </div>
         </div>
       </main>

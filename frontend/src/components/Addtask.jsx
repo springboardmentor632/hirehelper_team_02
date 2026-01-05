@@ -11,7 +11,6 @@ const AddTask = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // 🔹 Form states
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -22,31 +21,23 @@ const AddTask = () => {
   const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
 
-  const toggleSidebar = () => {
-    setSidebarOpen((prev) => !prev);
-  };
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
-  // 🔹 Handle file (click + drag & drop)
   const handleFile = (file) => {
     if (!file) return;
-
     if (!["image/jpeg", "image/png"].includes(file.type)) {
       alert("Only JPG and PNG files are allowed");
       return;
     }
-
     if (file.size > MAX_FILE_SIZE) {
       alert("File size must be less than 500KB");
       return;
     }
-
     setImage(file);
   };
 
-  // 🔹 Create Task API call
   const handleCreateTask = async (e) => {
     e.preventDefault();
-
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -59,31 +50,37 @@ const AddTask = () => {
       formData.append("category", category);
       if (image) formData.append("image", image);
 
-      await API.post("/tasks", formData); // token handled by interceptor
-
+      await API.post("/tasks", formData);
       alert("Task created successfully");
       navigate("/my-tasks");
     } catch (err) {
-      console.error("Create task error:", err);
       alert(err.response?.data?.message || "Failed to create task");
     }
   };
 
   return (
     <div className="addtask-page">
+      {/* DESKTOP SIDEBAR */}
+      <aside className="sidebar desktop-only">
+        <Sidebar />
+      </aside>
+
+      {/* MOBILE SIDEBAR */}
       {sidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <>
+          <div
+            className="sidebar-overlay mobile-only"
+            onClick={() => setSidebarOpen(false)}
+          />
+          <div className="sidebar-wrapper mobile-only open">
+            <Sidebar />
+          </div>
+        </>
       )}
 
-      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
-        <Sidebar />
-      </div>
-
+      {/* MAIN CONTENT */}
       <div className="addtask-content">
-        <button className="menu-btn" onClick={toggleSidebar}>
+        <button className="menu-btn mobile-only" onClick={toggleSidebar}>
           ☰
         </button>
 
@@ -94,11 +91,12 @@ const AddTask = () => {
 
         <div className="addtask-card">
           <form className="addtask-form" onSubmit={handleCreateTask}>
+            {/* FORM (unchanged) */}
+
             <div className="form-group">
               <label>Task Title</label>
               <input
                 type="text"
-                placeholder="e.g. Help moving furniture"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -108,7 +106,6 @@ const AddTask = () => {
             <div className="form-group">
               <label>Description</label>
               <textarea
-                placeholder="Describe what help you need..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -119,7 +116,6 @@ const AddTask = () => {
               <label>Location</label>
               <input
                 type="text"
-                placeholder="e.g. Delhi, India"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
@@ -137,7 +133,6 @@ const AddTask = () => {
                   required
                 />
               </div>
-
               <div className="form-group">
                 <label>Start Time</label>
                 <input
@@ -159,7 +154,6 @@ const AddTask = () => {
                   required
                 />
               </div>
-
               <div className="form-group">
                 <label>End Time</label>
                 <input
@@ -187,8 +181,6 @@ const AddTask = () => {
                 <option value="Moving">Moving</option>
               </select>
             </div>
-
-            {/* ✅ CUSTOM FILE UPLOAD */}
             <div className="form-group">
               <label>Task Image (Optional)</label>
 

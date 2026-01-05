@@ -1,23 +1,23 @@
+/* ================= LAYOUT ================= */
 .request-layout {
   display: flex;
-  background: linear-gradient(to bottom, #c5f9ff, #6cc1ca);
+  background: linear-gradient(to bottom, #c5f9ff, #7adfe3);
   min-height: 100vh;
 }
 
 .request-content {
   flex: 1;
-  padding: 24px 16px;
-  
+  padding: 20px;
 }
 
 .request-page {
-  width: 100%; 
-  min-height: 100vh;
-  background: linear-gradient(to bottom, #d9fbff, #77cdd3);
-  padding-left: 0; 
+  border-radius: 15px;
+  padding: 20px;
+  min-height: 93vh;
+  background: linear-gradient(to bottom, #d9fbff, #85dee2);
 }
 
-/* Header */
+/* ================= HEADER ================= */
 .request-header {
   background: white;
   padding: 20px 25px;
@@ -35,7 +35,7 @@
   font-size: 14px;
 }
 
-/* Incoming */
+/* ================= INCOMING ================= */
 .incoming-section {
   background: #e9fbff;
   padding: 20px;
@@ -53,7 +53,7 @@
   margin-bottom: 10px;
 }
 
-/* Card */
+/* ================= CARD ================= */
 .request-card {
   background: #eefcff;
   border-radius: 14px;
@@ -64,12 +64,12 @@
 
 .request-left {
   display: flex;
-  gap: 15px;
+  gap: 12px;
 }
 
-.profile-img {
-  width: 48px;
-  height: 48px;
+.request-profile-img {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -115,7 +115,7 @@
   color: #6b7280;
 }
 
-/* Actions */
+/* ================= ACTIONS ================= */
 .request-actions {
   display: flex;
   gap: 12px;
@@ -145,39 +145,19 @@
   background: #e5d4d4;
 }
 
-/* Sidebar mobile handling */
+/* ================= SIDEBAR ================= */
+/* IMPORTANT: sidebar-wrapper MUST NOT take space on desktop */
 .sidebar-wrapper {
+  display: none;
+}
+
+/* Desktop sidebar */
+.sidebar.desktop-only {
   width: 260px;
+  flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
-  .sidebar-wrapper {
-    position: fixed;
-    left: -260px;
-    top: 0;
-    height: 100vh;
-    background: linear-gradient(to bottom, #c5f9ff, #59bcc7);
-    transition: left 0.3s ease;
-    z-index: 1001;
-  }
-
-  .sidebar-wrapper.open {
-    left: 0;
-  }
-
-  .sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-  }
-
-  .menu-btn {
-    display: block !important;
-  }
-}
-
-/* Desktop */
+/* ================= MENU BUTTON ================= */
 .menu-btn {
   display: none;
   background: none;
@@ -187,8 +167,39 @@
   margin-bottom: 12px;
 }
 
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  /* Remove white rectangle */
+
+  /* Hide desktop sidebar */
+  .desktop-only {
+    display: none;
+  }
+
+  /* Show menu */
+  .menu-btn {
+    display: block;
+  }
+
+  /* Mobile sidebar overlay */
+  .sidebar-wrapper {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(to bottom, #c5f9ff, #59bcc7);
+    z-index: 1001;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+
+  /* Mobile header style */
   .request-header {
     background: transparent;
     padding: 0;
@@ -196,7 +207,6 @@
     margin-bottom: 16px;
   }
 
-  /* Adjust text like MyTasks */
   .request-header h1 {
     font-size: 20px;
     margin-bottom: 4px;
@@ -207,7 +217,7 @@
     color: #555;
   }
 
-  /* Cards full width on mobile */
+  /* Mobile card layout */
   .request-card {
     flex-direction: column;
   }
@@ -216,9 +226,7 @@
     margin-top: 1rem;
   }
 
-  /* Same padding feel as MyTasks */
   .request-content {
     padding: 16px;
   }
 }
-

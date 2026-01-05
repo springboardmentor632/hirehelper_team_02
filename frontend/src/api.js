@@ -2,16 +2,24 @@ import axios from "axios";
 
 let setGlobalLoading = null;
 
-// this function will be called ONCE from App.jsx
+/**
+ * This function is called ONCE from App.jsx
+ * to register the global loader setter
+ */
 export const setLoader = (setLoading) => {
   setGlobalLoading = setLoading;
 };
 
 const API = axios.create({
   baseURL: "http://localhost:5000/api",
+  withCredentials: false, // keep false unless using cookies
 });
 
-/* REQUEST → SHOW LOADER + ADD TOKEN */
+/* =========================
+   REQUEST INTERCEPTOR
+   - Show loader
+   - Attach JWT token
+========================= */
 API.interceptors.request.use(
   (config) => {
     // Show global loader
@@ -19,7 +27,7 @@ API.interceptors.request.use(
       setGlobalLoading(true);
     }
 
-    // Attach JWT token if available
+    // Attach token if exists
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -35,7 +43,11 @@ API.interceptors.request.use(
   }
 );
 
-/* RESPONSE → HIDE LOADER */
+/* =========================
+   RESPONSE INTERCEPTOR
+   - Hide loader
+   - Handle auth errors
+========================= */
 API.interceptors.response.use(
   (response) => {
     if (setGlobalLoading) {
@@ -48,10 +60,11 @@ API.interceptors.response.use(
       setGlobalLoading(false);
     }
 
-    // Optional: handle unauthorized globally
+    // Handle unauthorized globally
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
-      // window.location.href = "/login"; // enable if you want auto-redirect
+      // Optional redirect
+      // window.location.href = "/login";
     }
 
     return Promise.reject(error);
