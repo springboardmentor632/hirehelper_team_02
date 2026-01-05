@@ -1,4 +1,4 @@
-/* ================= PAGE ================= */
+/*  PAGE  */
 .settings-page {
   display: flex;
   background: linear-gradient(to bottom, #C5F9FF, #6cc1ca);
@@ -6,7 +6,7 @@
   
 }
 
-/* ================= MAIN CONTENT ================= */
+/*  MAIN CONTENT  */
 .settings-content {
   flex: 1;
   padding: 28px 40px;
@@ -19,7 +19,7 @@
   font-family: poppins;
 }
 
-/* ================= MENU BUTTON ================= */
+/*  MENU BUTTON  */
 .menu-btn {
   display: none;
   font-size: 26px;
@@ -29,7 +29,7 @@
   margin-bottom: 12px;
 }
 
-/* ================= HEADER ================= */
+/*  HEADER  */
 .settings-header {
   width: 100%;
   max-width: 1200px;
@@ -37,6 +37,9 @@
   padding: 18px;
   border-radius: 14px;
   margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .settings-header h2 {
@@ -51,7 +54,7 @@
   color: #666;
 }
 
-/* ================= CARD ================= */
+/*  CARD  */
 .settings-card {
   width: 100%;
   max-width: 1000px;
@@ -66,7 +69,7 @@
   font-size: 18px;
 }
 
-/* ================= PROFILE ================= */
+/*  PROFILE  */
 .profile-row {
   display: flex;
   align-items: center;
@@ -82,7 +85,7 @@
   border: 2px solid #e5e5e5;
 }
 
-/* ================= FORM ================= */
+/*  FORM  */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -124,7 +127,7 @@
   box-shadow: 0 0 0 2px rgba(91, 91, 240, 0.15);
 }
 
-/* ================= ROW ================= */
+/*  ROW  */
 .form-row.name-row {
   gap: 8px;  /* smaller horizontal gap */
 }
@@ -134,7 +137,7 @@
 
 }
 
-/* ================= BUTTONS ================= */
+/*  BUTTONS  */
 .primary-btn {
   background: #5b5bf0;
   color: #ffffff;
@@ -164,14 +167,14 @@
   margin-top: 16px;
 }
 
-/* ================= SECURITY ================= */
+/*  SECURITY  */
 .security-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* ================= IMAGE MODAL ================= */
+/*  IMAGE MODAL  */
 .image-overlay {
   position: fixed;
   inset: 0;

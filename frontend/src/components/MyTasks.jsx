@@ -2,6 +2,7 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import MyTaskCard from "./MyTaskCard";
 import "../styles/MyTasks.css";
+import Notification from "./Notification";
 
 const MyTasks = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -59,8 +60,11 @@ const MyTasks = () => {
         </button>
 
         <div className="mytasks-header">
-          <h2>My Tasks</h2>
-          <p>Manage your posted tasks</p>
+          <div className="header-left">
+            <h2>My Tasks</h2>
+            <p>Manage your posted tasks</p>
+          </div>
+          <Notification />
         </div>
 
         <div className="mytasks-grid">

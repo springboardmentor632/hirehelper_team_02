@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import "../styles/myRequests.css";
+import Notification from "./Notification";
 
 const MyRequests = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -37,8 +38,11 @@ const MyRequests = () => {
           {/* Glass Background */}
           <div className="myrequests-page">
             <div className="myrequests-header">
-              <h1>My Requests</h1>
-              <p>Track the help request you have sent</p>
+              <div className="header-left">
+                <h1>My Requests</h1>
+                <p>Track the help request you have sent</p>
+              </div>
+              <Notification />
             </div>
 
             <div className="myrequests-section">

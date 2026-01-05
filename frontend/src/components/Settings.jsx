@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import "../styles/Settings.css";
+import Notification from "./Notification";
 
 const DEFAULT_USER_ICON = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
@@ -61,8 +62,11 @@ const Settings = () => {
         <button className="menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button>
 
         <div className="settings-header">
-          <h2>Settings</h2>
-          <p>Manage your profile and account preferences</p>
+          <div className="header-left">
+            <h2>Settings</h2>
+            <p>Manage your profile and account preferences</p>
+          </div>
+          <Notification />
         </div>
 
         {/* Profile Picture */}
@@ -118,6 +122,7 @@ const Settings = () => {
 
           <div className="save-btn-wrapper">
             <button className="primary-btn" onClick={handleSave}>Save Changes</button>
+
           </div>
 
           {saved && <p className="save-msg">✔ Changes saved successfully</p>}

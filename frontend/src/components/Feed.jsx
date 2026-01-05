@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/Feed.css";
+import Notification from "./Notification";
 import Sidebar from "./Sidebar";
 import TaskCard from "./TaskCard";
 
@@ -9,7 +10,7 @@ export default function Feed() {
   return (
     <div className="feed-layout">
 
-      {/* 🔥 Overlay (mobile only) */}
+      {/*  Overlay (mobile only) */}
       {sidebarOpen && (
         <div
           className="sidebar-overlay"
@@ -17,15 +18,15 @@ export default function Feed() {
         />
       )}
 
-      {/* 🔥 Sidebar wrapper */}
+      {/*  Sidebar wrapper */}
       <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
         <Sidebar />
       </div>
 
-      {/* 🔥 Main content */}
+      {/*  Main content */}
       <main className="feed-content">
 
-        {/* 🍔 Hamburger (mobile only) */}
+        {/*  Hamburger (mobile only) */}
         <button
           className="menu-btn"
           onClick={() => setSidebarOpen(prev => !prev)}
@@ -34,8 +35,11 @@ export default function Feed() {
         </button>
 
         <div className="feed-header">
-          <h2>Feed</h2>
-          <p>Find tasks that need help</p>
+          <div className="header-left">
+            <h2>Feed</h2>
+            <p>Find tasks that need help</p>
+          </div>
+          <Notification />
         </div>
 
         <div className="task-grid">

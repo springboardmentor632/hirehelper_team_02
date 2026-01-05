@@ -63,7 +63,7 @@ const ForgotPassword = () => {
       <div className="main-container">
         <div className="otp-wrapper">
 
-          {/* 🔥 HEADER (EXACT SAME AS OTP PAGE) */}
+          {/*  HEADER (EXACT SAME AS OTP PAGE) */}
           <div className="otp-header">
             <div className="logo-icon">
               <img src={logoImage} alt="HireHelper Logo" />
@@ -110,7 +110,7 @@ const ForgotPassword = () => {
             <button className="verify-btn" onClick={handleVerifyCode}>Verify Code</button>
 
             <p className="resend-text">
-              Haven’t got the OTP yet? <span>Resend</span>
+              Haven't got the OTP yet? <span>Resend</span>
             </p>
           </div>
 

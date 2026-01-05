@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import "../styles/Addtask.css";
+import Notification from "./Notification";
  
 const today = new Date().toISOString().split("T")[0];
  
@@ -35,8 +36,11 @@ const Addtask = () => {
  
         {/* Header */}
         <div className="addtask-header">
-          <h2>Add New Task</h2>
-          <p>Create a task and find someone to help you</p>
+          <div className="header-left">
+            <h2>Add New Task</h2>
+            <p>Create a task and find someone to help you</p>
+          </div>
+          <Notification />
         </div>
  
         {/* Form Card */}

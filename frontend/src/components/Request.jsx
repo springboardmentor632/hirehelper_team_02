@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import "../styles/request.css";
+import Notification from "./Notification";
 
 export default function Request() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -30,8 +31,11 @@ export default function Request() {
         <div className="request-page">
           {/* Header */}
           <div className="request-header">
-            <h1>Requests</h1>
-            <p>People who want to help with your tasks</p>
+            <div className="header-left">
+              <h1>Requests</h1>
+              <p>People who want to help with your tasks</p>
+            </div>
+            <Notification />
           </div>
 
           {/* Incoming Requests */}
