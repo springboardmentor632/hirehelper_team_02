@@ -20,6 +20,6 @@ router.get("/received", authMiddleware, getRequestsForMyTasks);
 router.get("/my", authMiddleware, getMyRequests);
 
   // UPDATE REQUEST STATUS
-router.put("/:requestId", authMiddleware, updateRequestStatus);
+router.patch("/:requestId", authMiddleware, updateRequestStatus);
 
 export default router;
