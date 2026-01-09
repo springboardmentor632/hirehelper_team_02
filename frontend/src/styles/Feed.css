@@ -1,4 +1,4 @@
-/* ================= LAYOUT ================= */
+/* ================= PAGE LAYOUT ================= */
 .feed-layout {
   display: flex;
   background: linear-gradient(to bottom, #c5f9ff, #7adfe3);
@@ -8,6 +8,7 @@
 .feed-content {
   flex: 1;
   padding: 24px 32px;
+  overflow-x: hidden;
 }
 
 /* ================= FEED HEADER ================= */
@@ -16,12 +17,18 @@
   padding: 16px 20px;
   border-radius: 14px;
   margin-bottom: 24px;
-  max-width: 100%;
+  width: 100%;
+
+  /* ✅ NEW (for Notification support) */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .feed-header h2 {
   margin: 0;
   font-size: 22px;
+  font-weight: 600;
 }
 
 .feed-header p {
@@ -33,20 +40,26 @@
 /* ================= TASK GRID ================= */
 .task-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
+
+  /* 🔥 FIX: prevent center gaps */
+  align-items: start;
+  justify-content: start;
 }
 
-/* ================= TASK CARD (UNCHANGED) ================= */
+/* ================= TASK CARD ================= */
 .task-card {
   background: white;
   border-radius: 14px;
   padding: 16px;
+
   display: flex;
   flex-direction: column;
   height: 100%;
+
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  transition: 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .task-card:hover {
@@ -73,6 +86,7 @@
   margin-bottom: 12px;
 }
 
+/* ================= META ================= */
 .meta {
   font-size: 12px;
   color: #777;
@@ -82,11 +96,12 @@
   margin-bottom: 14px;
 }
 
+/* ================= FOOTER ================= */
 .footer {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: auto;
+  margin-top: auto; /* pushes footer down */
 }
 
 .footer .avatar {
@@ -107,19 +122,6 @@
   cursor: pointer;
 }
 
-/* ================= SIDEBAR ================= */
-/* IMPORTANT:
-   sidebar-wrapper should NOT take space on desktop */
-.sidebar-wrapper {
-  display: none;
-}
-
-/* Desktop sidebar (comes from .sidebar.desktop-only) */
-.sidebar.desktop-only {
-  width: 260px;
-  flex-shrink: 0;
-}
-
 /* ================= MENU BUTTON ================= */
 .menu-btn {
   display: none;
@@ -130,29 +132,30 @@
   margin-bottom: 12px;
 }
 
+/* ================= SIDEBAR (MOBILE) ================= */
+/* .sidebar-wrapper {
+  width: 260px;
+} */
+
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
 
-  /* Hide desktop sidebar */
-  .desktop-only {
-    display: none;
-  }
-
-  /* Show menu button */
   .menu-btn {
-    display: block;
+    display: block !important;
   }
 
-  /* Mobile sidebar overlay */
   .sidebar-wrapper {
-    display: block;
     position: fixed;
-    left: 0;
+    left: -260px;
     top: 0;
-    width: 260px;
     height: 100vh;
     background: linear-gradient(to bottom, #c5f9ff, #59bcc7);
+    transition: left 0.3s ease;
     z-index: 1001;
+  }
+
+  .sidebar-wrapper.open {
+    left: 0;
   }
 
   .sidebar-overlay {
@@ -162,7 +165,7 @@
     z-index: 1000;
   }
 
-  /* Mobile feed header style (your existing logic) */
+  /* 🔥 Match MyTasks mobile UI */
   .feed-header {
     background: transparent;
     padding: 0;
@@ -180,7 +183,6 @@
     color: #555;
   }
 
-  /* Cards full width on mobile */
   .task-grid {
     grid-template-columns: 1fr;
     gap: 16px;

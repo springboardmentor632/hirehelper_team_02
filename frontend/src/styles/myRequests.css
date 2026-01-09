@@ -1,10 +1,15 @@
-/*  GLOBAL FONT  */
+/* =========================
+   GLOBAL FONT
+========================= */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   font-family: poppins;
 }
 
-/*  LAYOUT  */
+/* =========================
+   LAYOUT
+========================= */
 .dashboard {
   display: flex;
   min-height: 100vh;
@@ -12,22 +17,25 @@ body {
 
 .dashboard-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(to bottom, #c9f6fb, #7adfe3);
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0 20px;
 }
 
-/*  SIDEBAR  */
+/* =========================
+   SIDEBAR
+========================= */
 .sidebar-wrapper {
-  width: 260px;
+  width: 0;
 }
 
-/*  MOBILE HEADER  */
+/* =========================
+   MOBILE HEADER
+========================= */
 .mobile-header {
   display: none;
-  padding-left: 16px;
-  padding-top: 16px;
-  padding-bottom: 0;
+  padding: 16px;
 }
 
 .hamburger {
@@ -37,7 +45,9 @@ body {
   cursor: pointer;
 }
 
-/*  OVERLAY  */
+/* =========================
+   OVERLAY
+========================= */
 .sidebar-overlay {
   position: fixed;
   inset: 0;
@@ -45,39 +55,48 @@ body {
   z-index: 20;
 }
 
-/*  GLASS CONTAINER  */
- .myrequests-page {
-  border-radius: 15px;
-  padding-bottom: 96px;
-  margin: 24px auto;
-  padding: 20px;
+/* =========================
+   PAGE CONTAINER
+========================= */
+.myrequests-page {
+  border-radius: 16px;
+  margin: 24px 0;
+  padding: 22px;
   min-height: 93vh;
   background: linear-gradient(to bottom, #d9fbff, #85dee2);
+  width: 100%;
 }
 
-/*  HEADER  */
+/* =========================
+   HEADER
+========================= */
 .myrequests-header {
-  background: white;
+  background: #ffffff;
   padding: 20px 25px;
-  border-radius: 10px;
-  margin-bottom: 25px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .myrequests-header h1 {
   font-size: 22px;
-  font-weight: 600
+  font-weight: 600;
 }
 
-.myrequests-header p{
+.myrequests-header p {
   color: #6b7280;
   font-size: 14px;
 }
 
-/*  SECTION (MERGED LOOK)  */
+/* =========================
+   SECTION
+========================= */
 .myrequests-section {
   background: #e9fbff;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 22px;
+  border-radius: 14px;
 }
 
 .myrequests-section h2 {
@@ -86,94 +105,130 @@ body {
   color: #1f2937;
 }
 
-.myrequests-section p{
-  font-size: 13px;
-    color: #6b7280;
-    margin-bottom: 10px;
-}
-
-
-.myrequests-section span {
+.myrequests-section p {
   font-size: 13px;
   color: #6b7280;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-/*  CARD  */
+/* =========================
+   REQUEST CARD
+========================= */
 .myrequest-card {
-  background: #eefcff;
-  border-radius: 14px;
+  background: #e3ebf3; /* 🔥 slightly darker grey */
+  border-radius: 18px;
+  padding: 22px;
+  margin-top: 20px;
+
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 20px;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 /* LEFT SIDE */
 .card-left {
   display: flex;
-  gap: 12px;
-  flex: 1;  /* important */
+  gap: 16px;
+  flex: 1;
 }
 
 /* AVATAR */
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: #d9e4ff;
+  background: #dbeafe;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
 }
 
 /* CONTENT */
 .card-content h3 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
+  margin-bottom: 6px;
 }
 
-.card-content p{
-  font-size: 14px;
-    color: #344053;
-    margin: 0;
-    max-width: 900px
+.card-content .owner {
+  font-size: 13px;
+  color: #334155;
+  margin-bottom: 10px;
 }
 
-/*  MESSAGE BOX (FIXED WIDTH)  */
+/* MESSAGE BOX */
 .message-box {
-  background: #dbe6ea;
+  background: #d1dae3; /* darker inner card */
   padding: 14px;
-  border-radius: 6px;
-  margin-top: 10px;
-  width: 100%; /*  stretches till Pending */
-  box-sizing: border-box;
+  border-radius: 10px;
+  margin-top: 8px;
 }
 
 .message-box label {
   font-weight: 500;
+  font-size: 13px;
   color: #374151;
 }
 
-/*  TIME ROW  */
-.time-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  font-size: 13px;
+.message-box p {
+  font-size: 14px;
+  color: #1f2937;
+  margin-top: 6px;
 }
 
-/*  STATUS  */
+/* META ROW (TIME + LOCATION) */
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.meta-row .dot {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
 .status {
-  background: #4f6df5;
-  color: white;
-  padding: 6px 16px;
-  border-radius: 18px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
   height: fit-content;
   white-space: nowrap;
 }
 
-/*  MOBILE FIX  */
+/* Pending */
+.status.pending {
+  background: #fde68a;
+  color: #92400e;
+}
+
+/* Accepted */
+.status.accepted {
+  background: #bbf7d0;
+  color: #166534;
+}
+
+/* Rejected */
+.status.rejected {
+  background: #fecaca;
+  color: #7f1d1d;
+}
+
+/* =========================
+   MOBILE FIXES
+========================= */
 @media (max-width: 768px) {
   .sidebar-wrapper {
     position: fixed;
@@ -198,13 +253,11 @@ body {
   }
 
   .dashboard-content {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
   }
 
   .myrequests-page {
-    margin: 20px;
-    padding: 24px;
-    padding-bottom: 72px;
+    margin: 16px;
+    padding: 20px;
   }
 }

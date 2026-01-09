@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../styles/sidebar.css";
 import {
   FiHome,
@@ -9,21 +10,50 @@ import {
   FiSettings,
   FiSearch,
   FiLogOut,
-  FiUser,
 } from "react-icons/fi";
-import logoImage from '../assets/logo.png'; // Import the logo image
+import logoImage from "../assets/logo.png";
 
 export default function Sidebar() {
   const navigate = useNavigate();
 
+  /* =========================
+     USER STATE (LIVE SYNC)
+  ========================= */
+  const [user, setUser] = useState(() => {
+    return JSON.parse(localStorage.getItem("user")) || {};
+  });
+
+  useEffect(() => {
+    const refreshUser = () => {
+      const u = JSON.parse(localStorage.getItem("user")) || {};
+      setUser(u);
+    };
+
+    window.addEventListener("storage", refreshUser);
+    window.addEventListener("profileUpdated", refreshUser);
+
+    return () => {
+      window.removeEventListener("storage", refreshUser);
+      window.removeEventListener("profileUpdated", refreshUser);
+    };
+  }, []);
+
+  const fullName =
+    user.firstName || user.lastName
+      ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
+      : "User";
+
+  const avatar = user.profileImage || "";
+
   const handleLogout = () => {
-    // In a real application, this would also clear user session/auth tokens.
-    navigate('/');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   return (
     <aside className="sidebar">
-      {/* Logo */}
+      {/* HEADER */}
       <div className="sidebar-header">
         <img src={logoImage} alt="HireHelper Logo" className="logo-circle" />
         <div>
@@ -32,32 +62,49 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Search */}
+      {/* SEARCH */}
       <div className="sidebar-search">
         <FiSearch className="search-icon" />
         <input type="text" placeholder="Search" />
       </div>
 
-      {/* Navigation */}
+      {/* NAVIGATION */}
       <nav className="sidebar-nav">
-        <NavItem to="/feed" label="Feed" />
-        <NavItem to="/my-tasks" label="My Tasks" />
-        <NavItem to="/requests" label="Requests" />
-        <NavItem to="/my-requests" label="My Requests" />
-        <NavItem to="/add-task" label="Add Task" />
-        <NavItem to="/settings" label="Settings" />
+        <NavItem to="/feed" label="Feed" icon={FiHome} />
+        <NavItem to="/my-tasks" label="My Tasks" icon={FiCheckSquare} />
+        <NavItem to="/requests" label="Requests" icon={FiInbox} />
+        <NavItem to="/my-requests" label="My Requests" icon={FiFileText} />
+        <NavItem to="/add-task" label="Add Task" icon={FiPlusCircle} />
+        <NavItem to="/settings" label="Settings" icon={FiSettings} />
       </nav>
 
-      {/* Logout */}
+      {/* USER PROFILE + LOGOUT */}
       <div className="sidebar-footer">
-        <button className="logout-btn" onClick={handleLogout}>↩ Log out</button>
+        <div className="sidebar-profile">
+          <div className="profile-avatar">
+            {avatar ? (
+              <img src={avatar} alt="profile" />
+            ) : (
+              fullName.charAt(0).toUpperCase()
+            )}
+          </div>
+
+          <div className="profile-info">
+            <div className="profile-name">{fullName}</div>
+            <div className="profile-email">{user.email || ""}</div>
+          </div>
+
+          <button className="profile-logout" onClick={handleLogout}>
+            <FiLogOut size={18} />
+          </button>
+        </div>
       </div>
     </aside>
   );
 }
 
-/* Reusable Nav Item */
-function NavItem({ to, label }) {
+/* NAV ITEM */
+function NavItem({ to, label, icon: Icon }) {
   return (
     <NavLink
       to={to}
@@ -65,7 +112,8 @@ function NavItem({ to, label }) {
         isActive ? "sidebar-link active" : "sidebar-link"
       }
     >
-      {label}
+      <Icon size={18} />
+      <span>{label}</span>
     </NavLink>
   );
 }

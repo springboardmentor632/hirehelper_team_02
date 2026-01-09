@@ -1,30 +1,24 @@
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
+/* ================= OTP PAGE ONLY ================= */
+.otp-page {
   font-family: 'Poppins', sans-serif;
   background: #99f4ef;
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  position: relative;
   overflow: hidden;
 }
 
-/* PAGE */
-.otp-page {
-    position: fixed;
-  inset: 0;                 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* GRID BACKGROUND – EXACT LOGIN MATCH */
-.grid-background {
+/* ================= GRID BACKGROUND ================= */
+.otp-page .grid-background {
   position: fixed;
   inset: 0;
   display: grid;
@@ -33,6 +27,7 @@ body {
   padding: 20px;
   opacity: 0.3;
   z-index: 0;
+  pointer-events: none; /* 🔥 VERY IMPORTANT */
 }
 
 .grid-cell {
@@ -51,15 +46,15 @@ body {
   box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-/* CONTENT */
-.main-container {
+/* ================= CONTENT ================= */
+.otp-page .main-container {
   position: relative;
-  z-index: 1;
-  min-height: 100vh;
+  z-index: 2;
   width: 100%;
+  min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .otp-wrapper {
@@ -69,7 +64,7 @@ body {
   gap: 24px;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .otp-header {
   display: flex;
   align-items: center;
@@ -86,7 +81,7 @@ body {
   color: #6366f1;
 }
 
-/* LOGO */
+/* ================= LOGO ================= */
 .logo-icon {
   width: 60px;
   height: 60px;
@@ -108,7 +103,7 @@ body {
   padding: 6px;
 }
 
-/* OTP CARD */
+/* ================= OTP CARD ================= */
 .otp-card {
   background: rgb(216, 246, 248);
   padding: 40px;
@@ -133,7 +128,7 @@ body {
   margin-bottom: 24px;
 }
 
-/* OTP INPUTS */
+/* ================= OTP INPUTS ================= */
 .otp-inputs {
   display: flex;
   justify-content: center;
@@ -157,7 +152,7 @@ body {
   background: #fff;
 }
 
-/* BUTTON */
+/* ================= BUTTON ================= */
 .otp-card button {
   width: 100%;
   padding: 14px;
@@ -169,7 +164,7 @@ body {
   cursor: pointer;
 }
 
-/* RESEND */
+/* ================= RESEND ================= */
 .resend {
   margin-top: 16px;
   font-size: 14px;
@@ -181,32 +176,7 @@ body {
   cursor: pointer;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .otp-header h1 {
-    font-size: 26px;
-    text-align: center;
-  }
-
-  .otp-wrapper {
-    padding: 0 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .grid-background {
-    grid-template-columns: repeat(10, 1fr);
-  }
-
-  .otp-inputs input {
-    width: 42px;
-    height: 48px;
-  }
-
-  .otp-card {
-    padding: 32px 24px;
-  }
-}
+/* Forgot password resend */
 .resend-text {
   margin-top: 16px;
   font-size: 14px;
@@ -221,4 +191,31 @@ body {
 
 .resend-link:hover {
   text-decoration: underline;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .otp-header h1 {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .otp-wrapper {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .otp-page .grid-background {
+    grid-template-columns: repeat(10, 1fr);
+  }
+
+  .otp-inputs input {
+    width: 42px;
+    height: 48px;
+  }
+
+  .otp-card {
+    padding: 32px 24px;
+  }
 }

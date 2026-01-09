@@ -25,6 +25,11 @@
   padding: 20px 24px;
   border-radius: 14px;
   margin-bottom: 24px;
+
+  /* 🔥 NEW: supports Notification */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mytasks-header h2 {
@@ -46,6 +51,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
+  align-items: start;
+  justify-content: start; /* 🔥 prevents centering */
 }
 
 /* ===============================

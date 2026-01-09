@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
-import "../styles/myTasks.css";
-import MyTaskCard from "./MyTaskCard";
 import Sidebar from "./Sidebar";
+import MyTaskCard from "./MyTaskCard";
+import Notification from "./Notification";
 import API from "../api";
+import "../styles/myTasks.css";
 
 const MyTasks = () => {
   const [myTasks, setMyTasks] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchMyTasks = async () => {
       try {
         const res = await API.get("/tasks/my");
-
-        // 🔥 SAFE HANDLING FOR BOTH RESPONSE TYPES
-        const tasks = Array.isArray(res.data)
-          ? res.data
-          : res.data.tasks;
-
-        setMyTasks(tasks || []);
+        setMyTasks(res.data || []);
       } catch (err) {
-        console.error(err);
+        console.error("MY TASKS ERROR:", err);
         setError("Failed to load tasks");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -30,65 +28,53 @@ const MyTasks = () => {
   }, []);
 
   return (
-    <div className="request-layout">
-      {/* ================= DESKTOP SIDEBAR ================= */}
-      <aside className="sidebar desktop-only">
-        <Sidebar />
-      </aside>
-
-      {/* ================= MOBILE SIDEBAR ================= */}
+    <div className="mytasks-layout">
+      {/* Sidebar overlay (mobile only) */}
       {sidebarOpen && (
-        <>
-          <div
-            className="sidebar-overlay mobile-only"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <div className="sidebar-wrapper mobile-only">
-            <Sidebar />
-          </div>
-        </>
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
-      {/* ================= MAIN CONTENT ================= */}
-      <main className="request-content">
+      {/* Sidebar */}
+      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
+        <Sidebar />
+      </div>
+
+      {/* Main content */}
+      <main className="mytasks-content">
+        {/* Hamburger (mobile only) */}
         <button
-          className="menu-btn mobile-only"
-          onClick={() => setSidebarOpen(true)}
+          className="menu-btn"
+          onClick={() => setSidebarOpen((prev) => !prev)}
         >
           ☰
         </button>
 
-        {/* 🔽 YOUR EXISTING UI (UNCHANGED) 🔽 */}
-        <div className="mytasks-scope">
-          <div className="mytasks-header">
+        {/* Header */}
+        <div className="mytasks-header">
+          <div className="header-left">
             <h2>My Tasks</h2>
             <p>Manage your posted tasks</p>
           </div>
+          <Notification />
+        </div>
 
-          {error && <p className="error-text">{error}</p>}
+        {/* Error */}
+        {error && <p className="error-text">{error}</p>}
 
-          <div className="mytasks-grid">
-            {myTasks.length === 0 ? (
-              <p>No tasks created yet</p>
-            ) : (
-              myTasks.map((task) => (
-                <MyTaskCard
-                  key={task._id}
-                  task={{
-                    id: task._id,
-                    title: task.title,
-                    category: task.category,
-                    status: task.status || "Open",
-                    description: task.description,
-                    location: task.location,
-                    startTime: task.startTime,
-                    endTime: task.endTime,
-                    image: task.image,
-                  }}
-                />
-              ))
-            )}
-          </div>
+        {/* Tasks */}
+        <div className="mytasks-grid">
+          {loading ? (
+            <p>Loading tasks...</p>
+          ) : myTasks.length === 0 ? (
+            <p>No tasks created yet</p>
+          ) : (
+            myTasks.map((task) => (
+              <MyTaskCard key={task._id} task={task} />
+            ))
+          )}
         </div>
       </main>
     </div>

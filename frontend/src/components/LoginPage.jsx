@@ -27,6 +27,8 @@ const LoginPage = () => {
 
       // save token
       localStorage.setItem("token", res.data.token);
+       // SAVE USER (THIS WAS MISSING)
+    localStorage.setItem("user", JSON.stringify(res.data.user));
 
       alert("Login successful");
 

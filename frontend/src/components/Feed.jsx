@@ -1,71 +1,75 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Feed.css";
 import Sidebar from "./Sidebar";
 import TaskCard from "./TaskCard";
+import Notification from "./Notification";
+import API from "../api";
 
 export default function Feed() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeed = async () => {
+      try {
+        const res = await API.get("/tasks/feed");
+        setTasks(res.data);
+      } catch (error) {
+        console.error("Failed to fetch feed:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeed();
+  }, []);
 
   return (
     <div className="feed-layout">
-
-      {/* ================= DESKTOP SIDEBAR ================= */}
-      <aside className="sidebar desktop-only">
-        <Sidebar />
-      </aside>
-
-      {/* ================= MOBILE SIDEBAR ================= */}
+      {/* Overlay (mobile only) */}
       {sidebarOpen && (
-        <>
-          <div
-            className="sidebar-overlay mobile-only"
-            onClick={() => setSidebarOpen(false)}
-          />
-
-          <div className="sidebar-wrapper mobile-only">
-            <Sidebar />
-          </div>
-        </>
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
-      {/* ================= MAIN CONTENT ================= */}
-      <main className="feed-content">
+      {/* Sidebar */}
+      <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
+        <Sidebar />
+      </div>
 
-        {/* 🍔 Hamburger (mobile only) */}
+      {/* Main content */}
+      <main className="feed-content">
+        {/* Hamburger */}
         <button
-          className="menu-btn mobile-only"
-          onClick={() => setSidebarOpen(true)}
+          className="menu-btn"
+          onClick={() => setSidebarOpen((prev) => !prev)}
         >
           ☰
         </button>
 
+        {/* Header */}
         <div className="feed-header">
-          <h2>Feed</h2>
-          <p>Find tasks that need help</p>
+          <div>
+            <h2>Feed</h2>
+            <p>Find tasks that need help</p>
+          </div>
+          <Notification />
         </div>
 
+        {/* Task grid */}
         <div className="task-grid">
-          {/* 🔥 TaskCard kept EXACTLY same */}
-          <TaskCard
-            image="https://images.unsplash.com/photo-1581578731548-c64695cc6952"
-            title="Help Moving Furniture"
-            desc="Need help moving furniture from my apartment to a new house."
-            user="Saurav Mehta"
-          />
-
-          <TaskCard
-            image="https://images.unsplash.com/photo-1587202372775-e229f172b9d7"
-            title="Help Computer Setup"
-            desc="Need help to setup my computer system."
-            user="Khushi Mehta"
-          />
-
-          <TaskCard
-            image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
-            title="Plumbing Work"
-            desc="Need help fixing kitchen sink leakage."
-            user="Rahul"
-          />
+          {loading ? (
+            <p>Loading tasks...</p>
+          ) : tasks.length === 0 ? (
+            <p>No tasks available</p>
+          ) : (
+            tasks.map((task) => (
+              <TaskCard key={task._id} task={task} />
+            ))
+          )}
         </div>
       </main>
     </div>

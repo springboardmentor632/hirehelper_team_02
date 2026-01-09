@@ -1,6 +1,40 @@
 @import "tailwindcss";
+
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+/* ===== LAYOUT SUPPORT ===== */
+.feed-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Main content beside sidebar */
+.feed-content {
+  flex: 1;
+  padding: 24px;
+}
+
+/* ===== MOBILE BEHAVIOR ===== */
+@media (max-width: 768px) {
+  .sidebar-wrapper {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar-wrapper.open {
+    left: 0;
+  }
+}
+html,
+body {
+  background: linear-gradient(to bottom, #c5f9ff, #7adfe3);
 }

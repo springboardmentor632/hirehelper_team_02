@@ -1,0 +1,165 @@
+/* Container */
+.notification-container {
+  position: relative;
+}
+
+/* Bell button */
+.notification-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 20px;
+}
+
+/* Unread dot on bell */
+/* Unread dot on bell */
+/* Bell dot (base) */
+/* 🔢 UNREAD NOTIFICATION COUNT BADGE */
+.notification-count {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+
+  background-color: #ef4444; /* 🔴 red when unread */
+  color: white;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 0 0 2px white;
+}
+
+/* 🔵 when all notifications are read */
+.notification-count.read {
+  background-color: #3b82f6;
+}
+
+
+
+/* ===== DROPDOWN ===== */
+.notification-dropdown.modern {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 340px;
+  max-height: 420px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+/* Header */
+.notification-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* List */
+.notification-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Empty */
+.notification-empty {
+  padding: 16px;
+  text-align: center;
+  color: #777;
+}
+
+/* ===== ITEM ===== */
+.notification-item.modern {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.notification-item.modern:hover {
+  background: #f5f7ff;
+}
+
+/* Avatar */
+.notif-avatar {
+  width: 36px;
+  height: 36px;
+  background: #eef2ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+/* Content */
+.notif-content {
+  flex: 1;
+}
+
+.notif-message {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  color: #222;
+}
+
+.notif-time {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* Unread indicator */
+.notif-unread-dot {
+  width: 8px;
+  height: 8px;
+  background: #4f46e5;
+  border-radius: 50%;
+  margin-top: 6px;
+}
+
+/* Read state */
+.notification-item.read .notif-message {
+  font-weight: 400;
+  color: #666;
+}
+.mark-all-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+.mark-all-btn:hover {
+  text-decoration: underline;
+}
+
+.notif-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
