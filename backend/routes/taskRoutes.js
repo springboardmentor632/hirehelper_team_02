@@ -5,10 +5,11 @@ import {
   getTaskFeed,
 } from "../controllers/taskController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-import upload from "../middleware/uploadMiddleware.js";
+import uploadToCloudinary from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
+/* TEST */
 router.get("/test", (req, res) => {
   res.json({ message: "Task API working" });
 });
@@ -20,7 +21,7 @@ router.get("/test", (req, res) => {
 router.post(
   "/",
   authMiddleware,
-  upload.single("image"), // image field name
+  uploadToCloudinary("tasks").single("image"),
   createTask
 );
 
@@ -31,12 +32,9 @@ router.post(
 router.get("/my", authMiddleware, getMyTasks);
 
 /**
- * GET TASK FEED (other users' tasks)
+ * GET TASK FEED
  * GET /api/tasks/feed
  */
 router.get("/feed", authMiddleware, getTaskFeed);
-
-router.get("/", authMiddleware, getTaskFeed);
-
 
 export default router;

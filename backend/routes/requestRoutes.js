@@ -5,21 +5,29 @@ import {
   createRequest,
   getRequestsForMyTasks,
   getMyRequests,
-  updateRequestStatus
+  updateRequestStatus,
 } from "../controllers/requestController.js";
 
 const router = express.Router();
 
-   ///CREATE REQUEST
+/* =========================
+   CREATE REQUEST (Helper)
+========================= */
 router.post("/", authMiddleware, createRequest);
 
-   //GET REQUESTS RECEIVED (Task Owner)
-router.get("/received", authMiddleware, getRequestsForMyTasks);
+/* =========================
+   GET INCOMING REQUESTS (Owner)
+========================= */
+router.get("/incoming", authMiddleware, getRequestsForMyTasks);
 
-   //GET MY REQUESTS (Helper)
+/* =========================
+   GET MY REQUESTS (Helper)
+========================= */
 router.get("/my", authMiddleware, getMyRequests);
 
-  // UPDATE REQUEST STATUS
+/* =========================
+   ACCEPT / REJECT REQUEST
+========================= */
 router.patch("/:requestId", authMiddleware, updateRequestStatus);
 
 export default router;

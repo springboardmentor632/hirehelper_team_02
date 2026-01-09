@@ -23,13 +23,13 @@ export const register = async (req, res) => {
       password: hashedPassword,
       otp,
       otpExpires: Date.now() + 10 * 60 * 1000,
-      isVerified: false
+      isVerified: false,
     });
 
     await sendMail(email, otp);
 
     res.status(201).json({
-      message: "Registration successful. Verify OTP."
+      message: "Registration successful. Verify OTP.",
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -42,17 +42,13 @@ export const sendOtp = async (req, res) => {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     user.otp = otp;
     user.otpExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
-
-    console.log("🔐 OTP for", email, "=>", otp);
 
     await sendMail(email, otp);
 
@@ -68,17 +64,13 @@ export const verifyOtp = async (req, res) => {
     const { email, otp } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (!user.otp || user.otp !== otp) {
+    if (user.otp !== otp)
       return res.status(400).json({ message: "Invalid OTP" });
-    }
 
-    if (user.otpExpires < Date.now()) {
+    if (user.otpExpires < Date.now())
       return res.status(400).json({ message: "OTP expired" });
-    }
 
     user.otp = null;
     user.otpExpires = null;
@@ -97,35 +89,38 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) {
+    if (!user)
       return res.status(404).json({ message: "User not found" });
-    }
 
-    if (!user.isVerified) {
+    if (!user.isVerified)
       return res.status(401).json({ message: "Email not verified" });
-    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
-    }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.status(200).json({
-      message: "You are logged in successfully 🎉",
-      token
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        profileImage: user.profileImage,
+      },
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-/////Resend OTP
+/* ================= RESEND OTP ================= */
 export const resendOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -140,13 +135,63 @@ export const resendOtp = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     user.otp = otp;
-    user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 min
+    user.otpExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
 
     await sendMail(email, otp);
 
     res.json({ message: "OTP resent successfully" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/* ================= UPDATE PROFILE (CRITICAL FIX) ================= */
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const { firstName, lastName, phoneNumber, email } = req.body;
+
+    const updates = {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+    };
+
+    // 🟢 Save Cloudinary image URL
+    if (req.file && req.file.path) {
+      updates.profileImage = req.file.path;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updates },   // 🔥 THIS FIXES YOUR BUG
+      { new: true }
+    ).select("firstName lastName email phoneNumber profileImage");
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("UPDATE PROFILE ERROR:", error);
+    res.status(500).json({
+      message: "Profile update failed",
+      error: error.message,
+    });
+  }
+};
+
+/* ================= GET LOGGED IN USER ================= */
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select(
+      "firstName lastName email phoneNumber profileImage"
+    );
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to load user" });
   }
 };

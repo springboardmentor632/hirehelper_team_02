@@ -6,9 +6,18 @@ import Task from "../models/Task.js";
 export const createTask = async (req, res) => {
   try {
     // 🔐 AUTH CHECK
-    if (!req.user || !req.user._id) {
+    if (!req.user) {
       return res.status(401).json({
         message: "Unauthorized: Please login again",
+      });
+    }
+
+    // ✅ SUPPORT BOTH id AND _id FROM JWT
+    const userId = req.user.id || req.user._id;
+
+    if (!userId) {
+      return res.status(401).json({
+        message: "Invalid user session",
       });
     }
 
@@ -16,10 +25,10 @@ export const createTask = async (req, res) => {
       title,
       description,
       location,
-      startDate,   // 🔥 REQUIRED from frontend
-      startTime,   // "09:30"
-      endDate,     // 🔥 REQUIRED from frontend
-      endTime,     // "16:30"
+      startDate,
+      startTime,
+      endDate,
+      endTime,
       category,
     } = req.body;
 
@@ -30,11 +39,23 @@ export const createTask = async (req, res) => {
       });
     }
 
-    // 🔥 COMBINE DATE + TIME → VALID DATE OBJECTS
+    // 🔥 COMBINE DATE + TIME
     const startDateTime = new Date(`${startDate}T${startTime}`);
-    const endDateTime = endDate && endTime
-      ? new Date(`${endDate}T${endTime}`)
-      : null;
+    const endDateTime =
+      endDate && endTime ? new Date(`${endDate}T${endTime}`) : null;
+
+    // ❌ INVALID DATE CHECK
+    if (isNaN(startDateTime.getTime())) {
+      return res.status(400).json({
+        message: "Invalid start date or time",
+      });
+    }
+
+    if (endDateTime && isNaN(endDateTime.getTime())) {
+      return res.status(400).json({
+        message: "Invalid end date or time",
+      });
+    }
 
     // ⏰ TIME VALIDATION
     if (endDateTime && startDateTime > endDateTime) {
@@ -48,18 +69,17 @@ export const createTask = async (req, res) => {
       title,
       description,
       location,
-      category: category?.trim() ? category : "General",
-      startTime: startDateTime,      // ✅ Date
-      endTime: endDateTime,          // ✅ Date or null
+      category: category?.trim() || "General",
+      startTime: startDateTime,
+      endTime: endDateTime,
       image: req.file ? req.file.path : null,
-      createdBy: req.user._id,
+      createdBy: userId,
     });
 
     res.status(201).json({
       message: "Task created successfully",
       task,
     });
-
   } catch (error) {
     console.error("CREATE TASK ERROR:", error);
     res.status(500).json({
@@ -69,21 +89,20 @@ export const createTask = async (req, res) => {
   }
 };
 
-
 /* =========================
    GET MY TASKS
 ========================= */
 export const getMyTasks = async (req, res) => {
   try {
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const tasks = await Task.find({
-      createdBy: req.user._id,
-    }).sort({ createdAt: -1 });
+    const userId = req.user.id || req.user._id;
+
+    const tasks = await Task.find({ createdBy: userId }).sort({
+      createdAt: -1,
+    });
 
     res.status(200).json(tasks);
   } catch (error) {
@@ -99,14 +118,14 @@ export const getMyTasks = async (req, res) => {
 ========================= */
 export const getTaskFeed = async (req, res) => {
   try {
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
+    const userId = req.user.id || req.user._id;
+
     const tasks = await Task.find({
-      createdBy: { $ne: req.user._id },
+      createdBy: { $ne: userId },
     })
       .populate("createdBy", "firstName lastName")
       .sort({ createdAt: -1 });
