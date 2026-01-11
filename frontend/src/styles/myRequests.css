@@ -32,8 +32,9 @@ body {
 
 .hamburger {
   font-size: 22px;
-  background: none;
-  border: none;
+  background-color: white;
+  padding:8px 12px;
+  border-radius: 8px;
   cursor: pointer;
 }
 

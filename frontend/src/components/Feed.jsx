@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "../styles/Feed.css";
 import Notification from "./Notification";
 import Sidebar from "./Sidebar";
@@ -36,7 +36,7 @@ export default function Feed() {
 
         <div className="feed-header">
           <div className="header-left">
-            <h2>Feed</h2>
+            <h1>Feed</h1>
             <p>Find tasks that need help</p>
           </div>
           <Notification />

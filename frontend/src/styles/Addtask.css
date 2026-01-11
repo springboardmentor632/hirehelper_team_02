@@ -60,7 +60,7 @@
 /*  CARD  */
 .addtask-card {
   width: 100%;
-  max-width: 1000px;
+  margin: 0;
   background: white;
   padding: 32px;
   border-radius: 18px;
@@ -89,13 +89,14 @@
 .form-group textarea,
 .form-group select {
   height: 44px;
-  padding: 10px 12px;
+  padding: 10px 12px ;
   border-radius: 8px;
   border: 1px solid #d0d0d0;
   font-size: 14px;
   box-sizing: border-box;
+  color: #c7c7c7;
 }
- 
+
 .form-group textarea {
   height: 90px;
   resize: none;
@@ -112,22 +113,47 @@
 }
  
 /*  UPLOAD  */
+/*  UPLOAD  */
 .upload-box {
   border: 2px dashed #cbd5e1;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 24px;
+  border-radius: 14px;
   text-align: center;
   position: relative;
-  color: #666;
+  color: #64748b;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  transition: 0.2s ease;
 }
- 
+
+.upload-box:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.upload-icon {
+  font-size: 26px;
+  color: #5b5bf0;
+}
+
+.upload-text {
+  font-size: 14px;
+  color: #64748b;
+}
+
 .upload-box input {
   position: absolute;
   inset: 0;
   opacity: 0;
   cursor: pointer;
 }
- 
+
 /*  BUTTON  */
 .submit-btn {
   margin: 22px auto 0;
@@ -157,7 +183,23 @@
 .sidebar-overlay {
   display: none;
 }
- 
+.addtask-form input,
+.addtask-form textarea,
+.addtask-form select {
+  color: #9ca3af;
+}
+
+/* When user clicks / types */
+.addtask-form input:focus,
+.addtask-form textarea:focus,
+.addtask-form select:focus {
+  color: #000000;
+}
+.addtask-form input::placeholder,
+.addtask-form textarea::placeholder {
+  color: #c7c7c7;
+}
+
 /*  MOBILE  */
 @media (max-width: 768px) {
   /* menu button visible */

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/Notification.css';
 import { FiBell } from 'react-icons/fi';

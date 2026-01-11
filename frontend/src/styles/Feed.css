@@ -20,15 +20,14 @@
   align-items: center;
 }
 
-.feed-header h2 {
-  margin: 0;
+.feed-header h1 {
   font-size: 22px;
+  font-weight: 600
 }
 
 .feed-header p {
-  margin-top: 6px;
+  color: #6b7280;
   font-size: 14px;
-  color: #666;
 }
 
 

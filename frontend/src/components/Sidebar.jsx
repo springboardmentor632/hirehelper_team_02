@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import React, { useEffect, useCallback, useState, useRef } from "react";
 import "../styles/sidebar.css";
 import {
   FiHome,

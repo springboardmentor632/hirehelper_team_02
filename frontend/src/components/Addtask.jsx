@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useCallback, useState, useRef } from "react";
 import Sidebar from "./Sidebar";
 import "../styles/Addtask.css";
 import Notification from "./Notification";
@@ -99,7 +99,8 @@ const Addtask = () => {
             <div className="form-group">
               <label>Task Image (Optional)</label>
               <div className="upload-box">
-                <span>Upload a file or drag and drop</span>
+                <i className="fas fa-cloud-upload-alt upload-icon"></i>
+                <span className="upload-text">Upload a file or drag and drop</span>
                 <input type="file" />
               </div>
             </div>
