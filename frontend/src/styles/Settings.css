@@ -1,43 +1,55 @@
-/* ================= PAGE ================= */
+/* ================= PAGE LAYOUT ================= */
 .settings-page {
   display: flex;
-  min-height: 100vh;
-  background: linear-gradient(to bottom, #C5F9FF, #6cc1ca);
+  width: 100%;
+  min-height: 100vh;   /* 🔥 critical */
+  background: linear-gradient(to bottom, #c5f9ff, #6cc1ca);
 }
 
-/* ================= MAIN CONTENT ================= */
+
+/* ================= SIDEBAR WRAPPER ================= */
+.sidebar-wrapper {
+  width: 260px;        /* 🔥 never collapse */
+  height: 100vh;      /* 🔥 full height */
+  flex-shrink: 0;
+}
+
+
+/* ================= OVERLAY ================= */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 15;
+}
+
+/* ================= RIGHT CONTENT ================= */
 .settings-content {
   flex: 1;
-  padding: 28px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, sans-serif;
-  font-family: poppins;
+  padding: 24px 32px;
+  overflow-y: auto;      
+  min-height: 0;          
 }
 
-/* ================= MENU BUTTON ================= */
+/* ================= MOBILE MENU BUTTON ================= */
 .menu-btn {
   display: none;
-  font-size: 26px;
-  background: none;
+  font-size: 22px;
+  background: white;
   border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 12px;
 }
 
 /* ================= HEADER ================= */
 .settings-header {
-  width: 100%;
-  max-width: 1200px;
-  background: #ffffff;
-  padding: 18px;
+  background: white;
+  padding: 18px 22px;
   border-radius: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 
-  /* ✅ NEW */
+  /* 🔥 ALIGN CONTENT */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,225 +57,549 @@
 
 .settings-header h2 {
   margin: 0;
-  font-size: 22px;
   font-weight: 600;
+  font-size: 22px;
 }
-
 .settings-header p {
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 14px;
   color: #666;
 }
 
-/* ================= CARD ================= */
-.settings-card {
+/* ================= PROFILE CARD ================= */
+.settings-page .profile-card {
+  max-width: 1100px;
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  position: relative;
+  margin-inline: auto;
+}
+.settings-page .profile-cover {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+.settings-page .profile-card .profile-info {
+    display: flex;
+  align-items: flex-end;
+  padding: 18px 28px;
+  gap: 24px;
+  flex-wrap: wrap;
+  position: relative;
+
+  /* Pull profile section upward to overlap cover */
+  margin-top: -60px;
+}
+.settings-page .profile-img-wrapper {
+   width: 130px;             /* ⬆️ Bigger */
+  height: 130px;
+  border-radius: 50%;
+  border: 5px solid white;  /* Clean cut with cover */
+  overflow: hidden;
+  cursor: pointer;
+  background: white;
+
+  /* Attach to cover */
+  position: relative;
+  z-index: 10;
+}
+.settings-page .profile-img-wrapper img {
   width: 100%;
-  max-width: 1000px;
-  background: #ffffff;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+/* ===== PROFILE ACTION BUTTONS ===== */
+/* Profile action buttons (Change Photo / Remove) */
+/* ===== PROFILE ACTION BUTTONS ===== */
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.profile-action-btn {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: none;
+  padding: 8px 16px;   /* Bigger */
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Change Photo */
+.profile-action-btn {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.profile-action-btn:hover {
+  background: #e0e7ff;
+}
+
+/* Remove button */
+.profile-action-btn.remove {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.profile-action-btn.remove:hover {
+  background: #fecaca;
+}
+
+
+.profile-action-btn:hover {
+  background: #e0e7ff;
+  transform: translateY(-1px);
+}
+
+/* Remove button */
+.profile-action-btn.remove {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.profile-action-btn.remove:hover {
+  background: #fecaca;
+}
+
+
+.profile-action-btn:hover {
+  background: #e0e7ff;
+}
+
+.profile-action-btn.remove {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.profile-action-btn.remove:hover {
+  background: #fecaca;
+}
+
+.settings-page .profile-card .profile-text h4 {
+  margin: 0;
+}
+
+.settings-page .profile-card .profile-text p {
+  font-size: 14px;
+  color: #777;
+}
+
+.settings-page .profile-progress {
+  margin-left: auto;
+  text-align: right;
+}
+.settings-page .progress-bar {
+  width: 160px;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  margin: 6px 0;
+}
+.settings-page .progress-fill {
+   height: 100%;
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
+  border-radius: 4px;
+  width: 0;
+  transition: width 1s ease-in-out; 
+}
+.settings-page .percent {
+  font-size: 12px;
+  color: #555;
+}
+
+/* ================= FIELDSET ================= */
+.settings-page .profile-fieldset {
+  border: 2px solid #ddd;
+  padding: 20px;
+  border-radius: 12px;
+}
+.settings-page .profile-fieldset legend {
+  padding: 0 10px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* ================= SPACING ================= */
+.spacer { width: 20px; }
+.spacerv { height: 10px; }
+
+/* ================= SETTINGS CARD ================= */
+.settings-page .settings-card {
+  background: white;
   padding: 26px;
   border-radius: 18px;
-  margin-bottom: 24px;
+  max-width: 1100px;
+  margin-inline: auto;
 }
-
-.settings-card h3 {
-  margin-bottom: 16px;
-  font-size: 18px;
+.settings-page .settings-card h3 {
+  margin-bottom: 18px;
 }
-
-/* ================= PROFILE ================= */
-.profile-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.profile-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  cursor: pointer;
-  object-fit: cover;
-  border: 2px solid #e5e5e5;
+.settings-page .settings-card p {
+  color: #555;
+  font-size: 14px;
 }
 
 /* ================= FORM ================= */
-.form-group {
+.settings-page .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
 }
-
-.form-group label {
+.settings-page .form-group label {
   margin-bottom: 6px;
   font-size: 14px;
-  font-weight: 500;
 }
-
-.form-group input,
-.form-group textarea {
-  height: 44px;
-  padding: 12px 14px;
+.settings-page .form-group input,
+.settings-page .form-group textarea {
+  padding: 12px;
   border-radius: 8px;
-  border: 1.5px solid #d0d0d0;
+  border: 1px solid #d1d5db;
   font-size: 14px;
-  background: #ffffff;
-  box-sizing: border-box;
-  color: #333;
 }
-
-.form-group textarea {
-  height: 90px;
+.settings-page textarea {
   resize: none;
+  height: 100px;
 }
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: #999;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #5b5bf0;
-  box-shadow: 0 0 0 2px rgba(91, 91, 240, 0.15);
-}
-
-/* ================= ROW ================= */
-/* Name row (First + Last name) */
-.form-row.name-row {
+.settings-page .form-row {
   display: flex;
-  gap: 8px;
+  gap: 16px;
 }
-
-.form-row.name-row .form-group {
+.settings-page .form-row .form-group {
   flex: 1;
 }
 
-/* ================= BUTTONS ================= */
-.primary-btn {
-  background: #5b5bf0;
-  color: #ffffff;
+/* ================= PASSWORD ================= */
+.settings-page .password-wrapper {
+  position: relative;
+}
+.settings-page .settings-pw-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   border: none;
-  padding: 10px 22px;
-  border-radius: 10px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.primary-btn:hover {
-  background: #4a4ad8;
-}
-
-.text-btn {
   background: none;
-  border: none;
-  color: #5b5bf0;
   cursor: pointer;
-  font-size: 14px;
 }
 
-/* SAVE BUTTON CENTER */
-.save-btn-wrapper {
+/* ================= BUTTONS ================= */
+.settings-page .save-btn-wrapper {
   display: flex;
-  justify-content: center;
-  margin-top: 16px;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
-
-/* ================= SECURITY ================= */
-.security-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.settings-page .primary-btn {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.settings-page .cancel-btn {
+  border: 2px solid #d1d5db;
+  background: transparent;
+  padding: 10px 26px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* ================= IMAGE MODAL ================= */
-.image-overlay {
+.settings-page .image-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 2000;
+  background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 50;
+}
+.settings-page .modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 14px;
 }
 
-.image-modal {
-  position: relative;
-}
-
-.image-modal img {
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* CLOSE BUTTON */
-.close-btn {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  background: #000;
-  color: #fff;
+/* ================= DELETE ACCOUNT ================= */
+.settings-page .delete-account-btn {
+  background: #ef4444;
+  color: white;
   border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  padding: 10px 26px;
+  border-radius: 10px;
   cursor: pointer;
-}
-
-/* SAVE MESSAGE */
-.save-msg {
-  margin-top: 12px;
-  text-align: center;
-  color: #16a34a;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* ================= SIDEBAR OVERLAY ================= */
-.sidebar-overlay {
-  display: none;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  .menu-btn {
-    display: block !important;
-    align-self: flex-start;
-  }
-
   .sidebar-wrapper {
     position: fixed;
-    top: 0;
     left: -260px;
-    width: 260px;
+    top: 0;
     height: 100vh;
-    background: #ffffff;
-    z-index: 1000;
+    background: #fff;
+    z-index: 20;
     transition: left 0.3s ease;
   }
-
   .sidebar-wrapper.open {
     left: 0;
   }
-
-  .sidebar-overlay {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.35);
-    z-index: 900;
+  .menu-btn {
+    display: inline-block;
+    margin-bottom: 12px;
   }
-
-  .settings-content {
-    padding: 20px;
-    width: 100%;
-  }
-
-  /* Stack name inputs on mobile */
-  .form-row.name-row {
+  .settings-page .profile-card.profile-info {
     flex-direction: column;
-    gap: 0;
+    align-items: flex-start;
   }
 }
+
+/* ================= ACCOUNT SECURITY CARD ================= */
+
+.security-card {
+  margin-top: 24px;
+}
+
+.security-row-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.security-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.security-sub {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.security-action-btn {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.security-action-btn:hover {
+  text-decoration: underline;
+}
+.change-password-card {
+  margin-top: 24px;     /* space from Account Security */
+  padding-top: 24px;   /* inner breathing space */
+}
+.change-password-card h3 {
+  font-weight: 700;   /* bold */
+}
+/* ===== DELETE ACCOUNT ===== */
+.delete-account-card {
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+}
+
+.delete-text {
+  font-size: 14px;
+  color: #7f1d1d;
+  margin-bottom: 16px;
+}
+
+.delete-account-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-account-btn:hover {
+  background: #b91c1c;
+}
+
+/* ===== DELETE POPUP ===== */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-box {
+  background: white;
+  padding: 30px 28px;
+  border-radius: 14px;
+  width: 360px;
+  text-align: center;
+}
+
+.popup-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.popup-text {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 22px;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.popup-cancel-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.popup-delete-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.popup-delete-btn:hover {
+  background: #b91c1c;
+}
+/* Give breathing space above Delete Account card */
+.delete-account-card {
+  margin-top: 32px;        /* space from above block */
+  padding-top: 28px;      /* space inside the card at top */
+}
+.popup-input {
+  margin: 15px 0;
+}
+
+.popup-input input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.error-msg {
+  color: red;
+  font-size: 13px;
+  margin-top: 8px;
+}
+/* ===== DELETE POPUP STYLES ===== */
+
+.popup-box h3 {
+  color: #b91c1c; /* 🔴 Delete Account title */
+  font-weight: 700;
+}
+
+/* Button container spacing */
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;              /* 👈 space between buttons */
+  margin-top: 24px;      /* 👈 space above buttons */
+}
+
+/* Cancel Button (Blue) */
+.popup-actions .cancel-btn {
+  background: #2563eb;   /* blue */
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.popup-actions .cancel-btn:hover {
+  background: #1e40af;
+}
+
+/* Delete Button (Red) */
+.popup-actions .confirm-delete-btn {
+  background: #dc2626;   /* red */
+  color: white;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.popup-actions .confirm-delete-btn:hover {
+  background: #991b1b;
+}
+/* ===== DELETE ACCOUNT POPUP INPUT ===== */
+.popup-box input {
+  color: #111;                 /* typed text */
+  background: #fff;
+}
+
+/* Placeholder text */
+.popup-box input::placeholder {
+  color: #6b7280;              /* visible gray */
+  font-size: 14px;
+  opacity: 1;                 /* important for Firefox */
+}
+
+/* ================= FORCE SIDEBAR FOOTER FIX (Settings only) ================= */
+
+/* =========================================================
+   🔥 SETTINGS PAGE – FIX LOGOUT POSITION
+   Keeps sidebar footer pinned to bottom like other pages
+========================================================= */
+
+.settings-layout .sidebar {
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Let menu take remaining space */
+.settings-layout .sidebar-nav {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+}
+
+/* Pin the logout card */
+.settings-layout .sidebar-footer {
+  margin-top: auto !important;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Prevent shrinking of logout */
+.settings-layout .sidebar-profile {
+  flex-shrink: 0 !important;
+}
+

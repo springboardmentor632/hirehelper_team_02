@@ -79,17 +79,13 @@ export default function Request() {
                     {/* LEFT */}
                     <div className="incoming-left">
                       <div className="incoming-avatar">
-                        {requester?.profilePicture ? (
-                          <img
-                            src={requester.profilePicture}
-                            alt="user"
-                          />
+                        {requester?.profileImage ? (
+                          <img src={requester.profileImage} alt="user" />
                         ) : (
-                          (requester?.firstName || "U")
-                            .charAt(0)
-                            .toUpperCase()
+                          requester?.firstName?.charAt(0).toUpperCase() || "U"
                         )}
                       </div>
+
 
                       <div className="incoming-content">
                         {/* NAME */}

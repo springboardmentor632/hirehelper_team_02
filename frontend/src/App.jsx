@@ -47,11 +47,11 @@ const AuthLayout = ({ children }) => <>{children}</>;
 const DashboardLayout = ({ children }) => {
   return (
     <div className="app-layout">
-      <Sidebar />
-      <main className="app-content">{children}</main>
+      {children}
     </div>
   );
 };
+
 
 /* =========================
    APP CONTENT

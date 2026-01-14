@@ -151,12 +151,20 @@
 
 @media (max-width: 768px) {
   .menu-btn {
-    display: block !important;
-    background: none;
+      display: block !important;
+    position: fixed;        /* 🔥 float above content */
+    top: 16px;
+    right: 16px;            /* 🔥 push to right */
+    z-index: 1105;
+
+    background: white;
     border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
     font-size: 22px;
-    margin-bottom: 12px;
     cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 
   .mytasks-grid {

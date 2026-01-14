@@ -2,17 +2,24 @@ import { useState } from "react";
 import API from "../api";
 
 export default function TaskCard({ task }) {
-  const [requested, setRequested] = useState(false);
+  const [requested, setRequested] = useState(task.isRequested || false);
   const [loading, setLoading] = useState(false);
 
   if (!task) return null;
 
+  const owner = task.createdBy || {};
+  const ownerName = owner.firstName || "Owner";
+  const profileImage = owner.profileImage;
+
+  const formattedDate = new Date(task.createdAt).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+  });
+
   const handleRequest = async () => {
     try {
       setLoading(true);
-      await API.post("/requests", {
-        taskId: task._id,
-      });
+      await API.post("/requests", { taskId: task._id });
       setRequested(true);
     } catch (err) {
       alert(err.response?.data?.message || "Failed to send request");
@@ -23,26 +30,59 @@ export default function TaskCard({ task }) {
 
   return (
     <div className="task-card">
-      <img
-        src={task.image || "https://via.placeholder.com/300"}
-        alt={task.title}
-      />
 
-      <h3>{task.title}</h3>
-      <p>{task.description}</p>
+      {/* 🖼 Image */}
+      <div className="task-image-wrapper">
+        <img
+          src={task.image || "https://via.placeholder.com/400"}
+          alt={task.title}
+          className="task-image"
+        />
+      </div>
 
-      <div className="meta">📍 {task.location}</div>
+      {/* 🧾 Body */}
+      <div className="task-body">
 
-      <div className="footer">
-        <span>{task.createdBy?.firstName || "User"}</span>
+        {/* Top row */}
+        <div className="task-top">
+          <span className="task-category">
+            {task.title || task.category || "Task"}
+          </span>
 
-        <button
-          disabled={requested || loading}
-          onClick={handleRequest}
-          className={requested ? "disabled-btn" : ""}
-        >
-          {requested ? "Request Sent" : "Request Help"}
-        </button>
+          <span className="task-date">{formattedDate}</span>
+        </div>
+
+        <h3 className="task-title">{task.title}</h3>
+        <p className="task-desc">{task.description}</p>
+
+        <div className="task-meta">
+          📍 {task.location}
+        </div>
+
+        {/* Bottom row */}
+        <div className="task-footer">
+
+          <div className="task-owner">
+            {profileImage ? (
+              <img src={profileImage} className="owner-avatar" />
+            ) : (
+              <div className="owner-letter">
+                {ownerName.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <span className="owner-name">{ownerName}</span>
+          </div>
+
+          <button
+            disabled={requested || loading}
+            onClick={handleRequest}
+            className={`request-btn ${requested ? "sent" : ""}`}
+          >
+            {requested ? "Request Sent" : "Request Help"}
+          </button>
+
+        </div>
+
       </div>
     </div>
   );

@@ -1,55 +1,70 @@
 /* =========================
-   ROOT LAYOUT
+   ROOT
 ========================= */
 .app-layout {
-  display: flex;
-  height: 100vh;
   width: 100%;
-  overflow: hidden; /* 🔒 stop body scrolling */
+  min-height: 100vh;
 }
 
 /* =========================
-   SIDEBAR (FIXED)
+   DESKTOP (Fixed sidebar)
 ========================= */
-.sidebar {
-  width: 260px;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, #c3d8da, #639294);
-  z-index: 1000;
+@media (min-width: 769px) {
+
+  /* Layout containers */
+  .feed-layout,
+  .mytasks-layout,
+  .request-layout,
+  .myrequests-layout,
+  .addtask-layout,
+  .settings-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* Sidebar container — FIXED ONLY inside app-layout */
+  .app-layout .sidebar-wrapper {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    flex-shrink: 0;
+    z-index: 1000;
+  }
+
+  /* Sidebar itself */
+  .app-layout .sidebar {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Content area */
+  .feed-content,
+  .mytasks-content,
+  .request-content,
+  .myrequests-content,
+  .addtask-content,
+  .settings-content {
+    margin-left: 260px;       /* space for fixed sidebar */
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;        /* ONLY content scrolls */
+    overflow-x: hidden;
+    padding: 24px 32px;
+  }
 }
 
 /* =========================
-   MAIN CONTENT (SCROLLABLE)
-========================= */
-.app-content {
-  margin-left: 260px;      /* space for sidebar */
-  flex: 1;
-  height: 100vh;
-  overflow-y: auto;        /* ✅ ONLY content scrolls */
-  overflow-x: hidden;
-  box-sizing: border-box;
-  padding: 0;              /* page handles spacing */
-}
-
-/* =========================
-   MOBILE
+   MOBILE (Sliding sidebar)
 ========================= */
 @media (max-width: 768px) {
-  .sidebar {
-    position: absolute;
-    left: -260px;
-    transition: left 0.3s ease;
+  .app-layout {
+    display: block;
   }
 
-  .sidebar.open {
-    left: 0;
-  }
-
-  .app-content {
-    margin-left: 0;
+  .sidebar-wrapper {
+    width: 260px;
   }
 }

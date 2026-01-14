@@ -1,12 +1,32 @@
 /* ================= SIDEBAR ================= */
 .sidebar {
-  width: 260px;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(to bottom, #c3d8da, #639294);
   display: flex;
   flex-direction: column;
   padding: 20px 16px;
   box-sizing: border-box;
+  overflow: hidden; /* prevent footer from leaking */
+}
+
+/* ================= HEADER ================= */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #c3d8da, #639294);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* ================= HEADER ================= */
@@ -59,9 +79,13 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex-grow: 1;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding-right: 4px;
+  min-height: 0;
 }
 
+/* ================= LINKS ================= */
 .sidebar-link {
   display: flex;
   align-items: center;
@@ -81,16 +105,170 @@
   color: white;
 }
 
-/* ================= FOOTER PROFILE ================= */
+/* ================= FOOTER ================= */
 .sidebar-footer {
   margin-top: auto;
+  padding-top: 12px;
+  flex-shrink: 0;
+}
+
+/* Profile Card */
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: white;
+  min-height: 64px;           /* 🔥 prevent collapse */
+  flex-shrink: 0;
+}
+
+/* Avatar */
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: #4f46e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;            /* 🔥 never shrink */
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Text */
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-email {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Logout Button */
+.profile-logout {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  flex-shrink: 0;            /* 🔥 stay in place */
+}
+
+.profile-logout:hover {
+  color: #ef4444;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+}
+
+.logo-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.sidebar-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sidebar-header p {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+/* ================= SEARCH ================= */
+.sidebar-search {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+}
+
+.sidebar-search input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* ================= NAV ================= */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;                 /* 🔥 this makes it grow */
+  overflow-y: auto;        /* 🔥 this allows scrolling */
+  padding-right: 4px;
+}
+
+/* ================= LINKS ================= */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-link.active {
+  background: linear-gradient(to right, #a4b7b8, #808c8c);
+  color: white;
+}
+
+/* ================= FOOTER ================= */
+.sidebar-footer {
+  margin-top: auto;      /* 🔥 pushes it to bottom */
+  padding-top: 12px;
+  flex-shrink: 0;
 }
 
 .sidebar-profile {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 12px;
   border-radius: 14px;
   background: white;
@@ -103,11 +281,9 @@
   border-radius: 50%;
   background: #e0e7ff;
   color: #4f46e5;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 16px;
   font-weight: 600;
 }
@@ -139,7 +315,7 @@
   text-overflow: ellipsis;
 }
 
-/* Logout icon */
+/* Logout */
 .profile-logout {
   background: none;
   border: none;
@@ -154,14 +330,55 @@
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
-    left: -260px;
-    top: 0;
-    transition: left 0.3s ease;
-    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    position: relative;
   }
+}
+/* ===== FORCE FIX FOR SETTINGS PAGE FOOTER ===== */
+.settings-layout .sidebar-footer,
+.settings-page .sidebar-footer {
+  width: 100% !important;
+  flex-shrink: 0 !important;
+}
 
-  .sidebar.open {
-    left: 0;
-  }
+/* Lock footer row layout */
+.settings-layout .sidebar-profile,
+.settings-page .sidebar-profile {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+/* Prevent name/email from collapsing */
+.settings-layout .profile-info,
+.settings-page .profile-info {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+
+/* Show full name */
+.settings-layout .profile-name,
+.settings-page .profile-name {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+/* Show full email */
+.settings-layout .profile-email,
+.settings-page .profile-email {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+/* Keep logout button in place */
+.settings-layout .profile-logout,
+.settings-page .profile-logout {
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
 }
