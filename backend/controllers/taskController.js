@@ -1,4 +1,5 @@
 import Task from "../models/Task.js";
+import Request from "../models/Request.js";
 
 /* =========================
    CREATE TASK
@@ -116,25 +117,32 @@ export const getMyTasks = async (req, res) => {
 /* =========================
    GET TASK FEED
 ========================= */
+
+
 export const getTaskFeed = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const userId = req.user.id || req.user._id;
+    const userId = req.user._id;
 
     const tasks = await Task.find({
       createdBy: { $ne: userId },
     })
-      .populate("createdBy", "firstName lastName")
+      .populate("createdBy", "firstName profileImage")
       .sort({ createdAt: -1 });
 
-    res.status(200).json(tasks);
+    const requests = await Request.find({ requester: userId });
+    const requestedTaskIds = requests.map(r => r.task.toString());
+
+    const tasksWithRequestStatus = tasks.map(task => ({
+      ...task.toObject(),
+      isRequested: requestedTaskIds.includes(task._id.toString())
+    }));
+
+    res.status(200).json(tasksWithRequestStatus);
   } catch (error) {
     console.error("GET TASK FEED ERROR:", error);
-    res.status(500).json({
-      message: "Failed to fetch task feed",
-    });
+    res.status(500).json({ message: "Failed to fetch task feed" });
   }
 };
+
+
+

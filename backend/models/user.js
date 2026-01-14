@@ -22,34 +22,42 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: true, // optional for Google users (handled in controller)
+      required: true,
     },
+passwordUpdatedAt: {
+  type: Date,
+  default: null
+},
+
+
 
     phoneNumber: {
       type: String,
     },
 
-    profilePicture: {
+    // 🔥 FIXED: ONE SINGLE IMAGE FIELD
+    profileImage: {
       type: String,
+      default: "",
     },
+
+    bio: {
+      type: String,
+      default: "",
+    },
+
+    address: String,
 
     isVerified: {
       type: Boolean,
       default: false,
     },
 
-    otp: {
-      type: String,
-    },
-
-    otpExpires: {
-      type: Date,
-    },
+    otp: String,
+    otpExpires: Date,
   },
   { timestamps: true }
 );
 
-// ✅ Prevent model overwrite error in dev / nodemon
-const User = mongoose.models.User || mongoose.model("User", userSchema);
-
-export default User;
+export default mongoose.models.User ||
+  mongoose.model("User", userSchema);

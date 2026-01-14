@@ -67,15 +67,14 @@ export const createRequest = async (req, res) => {
 ========================= */
 export const getRequestsForMyTasks = async (req, res) => {
   try {
-    const ownerId = req.user.id || req.user._id;
+    const ownerId = req.user._id;
 
     const requests = await Request.find({ owner: ownerId })
       .populate("taskId", "title location")
-      .populate("requestedBy", "firstName lastName email profileImage")
+      .populate("requestedBy", "firstName lastName email profileImage") // 🔥 IMPORTANT
       .sort({ createdAt: -1 });
 
-    // 🔥 Normalized response for frontend
-    const formattedRequests = requests.map((r) => ({
+    const formatted = requests.map((r) => ({
       _id: r._id,
       status: r.status,
       createdAt: r.createdAt,
@@ -86,7 +85,7 @@ export const getRequestsForMyTasks = async (req, res) => {
         firstName: r.requestedBy?.firstName,
         lastName: r.requestedBy?.lastName,
         email: r.requestedBy?.email,
-        profileImage: r.requestedBy?.profileImage,   // ✅ FIXED
+        profileImage: r.requestedBy?.profileImage || null, // 🔥
       },
 
       task: {
@@ -96,31 +95,52 @@ export const getRequestsForMyTasks = async (req, res) => {
       },
     }));
 
-    res.status(200).json(formattedRequests);
+    res.status(200).json(formatted);
   } catch (error) {
-    console.error("GET OWNER REQUESTS ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 /* =========================
    GET MY REQUESTS (Helper)
 ========================= */
 export const getMyRequests = async (req, res) => {
   try {
-    const userId = req.user.id || req.user._id;
+    const userId = req.user._id;
 
     const requests = await Request.find({ requestedBy: userId })
       .populate("taskId", "title location")
-      .populate("owner", "firstName lastName email profileImage") // ✅ added photo
+      .populate("owner", "firstName lastName email profileImage") // 🔥 include profileImage
       .sort({ createdAt: -1 });
 
-    res.status(200).json(requests);
+    const formatted = requests.map((r) => ({
+      _id: r._id,
+      status: r.status,
+      createdAt: r.createdAt,
+      message: r.message,
+
+      task: {
+        title: r.taskId?.title,
+        location: r.taskId?.location,
+      },
+
+      owner: {
+        _id: r.owner?._id,
+        firstName: r.owner?.firstName,
+        lastName: r.owner?.lastName,
+        email: r.owner?.email,
+        profileImage: r.owner?.profileImage || null, 
+      },
+    }));
+
+    res.status(200).json(formatted);
   } catch (error) {
     console.error("GET MY REQUESTS ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 /* =========================
    ACCEPT / REJECT REQUEST (Owner)

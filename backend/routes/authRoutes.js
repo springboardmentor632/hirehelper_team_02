@@ -6,11 +6,15 @@ import {
   login,
   resendOtp,
   updateProfile,
-  getMe
+  getMe,
+  changePassword,
 } from "../controllers/authControllers.js";
+
 import authMiddleware from "../middleware/authMiddleware.js";
 import uploadToCloudinary from "../middleware/uploadMiddleware.js";
 import { forgotPassword, resetPassword } from "../controllers/passwordControllers.js";
+import { deleteAccount } from "../controllers/authControllers.js";
+
 
 const router = express.Router();
 
@@ -24,16 +28,18 @@ router.post("/resend-otp", resendOtp);
 /* PASSWORD */
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
+router.put("/change-password", authMiddleware, changePassword);
 
 /* PROFILE */
+router.get("/me", authMiddleware, getMe);
+
 router.put(
   "/update-profile",
   authMiddleware,
   uploadToCloudinary("profile_pictures").single("profileImage"),
   updateProfile
 );
+router.delete("/delete-account", authMiddleware, deleteAccount);
 
-/* 🔥 THIS WAS MISSING */
-router.get("/me", authMiddleware, getMe);
 
 export default router;

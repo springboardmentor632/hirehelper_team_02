@@ -1,4 +1,4 @@
-// FORCE env to load FIRST
+// Load env FIRST
 import "./loadEnv.js";
 
 import express from "express";
@@ -13,16 +13,18 @@ import taskRoutes from "./routes/taskRoutes.js";
 import requestRoutes from "./routes/requestRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 
+// Connect MongoDB
 connectDB();
 
 const app = express();
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
 // ================= ROUTES =================
 app.use("/api/auth", authRoutes);
-app.use("/api/auth", otpRoutes); // ⚠️ keep only if otp_route.js is still used
+app.use("/api/auth", otpRoutes);   // keep if OTP routes exist
 app.use("/api/tasks", taskRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/notifications", notificationRoutes);
