@@ -3,27 +3,29 @@ import "../styles/login.css";
 import "../styles/forgot-password.css";
 import logoImage from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ForgotPassword = () => {
   const [gridCells, setGridCells] = useState([]);
   const otpRefs = useRef([]);
   const navigate = useNavigate();
 
-  // 🔹 UI STATES (ONLY FOR VISIBILITY)
+  // 🔹 STATES
+  const [email, setEmail] = useState("");
   const [showOtp, setShowOtp] = useState(false);
   const [sending, setSending] = useState(false);
 
-  // GRID BACKGROUND (UNCHANGED)
+  /* ================= GRID BACKGROUND ================= */
   const generateGrid = useCallback(() => {
     const totalCells = 380;
     const highlights = [
-      9,19,46,90,125,156,200,210,232,256,266,289,
-      302,311,15,20,121,23,49,5,70,104,137,168,
-      184,223,245,351
+      9, 19, 46, 90, 125, 156, 200, 210, 232, 256, 266, 289,
+      302, 311, 15, 20, 121, 23, 49, 5, 70, 104, 137, 168,
+      184, 223, 245, 351,
     ];
     const shadows = [
-      13,42,58,81,118,143,150,181,196,219,
-      228,262,294,306,325,360,373
+      13, 42, 58, 81, 118, 143, 150, 181, 196, 219,
+      228, 262, 294, 306, 325, 360, 373,
     ];
 
     const cells = [];
@@ -40,6 +42,7 @@ const ForgotPassword = () => {
     setGridCells(generateGrid());
   }, [generateGrid]);
 
+  /* ================= OTP INPUT HANDLERS ================= */
   const handleOtpChange = (e, index) => {
     if (e.target.value && index < otpRefs.current.length - 1) {
       otpRefs.current[index + 1].focus();
@@ -52,15 +55,35 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleSendOtpUI = () => {
-    setSending(true);
-    setTimeout(() => {
+  /* ================= SEND OTP (BACKEND CALL) ================= */
+  const handleSendOtp = async () => {
+    if (!email) {
+      alert("Please enter your email");
+      return;
+    }
+
+    try {
+      setSending(true);
+
+      await axios.post(
+        "http://localhost:5000/api/auth/forgot-password",
+        { email }
+      );
+
+      // 🔥 show OTP UI only after backend success
+      setShowOtp(true);
+    } catch (error) {
+      alert(
+        error.response?.data?.message || "Failed to send OTP"
+      );
+    } finally {
       setSending(false);
-      setShowOtp(true);   // 🔥 SHOW OTP UI
-    }, 800); // UI-only delay
+    }
   };
 
+  /* ================= VERIFY BUTTON (UI ONLY FOR NOW) ================= */
   const handleVerifyCode = () => {
+    alert("OTP verified (hook reset-password API next)");
     navigate("/feed");
   };
 
@@ -90,29 +113,32 @@ const ForgotPassword = () => {
               Enter your email used to authenticate
             </p>
 
-            {/* EMAIL */}
+            {/* EMAIL INPUT */}
             <p className="enter-email-text">Enter Email</p>
             <div className="email-send-row">
               <input
                 type="email"
                 placeholder="Enter email"
                 className="forgot-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <button
                 className="forgot-send-btn"
-                onClick={handleSendOtpUI}
+                onClick={handleSendOtp}
+                disabled={sending}
               >
                 {sending ? "Sending..." : "Send"}
               </button>
             </div>
 
-            {/* 🔥 OTP SECTION (UI CHANGE) */}
+            {/* OTP SECTION */}
             {showOtp && (
               <>
                 <p className="enter-otp-text">Enter OTP</p>
 
                 <div className="otp-boxes">
-                  {[0,1,2,3,4,5].map((_, index) => (
+                  {[0, 1, 2, 3, 4, 5].map((_, index) => (
                     <input
                       key={index}
                       maxLength="1"
@@ -124,7 +150,7 @@ const ForgotPassword = () => {
                   ))}
                 </div>
 
-                <p className="otp-info">Sent to your mail id</p>
+                <p className="otp-info">OTP sent successfully</p>
 
                 <button
                   className="verify-btn"
@@ -135,7 +161,7 @@ const ForgotPassword = () => {
 
                 <p className="resend-text">
                   Haven’t got the OTP yet?{" "}
-                  <span onClick={handleSendOtpUI}>Resend</span>
+                  <span onClick={handleSendOtp}>Resend</span>
                 </p>
               </>
             )}
