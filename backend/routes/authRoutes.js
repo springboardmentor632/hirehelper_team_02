@@ -1,4 +1,6 @@
 import express from "express";
+
+/* CONTROLLERS */
 import {
   register,
   sendOtp,
@@ -8,29 +10,36 @@ import {
   updateProfile,
   getMe,
   changePassword,
+  deleteAccount,
 } from "../controllers/authControllers.js";
 
+import {
+  forgotPassword,
+  resetPassword,
+} from "../controllers/passwordControllers.js";
+
+/* MIDDLEWARE */
 import authMiddleware from "../middleware/authMiddleware.js";
 import uploadToCloudinary from "../middleware/uploadMiddleware.js";
-import { forgotPassword, resetPassword } from "../controllers/passwordControllers.js";
-import { deleteAccount } from "../controllers/authControllers.js";
-
 
 const router = express.Router();
 
-/* AUTH */
+/* ================= AUTH ================= */
 router.post("/register", register);
 router.post("/send-otp", sendOtp);
 router.post("/verify-otp", verifyOtp);
 router.post("/login", login);
 router.post("/resend-otp", resendOtp);
 
-/* PASSWORD */
+/* ================= PASSWORD ================= */
+// NO authMiddleware here
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/reset-password/:token", resetPassword);
+
+//Logged-in users only
 router.put("/change-password", authMiddleware, changePassword);
 
-/* PROFILE */
+/* ================= PROFILE ================= */
 router.get("/me", authMiddleware, getMe);
 
 router.put(
@@ -39,7 +48,7 @@ router.put(
   uploadToCloudinary("profile_pictures").single("profileImage"),
   updateProfile
 );
-router.delete("/delete-account", authMiddleware, deleteAccount);
 
+router.delete("/delete-account", authMiddleware, deleteAccount);
 
 export default router;

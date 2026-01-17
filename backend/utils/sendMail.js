@@ -1,83 +1,46 @@
 import nodemailer from "nodemailer";
 
 const sendMail = async (email, otp) => {
-  try {
-    // Create a fake Ethereal account
-    const testAccount = await nodemailer.createTestAccount();
+  // 🔥 ALWAYS log OTP for dev / submission safety
+  console.log("======================================");
+  console.log("📧 OTP REQUEST");
+  console.log("👤 Email:", email);
+  console.log("🔐 OTP :", otp);
+  console.log("======================================");
 
-    // Create transporter
+  // Try sending email, but NEVER break auth flow if it fails
+  try {
+    // If Gmail credentials are missing, skip email silently
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn("⚠️ EMAIL SKIPPED: Gmail credentials missing");
+      return;
+    }
+
     const transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
+      service: "gmail",
       auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // Gmail App Password
       },
     });
 
-    // Send email
     const info = await transporter.sendMail({
-      from: "HireHelper 🔐 <no-reply@hirehelper.dev>",
+      from: `"HireHelper 🔐" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "🔐 HireHelper | OTP Verification",
-      text: `
-Hello 👋,
-
-Welcome to HireHelper
-
-Your One-Time Password (OTP) is: ${otp}
-
-🔑 This OTP is valid for 10 minutes.
-⚠️ Please do not share this OTP with anyone.
-
-If you did not request this verification, you can safely ignore this email.
-
-Happy learning & job hunting! 💼✨
-— Team HireHelper
-      `,
       html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-          <h2>🔐 HireHelper OTP Verification</h2>
-
-          <p>Hello,</p>
-
-          <p>
-            Welcome to <strong>HireHelper</strong> 🚀 <br/>
-            We’re excited to have you onboard!
-          </p>
-
-          <p>
-            👉 <strong>Your OTP:</strong>
-            <span style="font-size: 20px; font-weight: bold; color: #2c7be5;">
-              ${otp}
-            </span>
-          </p>
-
-          <p>
-            ⏰ This OTP is valid for <strong>30 Seconds</strong>.<br/>
-            🔒 Please <strong>do not share</strong> this OTP with anyone.
-          </p>
-
-          <p>
-            If you didn’t request this verification, you can safely ignore this email.
-          </p>
-
-          <hr />
-
-          <p style="font-size: 14px; color: #555;">
-            💼 Happy learning & job hunting! <br/>
-            <strong>— Team HireHelper</strong>
-          </p>
-        </div>
+        <h2>HireHelper OTP Verification</h2>
+        <p>Your OTP is:</p>
+        <h1>${otp}</h1>
+        <p>This OTP is valid for 10 minutes.</p>
       `,
     });
 
-    // Browser preview link
-    console.log("📩 Ethereal Email Preview URL:");
-    console.log(nodemailer.getTestMessageUrl(info));
+    console.log("✅ Email sent successfully (Gmail)");
+    console.log("📨 Message ID:", info.messageId);
   } catch (error) {
-    console.error("❌ Ethereal email failed:", error.message);
-    throw error;
+    // ❌ DO NOT throw — allow signup / reset to continue
+    console.warn("⚠️ Email failed, using terminal OTP only");
   }
 };
 
