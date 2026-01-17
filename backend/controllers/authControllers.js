@@ -84,9 +84,9 @@ export const verifyOtp = async (req, res) => {
 /* ================= LOGIN ================= */
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, remember } = req.body; // 🔥 receive remember flag
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) return res.status(404).json({ message: "User not found" });
 
     if (!user.isVerified)
@@ -96,9 +96,14 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    // 🔥 Token expiry depends on Remember Me
+    const tokenExpiry = remember ? "30d" : "1d";
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: tokenExpiry }
+    );
 
     res.status(200).json({
       message: "Login successful",
@@ -110,10 +115,11 @@ export const login = async (req, res) => {
         email: user.email,
         phoneNumber: user.phoneNumber,
         profileImage: user.profileImage,
+        passwordUpdatedAt: user.passwordUpdatedAt,
       },
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
