@@ -28,7 +28,8 @@ API.interceptors.request.use(
     }
 
     // Attach token if exists
-    const token = localStorage.getItem("token");
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

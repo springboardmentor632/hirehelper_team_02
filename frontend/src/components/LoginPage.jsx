@@ -13,34 +13,36 @@ const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [gridCells, setGridCells] = useState([]);
 
-  const { setLoading } = useLoader(); // ✅ GLOBAL LOADER
-  const navigate = useNavigate();     // ✅ FOR REDIRECT
+  const { setLoading } = useLoader(); //GLOBAL LOADER
+  const navigate = useNavigate();     //FOR REDIRECT
 
-  /* ---------------- LOGIN SUBMIT ---------------- */
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      setLoading(true); // 👈 SHOW LOADER
+  try {
+    setLoading(true);
 
-      const res = await API.post("/auth/login", { email, password });
+    const res = await API.post("/auth/login", { email, password });
 
-      // save token
-      localStorage.setItem("token", res.data.token);
-       // SAVE USER (THIS WAS MISSING)
+    localStorage.setItem("token", res.data.token);
     localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      alert("Login successful");
-
-      // ✅ REDIRECT TO FEED PAGE
-      navigate("/feed");
-
-    } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false); // 👈 HIDE LOADER
+    // 🔥 Remember both email & password (encoded)
+    if (remember) {
+      const encoded = btoa(JSON.stringify({ email, password }));
+      localStorage.setItem("rememberAuth", encoded);
+    } else {
+      localStorage.removeItem("rememberAuth");
     }
-  };
+
+    navigate("/feed");
+  } catch (error) {
+    alert(error.response?.data?.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   /* ---------------- GRID BACKGROUND ---------------- */
   const generateGrid = useCallback(() => {
@@ -68,6 +70,21 @@ const LoginPage = () => {
   useEffect(() => {
     setGridCells(generateGrid());
   }, [generateGrid]);
+
+  useEffect(() => {
+  const saved = localStorage.getItem("rememberAuth");
+
+  if (saved) {
+    try {
+      const decoded = JSON.parse(atob(saved));
+      setEmail(decoded.email);
+      setPassword(decoded.password);
+      setRemember(true);
+    } catch (e) {
+      localStorage.removeItem("rememberAuth");
+    }
+  }
+}, []);
 
   /* ---------------- GOOGLE LOGIN ---------------- */
   const signInWithGoogle = () => {
