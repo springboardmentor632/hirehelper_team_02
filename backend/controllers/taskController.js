@@ -145,4 +145,38 @@ export const getTaskFeed = async (req, res) => {
 };
 
 
+// DELETE TASK
+export const deleteTask = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
+    const userId = req.user.id || req.user._id;
+
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // 🔐 Only task owner can delete (FIXED)
+    if (task.createdBy.toString() !== userId.toString()) {
+      return res.status(403).json({
+        message: "Not authorized to delete this task",
+      });
+    }
+
+    await task.deleteOne();
+
+    res.status(200).json({
+      message: "Task deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete task error:", error);
+    res.status(500).json({
+      message: "Failed to delete task",
+      error: error.message,
+    });
+  }
+};

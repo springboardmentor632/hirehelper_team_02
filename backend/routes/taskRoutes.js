@@ -4,6 +4,7 @@ import {
   getMyTasks,
   getTaskFeed,
 } from "../controllers/taskController.js";
+import { deleteTask } from "../controllers/taskController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import uploadToCloudinary from "../middleware/uploadMiddleware.js";
 
@@ -36,5 +37,7 @@ router.get("/my", authMiddleware, getMyTasks);
  * GET /api/tasks/feed
  */
 router.get("/feed", authMiddleware, getTaskFeed);
+router.delete("/:id", authMiddleware, deleteTask);
+
 
 export default router;
