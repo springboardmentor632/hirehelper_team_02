@@ -11,6 +11,9 @@ const MyTasks = () => {
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const currentUserId = user?._id;
+
   useEffect(() => {
     const fetchMyTasks = async () => {
       try {
@@ -27,9 +30,12 @@ const MyTasks = () => {
     fetchMyTasks();
   }, []);
 
+  const handleDelete = (taskId) => {
+    setMyTasks((prev) => prev.filter((task) => task._id !== taskId));
+  };
+
   return (
     <div className="mytasks-layout">
-      {/* Sidebar overlay (mobile only) */}
       {sidebarOpen && (
         <div
           className="sidebar-overlay"
@@ -37,14 +43,11 @@ const MyTasks = () => {
         />
       )}
 
-      {/* Sidebar */}
       <div className={`sidebar-wrapper ${sidebarOpen ? "open" : ""}`}>
         <Sidebar />
       </div>
 
-      {/* Main content */}
       <main className="mytasks-content">
-        {/* Hamburger (mobile only) */}
         <button
           className="menu-btn"
           onClick={() => setSidebarOpen((prev) => !prev)}
@@ -52,7 +55,6 @@ const MyTasks = () => {
           ☰
         </button>
 
-        {/* Header */}
         <div className="mytasks-header">
           <div className="header-left">
             <h2>My Tasks</h2>
@@ -61,10 +63,8 @@ const MyTasks = () => {
           <Notification />
         </div>
 
-        {/* Error */}
         {error && <p className="error-text">{error}</p>}
 
-        {/* Tasks */}
         <div className="mytasks-grid">
           {loading ? (
             <p>Loading tasks...</p>
@@ -72,7 +72,12 @@ const MyTasks = () => {
             <p>No tasks created yet</p>
           ) : (
             myTasks.map((task) => (
-              <MyTaskCard key={task._id} task={task} />
+              <MyTaskCard
+                key={task._id}
+                task={task}
+                currentUserId={currentUserId}
+                onDelete={handleDelete}
+              />
             ))
           )}
         </div>

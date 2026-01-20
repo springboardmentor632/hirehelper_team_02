@@ -1,8 +1,9 @@
 import { useState } from "react";
 import API from "../api";
+import defaultTaskImage from "../assets/default-task.png"; // HireHelper default image
 
 export default function TaskCard({ task }) {
-  const [requested, setRequested] = useState(task.isRequested || false);
+  const [requested, setRequested] = useState(task?.isRequested || false);
   const [loading, setLoading] = useState(false);
 
   if (!task) return null;
@@ -15,6 +16,10 @@ export default function TaskCard({ task }) {
     day: "2-digit",
     month: "short",
   });
+
+  // ✅ Image fallback logic (IMPORTANT)
+  const hasImage = task.image && task.image.trim() !== "";
+  const imageSrc = hasImage ? task.image : defaultTaskImage;
 
   const handleRequest = async () => {
     try {
@@ -30,41 +35,41 @@ export default function TaskCard({ task }) {
 
   return (
     <div className="task-card">
-
       {/* 🖼 Image */}
       <div className="task-image-wrapper">
         <img
-          src={task.image || "https://via.placeholder.com/400"}
-          alt={task.title}
-          className="task-image"
+          src={imageSrc}
+          alt={task.title || "Task image"}
+          className={`task-image ${!hasImage ? "default-image" : ""}`}
         />
       </div>
 
       {/* 🧾 Body */}
       <div className="task-body">
-
         {/* Top row */}
         <div className="task-top">
           <span className="task-category">
-            {task.title || task.category || "Task"}
+            {task.category || "General"}
           </span>
-
           <span className="task-date">{formattedDate}</span>
         </div>
 
         <h3 className="task-title">{task.title}</h3>
         <p className="task-desc">{task.description}</p>
 
-        <div className="task-meta">
-          📍 {task.location}
-        </div>
+        {task.location && (
+          <div className="task-meta">📍 {task.location}</div>
+        )}
 
         {/* Bottom row */}
         <div className="task-footer">
-
           <div className="task-owner">
             {profileImage ? (
-              <img src={profileImage} className="owner-avatar" />
+              <img
+                src={profileImage}
+                alt={ownerName}
+                className="owner-avatar"
+              />
             ) : (
               <div className="owner-letter">
                 {ownerName.charAt(0).toUpperCase()}
@@ -80,9 +85,7 @@ export default function TaskCard({ task }) {
           >
             {requested ? "Request Sent" : "Request Help"}
           </button>
-
         </div>
-
       </div>
     </div>
   );

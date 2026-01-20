@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import API from "../api";
+import defaultTaskImage from "../assets/default-task.png";
+import "../styles/myTasks.css";
 
 const formatTime = (dateString) => {
   if (!dateString) return "";
@@ -9,45 +12,54 @@ const formatTime = (dateString) => {
   });
 };
 
-const MyTaskCard = ({ task }) => {
-  // 🔒 Safety guard (prevents empty / ghost cards)
+const MyTaskCard = ({ task, onDelete }) => {
   if (!task) return null;
+
+  const [deleting, setDeleting] = useState(false);
+
+  const hasImage = task.image && task.image.trim() !== "";
+  const imageSrc = hasImage ? task.image : defaultTaskImage;
+
+  const handleDelete = async () => {
+    if (!window.confirm("Delete this task?")) return;
+
+    try {
+      setDeleting(true);
+      await API.delete(`/tasks/${task._id}`);
+      onDelete?.(task._id);
+    } catch (err) {
+      alert(err.response?.data?.message || "Not authorized to delete this task");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
     <div className="mytasks-card">
-      {/* Task Image */}
+      {/* Image */}
       <div className="mytasks-image">
         <img
-          src={
-            task.image
-              ? task.image
-              : "https://via.placeholder.com/300x200?text=No+Image"
-          }
+          src={imageSrc}
           alt={task.title || "Task image"}
+          className={`mytasks-img ${!hasImage ? "default-image" : ""}`}
         />
       </div>
 
       {/* Tags */}
       <div className="mytasks-tags">
         <span className="mytasks-tag category">
-          {task.category ? task.category : "General"}
+          {task.category || "General"}
         </span>
-
         <span className="mytasks-tag status">
-          {task.status ? task.status : "Open"}
+          {task.status || "Open"}
         </span>
       </div>
 
-      {/* Title */}
       <h4 className="mytasks-title">{task.title}</h4>
-
-      {/* Description */}
       <p className="mytasks-desc">{task.description}</p>
 
-      {/* Info */}
       <div className="mytasks-info">
-        <span>📍 {task.location}</span>
-
+        {task.location && <span>📍 {task.location}</span>}
         {task.startTime && (
           <span>
             ⏰ {formatTime(task.startTime)}
@@ -55,6 +67,15 @@ const MyTaskCard = ({ task }) => {
           </span>
         )}
       </div>
+
+      {/* ✅ ALWAYS RENDER – hover controlled by CSS */}
+      <button
+        className="mytasks-delete-btn"
+        onClick={handleDelete}
+        disabled={deleting}
+      >
+        {deleting ? "Deleting..." : "Delete"}
+      </button>
     </div>
   );
 };

@@ -73,3 +73,25 @@
 .feed-request-btn:hover {
   background: #16a34a;
 }
+/* ===== FEED & MY TASKS IMAGE BASE ===== */
+
+.task-image,
+.mytasks-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;       /* real images */
+  border-radius: 12px;
+}
+
+/* ===== DEFAULT PLACEHOLDER (BOTH PAGES) ===== */
+.task-image.default-image,
+.mytasks-img.default-image {
+  object-fit: contain;     /* ✅ NO CROP */
+  padding: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(125, 227, 234, 0.7),
+    rgba(0, 180, 216, 0.7)
+  );
+  filter: grayscale(100%) brightness(1.1);
+}
