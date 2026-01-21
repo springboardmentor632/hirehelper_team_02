@@ -15,6 +15,7 @@ import {
 
 import {
   forgotPassword,
+  verifyOtp as verifyResetOtp,
   resetPassword,
 } from "../controllers/passwordControllers.js";
 
@@ -31,12 +32,12 @@ router.post("/verify-otp", verifyOtp);
 router.post("/login", login);
 router.post("/resend-otp", resendOtp);
 
-/* ================= PASSWORD ================= */
-// NO authMiddleware here
+/* ================= PASSWORD RESET ================= */
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password/:token", resetPassword);
+router.post("/verify-reset-otp", verifyResetOtp);
+router.post("/reset-password", resetPassword);
 
-//Logged-in users only
+/* ================= PASSWORD (LOGGED IN) ================= */
 router.put("/change-password", authMiddleware, changePassword);
 
 /* ================= PROFILE ================= */

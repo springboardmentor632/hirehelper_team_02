@@ -24,18 +24,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-passwordUpdatedAt: {
-  type: Date,
-  default: null
-},
 
-
+    passwordUpdatedAt: {
+      type: Date,
+      default: null
+    },
 
     phoneNumber: {
       type: String,
     },
 
-    // 🔥 FIXED: ONE SINGLE IMAGE FIELD
     profileImage: {
       type: String,
       default: "",
@@ -55,6 +53,12 @@ passwordUpdatedAt: {
 
     otp: String,
     otpExpires: Date,
+
+    // ✅ ADD THIS
+    otpVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

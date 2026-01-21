@@ -9,39 +9,36 @@ export const forgotPassword = async (req, res) => {
 
     const { email } = req.body;
     if (!email) {
-      console.log("❌ Email missing in request");
       return res.status(400).json({ message: "Email is required" });
     }
 
     const emailLower = email.toLowerCase();
-    console.log("📧 Email received:", emailLower);
-
     const user = await User.findOne({ email: emailLower });
+
     if (!user) {
-      console.log("❌ User not found for:", emailLower);
       return res.status(404).json({ message: "User not found" });
     }
 
     // 🔐 Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // 🔥 FORCE TERMINAL LOG (THIS WILL ALWAYS SHOW)
     console.log("======================================");
     console.log("🔐 FORGOT PASSWORD OTP GENERATED");
     console.log("👤 User :", emailLower);
     console.log("🔢 OTP  :", otp);
     console.log("======================================");
 
-    // Save OTP
+    // Save OTP + reset verification state
     user.otp = otp;
     user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    user.otpVerified = false;
     await user.save();
 
-    // Send email (email may succeed/fail — does NOT affect terminal log)
+    // Send OTP email
     await sendMail(emailLower, otp);
 
     return res.status(200).json({
-      message: "Forgot password OTP generated",
+      message: "OTP sent successfully",
     });
   } catch (error) {
     console.error("FORGOT PASSWORD ERROR:", error);
@@ -49,17 +46,14 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-/* ================= RESET PASSWORD (VERIFY OTP) ================= */
-export const resetPassword = async (req, res) => {
+/* ================= VERIFY OTP ================= */
+export const verifyOtp = async (req, res) => {
   try {
-    console.log("🔁 RESET PASSWORD API HIT");
+    console.log("🔐 VERIFY OTP API HIT");
 
-    const { email, otp, password } = req.body;
-
-    if (!email || !otp || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email, OTP, and password are required" });
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required" });
     }
 
     const user = await User.findOne({ email: email.toLowerCase() });
@@ -67,11 +61,7 @@ export const resetPassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (!user.otp) {
-      return res.status(400).json({ message: "No OTP requested" });
-    }
-
-    if (user.otp !== otp) {
+    if (!user.otp || user.otp !== otp) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
@@ -79,9 +69,48 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "OTP expired" });
     }
 
+    // ✅ Mark OTP as verified
+    user.otpVerified = true;
+    await user.save();
+
+    console.log("✅ OTP verified for:", user.email);
+
+    return res.status(200).json({ message: "OTP verified successfully" });
+  } catch (error) {
+    console.error("VERIFY OTP ERROR:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+/* ================= RESET PASSWORD (NO OTP CHECK) ================= */
+export const resetPassword = async (req, res) => {
+  try {
+    console.log("🔁 RESET PASSWORD API HIT");
+
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // 🚨 OTP must be verified before reset
+    if (!user.otpVerified) {
+      return res.status(403).json({ message: "OTP not verified" });
+    }
+
     user.password = await bcrypt.hash(password, 10);
+    user.passwordUpdatedAt = new Date();
+
+    // Cleanup OTP data
     user.otp = null;
     user.otpExpires = null;
+    user.otpVerified = false;
 
     await user.save();
 
