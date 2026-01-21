@@ -14,6 +14,7 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [showOtp, setShowOtp] = useState(false);
   const [sending, setSending] = useState(false);
+  const [otp, setOtp] = useState("");
 
   /* ================= GRID BACKGROUND ================= */
   const generateGrid = useCallback(() => {
@@ -44,7 +45,14 @@ const ForgotPassword = () => {
 
   /* ================= OTP INPUT HANDLERS ================= */
   const handleOtpChange = (e, index) => {
-    if (e.target.value && index < otpRefs.current.length - 1) {
+    const value = e.target.value;
+    if (!value) return;
+
+    const newOtp = otp.split("");
+    newOtp[index] = value;
+    setOtp(newOtp.join(""));
+
+    if (index < otpRefs.current.length - 1) {
       otpRefs.current[index + 1].focus();
     }
   };
@@ -55,7 +63,7 @@ const ForgotPassword = () => {
     }
   };
 
-  /* ================= SEND OTP (BACKEND CALL) ================= */
+  /* ================= SEND OTP ================= */
   const handleSendOtp = async () => {
     if (!email) {
       alert("Please enter your email");
@@ -70,22 +78,39 @@ const ForgotPassword = () => {
         { email }
       );
 
-      // 🔥 show OTP UI only after backend success
+      setOtp("");
       setShowOtp(true);
     } catch (error) {
-      alert(
-        error.response?.data?.message || "Failed to send OTP"
-      );
+      alert(error.response?.data?.message || "Failed to send OTP");
     } finally {
       setSending(false);
     }
   };
 
-  /* ================= VERIFY BUTTON (UI ONLY FOR NOW) ================= */
-  const handleVerifyCode = () => {
-    alert("OTP verified (hook reset-password API next)");
-    navigate("/feed");
-  };
+  /* ================= VERIFY OTP (PASS TO RESET PAGE) ================= */
+ const handleVerifyCode = async () => {
+  if (otp.length !== 6) {
+    alert("Please enter a valid 6-digit OTP");
+    return;
+  }
+
+  try {
+    // 🔐 VERIFY OTP WITH BACKEND
+    await axios.post(
+      "http://localhost:5000/api/auth/verify-reset-otp",
+      { email, otp }
+    );
+
+    // ✅ OTP VERIFIED → NOW RESET PASSWORD
+    navigate("/reset-password", {
+      state: { email }
+    });
+
+  } catch (error) {
+    alert(error.response?.data?.message || "Invalid OTP");
+  }
+};
+
 
   return (
     <div className="LoginPage">
@@ -166,7 +191,6 @@ const ForgotPassword = () => {
               </>
             )}
           </div>
-
         </div>
       </div>
     </div>
