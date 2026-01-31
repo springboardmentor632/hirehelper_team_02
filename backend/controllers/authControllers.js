@@ -61,7 +61,7 @@ export const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) return res.status(404).json({ message: "User not found" });
 
     if (user.otp !== otp)
@@ -75,7 +75,26 @@ export const verifyOtp = async (req, res) => {
     user.isVerified = true;
     await user.save();
 
-    res.json({ message: "OTP verified successfully" });
+    // ✅ CREATE TOKEN (AUTO LOGIN)
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.status(200).json({
+      message: "OTP verified successfully",
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        profileImage: user.profileImage,
+      },
+    });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -150,7 +169,7 @@ export const resendOtp = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select(
-      "firstName lastName email phoneNumber profileImage"
+      "firstName lastName email phoneNumber bio profileImage"
     );
     res.status(200).json(user);
   } catch {

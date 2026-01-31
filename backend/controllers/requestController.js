@@ -44,10 +44,10 @@ export const createRequest = async (req, res) => {
       status: "pending",
     });
 
-    // 🔔 Notification → Task Owner (store sender)
+    // 🔔 Notification → Task Owner
     await Notification.create({
       user: task.createdBy,
-      sender: requestedBy,              // ✅ who sent it
+      sender: requestedBy,
       message: "You received a new request on your task",
       isRead: false,
     });
@@ -70,8 +70,8 @@ export const getRequestsForMyTasks = async (req, res) => {
     const ownerId = req.user._id;
 
     const requests = await Request.find({ owner: ownerId })
-      .populate("taskId", "title location")
-      .populate("requestedBy", "firstName lastName email profileImage") // 🔥 IMPORTANT
+      .populate("taskId", "title location category") // ✅ category added
+      .populate("requestedBy", "firstName lastName email profileImage")
       .sort({ createdAt: -1 });
 
     const formatted = requests.map((r) => ({
@@ -85,22 +85,23 @@ export const getRequestsForMyTasks = async (req, res) => {
         firstName: r.requestedBy?.firstName,
         lastName: r.requestedBy?.lastName,
         email: r.requestedBy?.email,
-        profileImage: r.requestedBy?.profileImage || null, // 🔥
+        profileImage: r.requestedBy?.profileImage || null,
       },
 
       task: {
         _id: r.taskId?._id,
         title: r.taskId?.title,
         location: r.taskId?.location,
+        category: r.taskId?.category, // ✅ added
       },
     }));
 
     res.status(200).json(formatted);
   } catch (error) {
+    console.error("GET REQUESTS FOR MY TASKS ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
-
 
 /* =========================
    GET MY REQUESTS (Helper)
@@ -110,8 +111,8 @@ export const getMyRequests = async (req, res) => {
     const userId = req.user._id;
 
     const requests = await Request.find({ requestedBy: userId })
-      .populate("taskId", "title location")
-      .populate("owner", "firstName lastName email profileImage") // 🔥 include profileImage
+      .populate("taskId", "title location category") // ✅ category added
+      .populate("owner", "firstName lastName email profileImage")
       .sort({ createdAt: -1 });
 
     const formatted = requests.map((r) => ({
@@ -123,6 +124,7 @@ export const getMyRequests = async (req, res) => {
       task: {
         title: r.taskId?.title,
         location: r.taskId?.location,
+        category: r.taskId?.category, // ✅ added
       },
 
       owner: {
@@ -130,7 +132,7 @@ export const getMyRequests = async (req, res) => {
         firstName: r.owner?.firstName,
         lastName: r.owner?.lastName,
         email: r.owner?.email,
-        profileImage: r.owner?.profileImage || null, 
+        profileImage: r.owner?.profileImage || null,
       },
     }));
 
@@ -140,7 +142,6 @@ export const getMyRequests = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 /* =========================
    ACCEPT / REJECT REQUEST (Owner)
@@ -167,10 +168,10 @@ export const updateRequestStatus = async (req, res) => {
     request.status = status;
     await request.save();
 
-    // 🔔 Notification → Helper (store sender)
+    // 🔔 Notification → Helper
     await Notification.create({
       user: request.requestedBy,
-      sender: req.user._id,          // ✅ who responded
+      sender: req.user._id,
       message:
         status === "accepted"
           ? "Your request has been accepted"

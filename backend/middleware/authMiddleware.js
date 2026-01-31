@@ -14,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findById(decoded.id).select(
-      "firstName lastName email phoneNumber profileImage"
+      "firstName lastName email phoneNumber profileImage bio phoneNumber"
     );
 
     if (!user) {
@@ -28,6 +28,7 @@ const authMiddleware = async (req, res, next) => {
       email: user.email,
       phoneNumber: user.phoneNumber,
       profileImage: user.profileImage,
+      bio: user.bio,
     };
 
     next();
