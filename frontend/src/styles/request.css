@@ -112,7 +112,11 @@
   font-weight: 600;
   margin-bottom: 6px;
 }
-
+hr{
+  margin: 8px 0;
+  border: none;
+  border-top: 2px solid #334155;
+}
 /* MESSAGE */
 .incoming-message {
   font-size: 14px;

@@ -94,11 +94,11 @@ export default function Request() {
                             ? `${requester.firstName} ${requester.lastName}`
                             : "Unknown User"}
                         </div>
-
+                        <hr />
                         {/* RATING */}
-                        <div className="incoming-rating">
+                        {/* <div className="incoming-rating">
                           ⭐ 4.8 <span>(18 reviews)</span>
-                        </div>
+                        </div> */}
 
                         {/* MESSAGE */}
                         <p className="incoming-message">
@@ -131,7 +131,15 @@ export default function Request() {
                       </button>
                       <button
                         className="decline-btn"
-                        onClick={() => updateStatus(req._id, "rejected")}
+                        onClick={() => {
+                          const confirmReject = window.confirm(
+                            "Are you sure you want to decline this request?"
+                          );
+
+                          if (confirmReject) {
+                            updateStatus(req._id, "rejected");
+                          }
+                        }}
                       >
                         Decline
                       </button>

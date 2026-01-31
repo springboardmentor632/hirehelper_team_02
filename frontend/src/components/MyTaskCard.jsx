@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import API from "../api";
-import defaultTaskImage from "../assets/default-task.png";
+import defaultTaskImage from "../assets/logo.png";
 import "../styles/myTasks.css";
 
 const formatTime = (dateString) => {

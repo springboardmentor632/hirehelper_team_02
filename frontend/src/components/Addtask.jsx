@@ -79,6 +79,18 @@ const AddTask = () => {
       alert(err.response?.data?.message || "Failed to create task");
     }
   };
+    const handleCancel = () => {
+    setTitle("");
+    setDescription("");
+    setLocation("");
+    setStartDate("");
+    setStartTime("");
+    setEndDate("");
+    setEndTime("");
+    setCategory("");
+    setImage(null);
+  };
+
 
   return (
     <div className="addtask-page">
@@ -247,9 +259,14 @@ const AddTask = () => {
               )}
             </div>
 
+            <div className="btn-wrapper">
             <button type="submit" className="submit-btn">
               Create Task
             </button>
+            <button type="button" className="cancel-btn" onClick={handleCancel}>
+              Cancel
+            </button>
+            </div>
           </form>
         </div>
       </div>

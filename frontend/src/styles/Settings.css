@@ -292,6 +292,7 @@
 .settings-page .save-btn-wrapper {
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
   margin-top: 20px;
 }
 .settings-page .primary-btn {

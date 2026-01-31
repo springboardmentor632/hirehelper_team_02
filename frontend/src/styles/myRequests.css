@@ -55,7 +55,7 @@
 ========================= */
 .myrequests-section {
   background: #e9fbff;
-  padding: 22px;
+  padding: 18px;
   border-radius: 14px;
 }
 
@@ -89,7 +89,7 @@
 /* LEFT SIDE */
 .card-left {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex: 1;
 }
 
@@ -122,15 +122,24 @@
 }
 
 .card-content .owner {
+  font-size: 16px;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+hr{
+  margin: 8px 0;
+  border: none;
+  border-top: 2px solid #334155;
+}
+p{
   font-size: 13px;
   color: #334155;
   margin-bottom: 10px;
 }
-
 /* MESSAGE BOX */
 .message-box {
-  background: #d1dae3;
-  padding: 14px;
+  /* background: #d1dae3; */
+  /* padding: 6px; */
   border-radius: 10px;
   margin-top: 8px;
 }

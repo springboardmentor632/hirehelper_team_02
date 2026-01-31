@@ -57,16 +57,17 @@ export default function Sidebar() {
       <div className="sidebar-header">
         <img src={logoImage} alt="HireHelper Logo" className="logo-circle" />
         <div>
-          <h2>HireHelper</h2>
+          {/* <h2>HireHelper</h2> */}
+          <h1>HireHelper</h1>
           <p>Get a helping partner</p>
         </div>
       </div>
-
+      <hr />
       {/* SEARCH */}
-      <div className="sidebar-search">
+      {/* <div className="sidebar-search">
         <FiSearch className="search-icon" />
         <input type="text" placeholder="Search" />
-      </div>
+      </div> */}
 
       {/* NAVIGATION */}
       <nav className="sidebar-nav">

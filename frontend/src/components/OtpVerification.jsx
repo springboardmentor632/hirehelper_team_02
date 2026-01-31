@@ -61,32 +61,38 @@ const OtpVerification = () => {
   };
 
   /* VERIFY OTP */
-  const handleVerify = async () => {
-    const otpValue = otp.join("");
+const handleVerify = async () => {
+  const otpValue = otp.join("");
 
-    if (otpValue.length !== 6) {
-      alert("Enter valid 6-digit OTP");
-      return;
-    }
+  if (otpValue.length !== 6) {
+    alert("Enter valid 6-digit OTP");
+    return;
+  }
 
-    if (!email) {
-      alert("Session expired. Please sign up again.");
-      navigate("/signup");
-      return;
-    }
+  if (!email) {
+    alert("Session expired. Please sign up again.");
+    navigate("/signup");
+    return;
+  }
 
-    try {
-      await API.post("/auth/verify-otp", {
-        email,
-        otp: otpValue,
-      });
+  try {
+    const res = await API.post("/auth/verify-otp", {
+      email,
+      otp: otpValue,
+    });
 
-      alert("OTP verified successfully");
-      navigate("/");
-    } catch (error) {
-      alert(error.response?.data?.message || "OTP verification failed");
-    }
-  };
+    // ✅ SAVE TOKEN & USER (AUTO LOGIN)
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+    window.dispatchEvent(new Event("profileUpdated"));
+
+    alert("Account verified successfully!");
+    navigate("/feed");
+
+  } catch (error) {
+    alert(error.response?.data?.message || "OTP verification failed");
+  }
+};
 
   /* RESEND OTP */
   const handleResend = async () => {

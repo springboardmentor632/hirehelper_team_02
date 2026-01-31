@@ -39,7 +39,18 @@ const PrivateRoute = ({ children }) => {
 /* =========================
    AUTH LAYOUT
 ========================= */
-const AuthLayout = ({ children }) => <>{children}</>;
+// const AuthLayout = ({ children }) => <>{children}</>;
+const AuthLayout = ({ children }) => {
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
+
+  // If already logged in → block auth pages
+  if (token) {
+    return <Navigate to="/feed" replace />;
+  }
+
+  return <>{children}</>;
+};
 
 /* =========================
    DASHBOARD LAYOUT

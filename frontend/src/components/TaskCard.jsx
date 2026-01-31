@@ -1,6 +1,6 @@
 import { useState } from "react";
 import API from "../api";
-import defaultTaskImage from "../assets/default-task.png"; // HireHelper default image
+import defaultTaskImage from "../assets/logo.png"; // HireHelper default image
 
 export default function TaskCard({ task }) {
   const [requested, setRequested] = useState(task?.isRequested || false);

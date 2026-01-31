@@ -35,7 +35,7 @@ const LoginPage = () => {
       localStorage.removeItem("rememberAuth");
     }
 
-    navigate("/feed");
+    navigate("/feed", { replace: true });
   } catch (error) {
     alert(error.response?.data?.message || "Login failed");
   } finally {
@@ -131,9 +131,10 @@ const LoginPage = () => {
               <ul className="features">
                 <li><span className="check-icon">✓</span> Post tasks and receive instant help requests</li>
                 <li><span className="check-icon">✓</span> Browse available tasks and offer your skills</li>
-                <li><span className="check-icon">✓</span> Secure payments and ratings system</li>
+                {/* <li><span className="check-icon">✓</span> Secure payments and ratings system</li> */}
+                <li><span className="check-icon">✓</span> Mobile-friendly and fully responsive design</li>
                 <li><span className="check-icon">✓</span> Real-time notifications and updates</li>
-                <li><span className="check-icon">✓</span> 24/7 customer support</li>
+                <li><span className="check-icon">✓</span> Secure authentication with protected user access</li>
               </ul>
             </div>
           </div>
@@ -196,7 +197,7 @@ const LoginPage = () => {
                 <span>Or</span>
               </div>
 
-              <button
+              {/* <button
                 type="button"
                 className="btn-google"
                 onClick={signInWithGoogle}
@@ -208,7 +209,7 @@ const LoginPage = () => {
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                 </svg>
                 Sign in with Google
-              </button>
+              </button> */}
 
               <div className="signup-link">
                 Don&apos;t have an account? <Link to="/signup">Sign up</Link>

@@ -55,6 +55,9 @@ const Settings = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deletePassword, setDeletePassword] = useState("");
   const [deleteError, setDeleteError] = useState("");
+  const [originalUser, setOriginalUser] = useState(() => {
+    return JSON.parse(localStorage.getItem("user")) || {};
+  });
 
 
   useEffect(() => {
@@ -129,6 +132,16 @@ const Settings = () => {
       alert("Profile update failed");
     }
   };
+  const handleCancel = () => {
+    setFirstName(originalUser.firstName || "");
+    setLastName(originalUser.lastName || "");
+    setEmail(originalUser.email || "");
+    setPhone(originalUser.phoneNumber || "");
+    setBio(originalUser.bio || "");
+    setProfilePhoto(originalUser.profileImage || DEFAULT_USER_ICON);
+    setSelectedFile(null);
+  };
+
   const getTimeAgo = (date) => {
     if (!date) return "Never updated";
     const diff = Math.floor((Date.now() - new Date(date)) / 1000);
@@ -310,6 +323,12 @@ const Settings = () => {
             <button className="primary-btn" onClick={handleSave}>
               Save Changes
             </button>
+            <button
+                className="cancel-btn"
+                onClick={() => handleCancel(false)}
+              >
+                Cancel
+              </button>
           </div>
 
           {saved && <p className="save-msg">✔ Changes saved successfully</p>}

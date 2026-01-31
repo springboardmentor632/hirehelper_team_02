@@ -90,16 +90,19 @@ const MyRequests = () => {
                     </div>
 
                     <div className="card-content">
-                      <h3>{req.taskId?.title}</h3>
+                      {/* <h3>{req.task?.title}</h3> */}
 
-                      <p className="owner">
-                        Task owner: {req.owner?.firstName}{" "}
-                        {req.owner?.lastName}
-                      </p>
+                      
 
                       <div className="message-box">
-                        <label>Your Message:</label>
-                        <p>{req.message || "No message provided"}</p>
+                        <h3 className="owner">
+                        {req.owner?.firstName}{" "}
+                        {req.owner?.lastName}
+                      </h3>
+                        {/* <label>Your Request:</label> */}
+                        <p>You have requested for {req.task?.title || ""} task. <br />
+                        <b>Category: </b> {req.task?.category || "N/A"} <br />
+                        <strong>For location: </strong>{req.task.location} <br /></p>
                       </div>
 
                       <div className="meta-row">
@@ -108,7 +111,7 @@ const MyRequests = () => {
                         {req.taskId?.location && (
                           <>
                             <span className="dot">•</span>
-                            <span>📍 {req.taskId.location}</span>
+                            <span>📍 {req.task.location}</span>
                           </>
                         )}
                       </div>
