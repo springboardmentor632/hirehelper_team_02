@@ -75,4 +75,10 @@ HireHelper is a full-stack web application designed to streamline **task managem
 
 ---
 
-## 📂 Project Structure
+### 📈 Future Improvements
+- 📊 Advanced analytics dashboard
+- 🤖 AI-based task recommendations
+
+⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub!
